@@ -364,8 +364,9 @@ function showToast(msg) {
 
 function getShareText() {
   const activePanel = document.querySelector('.version-panel.active');
+  const activeVersion = WEEK.versions.find(v => v.key === activePanel.dataset.key);
   const langBlocks = activePanel.querySelectorAll('.lang-block');
-  let text = WEEK.ref + '\n\n';
+  let text = activeVersion.ref + '\n\n';
   
   langBlocks.forEach(block => {
     const langTag = block.querySelector('.lang-tag').textContent;
@@ -405,12 +406,14 @@ async function shareSingleLanguage(versionRef, langTag, lines) {
 document.getElementById('shareBtn').addEventListener('click', async () => {
   const shareText = getShareText();
   const btn = document.getElementById('shareBtn');
+  const activePanel = document.querySelector('.version-panel.active');
+  const activeVersion = WEEK.versions.find(v => v.key === activePanel.dataset.key);
   
   // Try native share first
   if (navigator.share) {
     try {
       await navigator.share({
-        title: WEEK.ref,
+        title: activeVersion.ref,
         text: shareText
       });
       showToast('Shared!');
