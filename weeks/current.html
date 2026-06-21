@@ -251,9 +251,9 @@ const WEEK = {
 const LANG_META = {
   nkjv: { tag: "NKJV", cls: "nkjv en" },
   esv:  { tag: "ESV",  cls: "esv en" },
-  ta:   { tag: "தமிழ்", cls: "ta" },
-  ml:   { tag: "മലയാളം", cls: "ml" },
-  hi:   { tag: "हिंदी", cls: "hi" }
+  ta:   { tag: "Tamil", cls: "ta" },
+  ml:   { tag: "Malayalam", cls: "ml" },
+  hi:   { tag: "Hindi", cls: "hi" }
 };
 const LANG_ORDER = ["nkjv", "esv", "ta", "ml", "hi"];
 
@@ -382,7 +382,7 @@ function getShareText() {
 }
 
 async function shareSingleLanguage(versionRef, langTag, lines) {
-  const text = `${versionRef}\n\n${langTag}\n${lines.join('\n')}`;
+  const text = `${versionRef}\n\n${lines.join('\n')}`;
 
   if (navigator.share) {
     try {
