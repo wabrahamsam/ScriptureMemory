@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scripture Memory тАФ Romans 10:13тАУ15</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Source+Sans+3:wght@400;500;600;700&family=Noto+Serif+Tamil:wght@400;600&family=Noto+Sans+Malayalam:wght@400;600&family=Noto+Serif+Devanagari:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #FAF6EE;
+    --paper-raised: #FFFDF9;
+    --ink: #3A3530;
+    --ink-soft: #6B6258;
+    --accent: #8B5E3C;
+    --accent-soft: #C9A57E;
+    --hairline: #E3DACB;
+    --hairline-strong: #D8CFC0;
+
+    --tint-en: #8B5E3C;
+    --tint-ta: #A8763F;
+    --tint-ml: #1F6F5C;
+    --tint-hi: #6E5A8C;
+
+    --font-display: 'Source Serif 4', Georgia, serif;
+    --font-body: 'Source Sans 3', system-ui, sans-serif;
+    --font-ta: 'Noto Serif Tamil', serif;
+    --font-ml: 'Noto Sans Malayalam', sans-serif;
+    --font-hi: 'Noto Serif Devanagari', serif;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); -webkit-font-smoothing: antialiased; }
+  body {
+    background-image: radial-gradient(circle at 15% 0%, rgba(139,94,60,0.05), transparent 45%),
+                       radial-gradient(circle at 85% 100%, rgba(31,111,92,0.04), transparent 45%);
+    min-height: 100vh;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 28px 18px 90px; }
+
+  .backlink { display: inline-flex; align-items: center; gap: 6px; color: var(--ink-soft); text-decoration: none; font-size: 13.5px; font-weight: 500; margin-bottom: 18px; }
+  .backlink:hover { color: var(--accent); }
+
+  header { text-align: center; margin-bottom: 22px; }
+  .eyebrow { font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 6px; }
+  .dates { font-size: 13px; color: var(--ink-soft); margin-bottom: 14px; }
+  h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(26px, 6vw, 38px); margin: 0; letter-spacing: -0.01em; }
+
+  /* ---------- Tabs ---------- */
+  .tabs { display: flex; justify-content: center; gap: 6px; margin: 24px 0 26px; flex-wrap: wrap; }
+  .tab {
+    font-family: var(--font-body); font-weight: 600; font-size: 13.5px;
+    border: 1px solid var(--hairline-strong); background: var(--paper-raised); color: var(--ink-soft);
+    padding: 9px 18px; border-radius: 20px; cursor: pointer; transition: all 0.15s;
+  }
+  .tab:hover { border-color: var(--accent); color: var(--accent); }
+  .tab.active { background: var(--ink); color: var(--paper-raised); border-color: var(--ink); }
+  .tab.only { cursor: default; }
+  .tab.only:hover { border-color: var(--hairline-strong); color: var(--ink-soft); }
+
+  /* ---------- Verse card ---------- */
+  .version-panel { display: none; }
+  .version-panel.active { display: block; }
+
+  .card {
+    background: var(--paper-raised);
+    border: 1px solid var(--hairline);
+    border-radius: 16px;
+    padding: 30px 30px 26px;
+    box-shadow: 0 1px 2px rgba(58,53,48,0.04), 0 8px 24px -16px rgba(58,53,48,0.18);
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .card-head {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 10px;
+    margin-bottom: 18px; padding-bottom: 16px; border-bottom: 1px solid var(--hairline);
+  }
+  .card-head .ref { font-family: var(--font-display); font-weight: 700; font-size: 21px; }
+  .card-head .version-tag { font-size: 11.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); background: rgba(139,94,60,0.08); padding: 5px 11px; border-radius: 20px; }
+
+  .lang-block { padding: 14px 0; border-top: 1px solid var(--hairline); margin-bottom: 2px; max-width: 100%; }
+  .lang-block:first-of-type { border-top: none; padding-top: 4px; }
+  .lang-block.nkjv, .lang-block.esv { --lang-tint: var(--tint-en); --lang-tint-bg: #F2EAE0; }
+  .lang-block.ta { --lang-tint: var(--tint-ta); --lang-tint-bg: #F4EBDF; }
+  .lang-block.ml { --lang-tint: var(--tint-ml); --lang-tint-bg: #E3EDE9; }
+  .lang-block.hi { --lang-tint: var(--tint-hi); --lang-tint-bg: #EBE6F0; }
+
+  .lang-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .lang-tag {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--lang-tint, var(--ink-soft));
+    background: var(--lang-tint-bg, #F0EBE3);
+    padding: 4px 10px; border-radius: 20px;
+  }
+  .verse-text { width: 100%; font-size: 16px; line-height: 1.7; color: var(--ink); margin: 0; overflow-wrap: break-word; word-wrap: break-word; word-break: normal; }
+  .verse-text.en { hyphens: auto; -webkit-hyphens: auto; }
+
+  .lang-share-btn {
+    flex-shrink: 0;
+    width: 34px; height: 34px; border-radius: 9px;
+    border: 1px solid transparent; background: transparent;
+    color: var(--ink-soft); opacity: 0.6;
+    display: flex; align-items: center; justify-content: center;
+    padding: 0; cursor: pointer;
+    transition: opacity 0.15s, background 0.15s, color 0.15s;
+  }
+  .lang-share-btn:hover { opacity: 1; background: rgba(139,94,60,0.08); color: var(--accent); }
+  .lang-share-btn svg { width: 17px; height: 17px; display: block; }
+  .verse-text.en { font-family: var(--font-display); font-size: 16.5px; }
+  .verse-text.ta { font-family: var(--font-ta); font-size: 17px; line-height: 1.85; }
+  .verse-text.ml { font-family: var(--font-ml); font-size: 17px; line-height: 1.9; }
+  .verse-text.hi { font-family: var(--font-hi); font-size: 17px; line-height: 1.85; }
+  .verse-text .vline { display: block; }
+  .verse-text .vline + .vline { margin-top: 6px; }
+
+  .card-foot { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--hairline); text-align: center; font-size: 11.5px; color: var(--ink-soft); letter-spacing: 0.02em; }
+
+  /* ---------- Actions ---------- */
+  .actions { display: flex; justify-content: center; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+  button { font-family: var(--font-body); font-weight: 600; font-size: 13.5px; border: 1px solid var(--hairline-strong); background: var(--paper-raised); color: var(--ink); padding: 10px 18px; border-radius: 8px; cursor: pointer; transition: all 0.15s; }
+  button:hover { border-color: var(--accent); color: var(--accent); }
+  button.primary { background: var(--ink); color: var(--paper-raised); border-color: var(--ink); }
+  button.primary:hover { background: var(--accent); border-color: var(--accent); color: white; }
+  button:disabled { opacity: 0.6; cursor: wait; }
+
+  footer.page-footer { text-align: center; margin-top: 46px; padding-top: 18px; border-top: 1px solid var(--hairline); color: var(--ink-soft); font-size: 12px; }
+
+  .toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(10px);
+    background: var(--ink); color: var(--paper); padding: 10px 18px; border-radius: 8px;
+    font-size: 13px; font-weight: 500; opacity: 0; pointer-events: none; transition: opacity 0.25s, transform 0.25s; z-index: 100;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  @media (max-width: 480px) {
+    .wrap { padding: 28px 10px 90px; }
+    .card { padding: 18px 14px 16px; }
+    .verse-text.ta, .verse-text.hi, .verse-text.ml { font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <a href="../index.html" class="backlink">тЖР All weeks</a>
+
+  <header>
+    <div class="eyebrow">Scripture Memory</div>
+    <div class="dates" id="datesLabel">Jun 21тАУ27</div>
+    <h1 id="refLabel">Romans 10:13тАУ15</h1>
+  </header>
+
+  <div class="tabs" id="tabs"></div>
+
+  <div id="panels"></div>
+
+  <div class="actions">
+    <button class="primary" id="shareBtn">ЁЯУЛ Share</button>
+  </div>
+
+  <footer class="page-footer">Emmanuel Believers' Fellowship ┬╖ Tenkasi, Tamil Nadu</footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   WEEKLY DATA тАФ edit this block each week, nothing else.
+   ========================================================= */
+const WEEK = {
+  dates: "Jun 21тАУ27",
+  ref: "Romans 10:13тАУ15",
+  versions: [
+    {
+      key: "full",
+      label: "Full Version",
+      ref: "Romans 10:13тАУ15",
+      verses: {
+        nkjv: [
+          `For "whoever calls on the name of the Lord shall be saved."`,
+          `How then shall they call on Him in whom they have not believed? And how shall they believe in Him of whom they have not heard? And how shall they hear without a preacher?`,
+          `And how shall they preach unless they are sent? As it is written: "How beautiful are the feet of those who preach the gospel of peace, who bring glad tidings of good things!"`
+        ],
+        esv: [
+          `For "everyone who calls on the name of the Lord will be saved."`,
+          `How then will they call on him in whom they have not believed? And how are they to believe in him of whom they have never heard? And how are they to hear without someone preaching?`,
+          `And how are they to preach unless they are sent? As it is written, "How beautiful are the feet of those who preach the good news!"`
+        ],
+        ta: [
+          `роЖродро▓ро╛ро▓рпН роХро░рпНродрпНродро░рпБроЯрпИроп роиро╛роородрпНродрпИродрпН родрпКро┤рпБродрпБроХрпКро│рпНро│рпБроХро┐ро▒ роОро╡ройрпБроорпН роЗро░роЯрпНроЪро┐роХрпНроХрокрпНрокроЯрпБро╡ро╛ройрпН.`,
+          `роЕро╡ро░рпИ ро╡ро┐роЪрпБро╡ро╛роЪро┐ропро╛родро╡ро░рпНроХро│рпН роОрокрпНрокроЯро┐ роЕро╡ро░рпИродрпН родрпКро┤рпБродрпБроХрпКро│рпНро│рпБро╡ро╛ро░рпНроХро│рпН? роЕро╡ро░рпИроХрпН роХрпБро▒ро┐родрпНродрпБроХрпН роХрпЗро│рпНро╡ро┐рокрпНрокроЯро╛родро╡ро░рпНроХро│рпН роОрокрпНрокроЯро┐ ро╡ро┐роЪрпБро╡ро╛роЪро┐рокрпНрокро╛ро░рпНроХро│рпН? рокро┐ро░роЪроЩрпНроХро┐роХрпНроХро┐ро▒ро╡ройрпН роЗро▓рпНро▓ро╛ро╡ро┐роЯрпНроЯро╛ро▓рпН роОрокрпНрокроЯро┐роХрпН роХрпЗро│рпНро╡ро┐рокрпНрокроЯрпБро╡ро╛ро░рпНроХро│рпН?`,
+          `роЕройрпБрокрпНрокрокрпНрокроЯро╛ро╡ро┐роЯрпНроЯро╛ро▓рпН роОрокрпНрокроЯро┐рокрпН рокро┐ро░роЪроЩрпНроХро┐рокрпНрокро╛ро░рпНроХро│рпН? роЪрооро╛родро╛ройродрпНродрпИроХрпНроХрпВро▒ро┐, роиро▒рпНроХро╛ро░ро┐ропроЩрпНроХро│рпИроЪрпН роЪрпБро╡ро┐роЪрпЗро╖рооро╛ропрпН роЕро▒ро┐ро╡ро┐роХрпНроХро┐ро▒ро╡ро░рпНроХро│рпБроЯрпИроп рокро╛родроЩрпНроХро│рпН роОро╡рпНро╡ро│ро╡рпБ роЕро┤роХро╛ройро╡рпИроХро│рпН роОройрпНро▒рпБ роОро┤рпБродро┐ропро┐ро░рпБроХрпНроХро┐ро▒родрпЗ.`
+        ],
+        ml: [
+          `"р┤Хр╡╝р┤др╡Нр┤др┤╛р┤╡р┤┐р┤ир╡Нр┤▒р╡Ж р┤ир┤╛р┤ор┤др╡Нр┤др╡Ж р┤╡р┤┐р┤│р┤┐р┤Ър╡Нр┤Ър┤кр╡Зр┤Хр╡Нр┤╖р┤┐р┤Хр╡Нр┤Хр╡Бр┤ир╡Нр┤и р┤Пр┤╡р┤ир╡Бр┤В р┤░р┤Хр╡Нр┤╖р┤┐р┤Хр╡Нр┤Хр┤кр╡Нр┤кр╡Жр┤Яр╡Бр┤В" р┤Ор┤ир╡Нр┤ир╡Бр┤гр╡Нр┤Яр┤▓р╡Нр┤▓р╡Л.`,
+          `р┤Ор┤ир╡Нр┤ир┤╛р╡╜ р┤Ер┤╡р╡╝ р┤╡р┤┐р┤╢р╡Нр┤╡р┤╕р┤┐р┤Хр╡Нр┤Хр┤╛р┤др╡Нр┤др┤╡р┤ир╡Ж р┤Ор┤Щр╡Нр┤Щр┤ир╡Ж р┤╡р┤┐р┤│р┤┐р┤Ър╡Нр┤Ър┤кр╡Зр┤Хр╡Нр┤╖р┤┐р┤Хр╡Нр┤Хр╡Бр┤В? р┤Ер┤╡р╡╝ р┤Хр╡Зр┤Яр╡Нр┤Яр┤┐р┤Яр╡Нр┤Яр┤┐р┤▓р╡Нр┤▓р┤╛р┤др╡Нр┤др┤╡р┤ир┤┐р╡╜ р┤Ор┤Щр╡Нр┤Щр┤ир╡Ж р┤╡р┤┐р┤╢р╡Нр┤╡р┤╕р┤┐р┤Хр╡Нр┤Хр╡Бр┤В? р┤кр╡Нр┤░р┤╕р┤Вр┤Чр┤┐р┤Хр╡Нр┤Хр╡Бр┤ир╡Нр┤ир┤╡р╡╗ р┤Зр┤▓р╡Нр┤▓р┤╛р┤др╡Ж р┤Ор┤Щр╡Нр┤Щр┤ир╡Ж р┤Хр╡Зр╡╛р┤Хр╡Нр┤Хр╡Бр┤В?`,
+          `р┤Жр┤░р╡Бр┤В р┤Ер┤пр┤Хр╡Нр┤Хр┤кр╡Нр┤кр╡Жр┤Яр┤╛р┤др╡Ж р┤Ор┤Щр╡Нр┤Щр┤ир╡Ж р┤кр╡Нр┤░р┤╕р┤Вр┤Чр┤┐р┤Хр╡Нр┤Хр╡Бр┤В? "р┤ир┤ир╡Нр┤ор┤пр╡Ж р┤╕р╡Бр┤╡р┤┐р┤╢р╡Зр┤╖р┤┐р┤Хр╡Нр┤Хр╡Бр┤ир╡Нр┤ир┤╡р┤░р╡Бр┤Яр╡Ж р┤Хр┤╛р╡╜ р┤Ор┤др╡Нр┤░ р┤ор┤ир╡Лр┤╣р┤░р┤В" р┤Ор┤ир╡Нр┤ир╡Н р┤Ор┤┤р╡Бр┤др┤┐р┤пр┤┐р┤░р┤┐р┤Хр╡Нр┤Хр╡Бр┤ир╡Нр┤ир╡Бр┤╡р┤▓р╡Нр┤▓р╡Л.`
+        ],
+        hi: [
+          `рдХреНрдпреЛрдВрдХрд┐, "рдЬреЛ рдХреЛрдИ рдкреНрд░рднреБ рдХрд╛ рдирд╛рдо рд▓реЗрдЧрд╛, рд╡рд╣ рдЙрджреНрдзрд╛рд░ рдкрд╛рдПрдЧрд╛ред"`,
+          `рдлрд┐рд░ рдЬрд┐рд╕ рдкрд░ рдЙрдиреНрд╣реЛрдВрдиреЗ рд╡рд┐рд╢реНрд╡рд╛рд╕ рдирд╣реАрдВ рдХрд┐рдпрд╛, рд╡реЗ рдЙрд╕рдХрд╛ рдирд╛рдо рдХреИрд╕реЗ рд▓реЗрдВ? рдФрд░ рдЬрд┐рд╕рдХреЗ рд╡рд┐рд╖рдп рд╕реБрдирд╛ рдирд╣реАрдВ рдЙрд╕ рдкрд░ рдХреИрд╕реЗ рд╡рд┐рд╢реНрд╡рд╛рд╕ рдХрд░реЗрдВ? рдФрд░ рдкреНрд░рдЪрд╛рд░рдХ рдмрд┐рдирд╛ рдХреИрд╕реЗ рд╕реБрдиреЗрдВ?`,
+          `рдФрд░ рдпрджрд┐ рднреЗрдЬреЗ рди рдЬрд╛рдПрдБ, рддреЛ рдХреИрд╕реЗ рдкреНрд░рдЪрд╛рд░ рдХрд░реЗрдВ? рдЬреИрд╕рд╛ рд▓рд┐рдЦрд╛ рд╣реИ, "рдЙрдирдХреЗ рдкрд╛рдБрд╡ рдХреНрдпрд╛ рд╣реА рд╕реБрд╣рд╛рд╡рдиреЗ рд╣реИрдВ, рдЬреЛ рдЕрдЪреНрдЫреА рдмрд╛рддреЛрдВ рдХрд╛ рд╕реБрд╕рдорд╛рдЪрд╛рд░ рд╕реБрдирд╛рддреЗ рд╣реИрдВред"`
+        ]
+      }
+    },
+    {
+      key: "short",
+      label: "Short Version",
+      ref: "Romans 10:13тАУ14",
+      verses: {
+        nkjv: [
+          `For "whoever calls on the name of the Lord shall be saved."`,
+          `How then shall they call on Him in whom they have not believed? And how shall they believe in Him of whom they have not heard? And how shall they hear without a preacher?`
+        ],
+        esv: [
+          `For "everyone who calls on the name of the Lord will be saved."`,
+          `How then will they call on him in whom they have not believed? And how are they to believe in him of whom they have never heard? And how are they to hear without someone preaching?`
+        ],
+        ta: [
+          `роЖродро▓ро╛ро▓рпН роХро░рпНродрпНродро░рпБроЯрпИроп роиро╛роородрпНродрпИродрпН родрпКро┤рпБродрпБроХрпКро│рпНро│рпБроХро┐ро▒ роОро╡ройрпБроорпН роЗро░роЯрпНроЪро┐роХрпНроХрокрпНрокроЯрпБро╡ро╛ройрпН.`,
+          `роЕро╡ро░рпИ ро╡ро┐роЪрпБро╡ро╛роЪро┐ропро╛родро╡ро░рпНроХро│рпН роОрокрпНрокроЯро┐ роЕро╡ро░рпИродрпН родрпКро┤рпБродрпБроХрпКро│рпНро│рпБро╡ро╛ро░рпНроХро│рпН? роЕро╡ро░рпИроХрпН роХрпБро▒ро┐родрпНродрпБроХрпН роХрпЗро│рпНро╡ро┐рокрпНрокроЯро╛родро╡ро░рпНроХро│рпН роОрокрпНрокроЯро┐ ро╡ро┐роЪрпБро╡ро╛роЪро┐рокрпНрокро╛ро░рпНроХро│рпН? рокро┐ро░роЪроЩрпНроХро┐роХрпНроХро┐ро▒ро╡ройрпН роЗро▓рпНро▓ро╛ро╡ро┐роЯрпНроЯро╛ро▓рпН роОрокрпНрокроЯро┐роХрпН роХрпЗро│рпНро╡ро┐рокрпНрокроЯрпБро╡ро╛ро░рпНроХро│рпН?`
+        ],
+        ml: [
+          `"р┤Хр╡╝р┤др╡Нр┤др┤╛р┤╡р┤┐р┤ир╡Нр┤▒р╡Ж р┤ир┤╛р┤ор┤др╡Нр┤др╡Ж р┤╡р┤┐р┤│р┤┐р┤Ър╡Нр┤Ър┤кр╡Зр┤Хр╡Нр┤╖р┤┐р┤Хр╡Нр┤Хр╡Бр┤ир╡Нр┤и р┤Пр┤╡р┤ир╡Бр┤В р┤░р┤Хр╡Нр┤╖р┤┐р┤Хр╡Нр┤Хр┤кр╡Нр┤кр╡Жр┤Яр╡Бр┤В" р┤Ор┤ир╡Нр┤ир╡Бр┤гр╡Нр┤Яр┤▓р╡Нр┤▓р╡Л.`,
+          `р┤Ор┤ир╡Нр┤ир┤╛р╡╜ р┤Ер┤╡р╡╝ р┤╡р┤┐р┤╢р╡Нр┤╡р┤╕р┤┐р┤Хр╡Нр┤Хр┤╛р┤др╡Нр┤др┤╡р┤ир╡Ж р┤Ор┤Щр╡Нр┤Щр┤ир╡Ж р┤╡р┤┐р┤│р┤┐р┤Ър╡Нр┤Ър┤кр╡Зр┤Хр╡Нр┤╖р┤┐р┤Хр╡Нр┤Хр╡Бр┤В? р┤Ер┤╡р╡╝ р┤Хр╡Зр┤Яр╡Нр┤Яр┤┐р┤Яр╡Нр┤Яр┤┐р┤▓р╡Нр┤▓р┤╛р┤др╡Нр┤др┤╡р┤ир┤┐р╡╜ р┤Ор┤Щр╡Нр┤Щр┤ир╡Ж р┤╡р┤┐р┤╢р╡Нр┤╡р┤╕р┤┐р┤Хр╡Нр┤Хр╡Бр┤В? р┤кр╡Нр┤░р┤╕р┤Вр┤Чр┤┐р┤Хр╡Нр┤Хр╡Бр┤ир╡Нр┤ир┤╡р╡╗ р┤Зр┤▓р╡Нр┤▓р┤╛р┤др╡Ж р┤Ор┤Щр╡Нр┤Щр┤ир╡Ж р┤Хр╡Зр╡╛р┤Хр╡Нр┤Хр╡Бр┤В?`
+        ],
+        hi: [
+          `рдХреНрдпреЛрдВрдХрд┐, "рдЬреЛ рдХреЛрдИ рдкреНрд░рднреБ рдХрд╛ рдирд╛рдо рд▓реЗрдЧрд╛, рд╡рд╣ рдЙрджреНрдзрд╛рд░ рдкрд╛рдПрдЧрд╛ред"`,
+          `рдлрд┐рд░ рдЬрд┐рд╕ рдкрд░ рдЙрдиреНрд╣реЛрдВрдиреЗ рд╡рд┐рд╢реНрд╡рд╛рд╕ рдирд╣реАрдВ рдХрд┐рдпрд╛, рд╡реЗ рдЙрд╕рдХрд╛ рдирд╛рдо рдХреИрд╕реЗ рд▓реЗрдВ? рдФрд░ рдЬрд┐рд╕рдХреЗ рд╡рд┐рд╖рдп рд╕реБрдирд╛ рдирд╣реАрдВ рдЙрд╕ рдкрд░ рдХреИрд╕реЗ рд╡рд┐рд╢реНрд╡рд╛рд╕ рдХрд░реЗрдВ? рдФрд░ рдкреНрд░рдЪрд╛рд░рдХ рдмрд┐рдирд╛ рдХреИрд╕реЗ рд╕реБрдиреЗрдВ?`
+        ]
+      }
+    },
+    {
+      key: "easy",
+      label: "Easy Version",
+      ref: "Romans 10:13",
+      verses: {
+        nkjv: [`For "whoever calls on the name of the Lord shall be saved."`],
+        esv: [`For "everyone who calls on the name of the Lord will be saved."`],
+        ta: [`роЖродро▓ро╛ро▓рпН роХро░рпНродрпНродро░рпБроЯрпИроп роиро╛роородрпНродрпИродрпН родрпКро┤рпБродрпБроХрпКро│рпНро│рпБроХро┐ро▒ роОро╡ройрпБроорпН роЗро░роЯрпНроЪро┐роХрпНроХрокрпНрокроЯрпБро╡ро╛ройрпН.`],
+        ml: [`"р┤Хр╡╝р┤др╡Нр┤др┤╛р┤╡р┤┐р┤ир╡Нр┤▒р╡Ж р┤ир┤╛р┤ор┤др╡Нр┤др╡Ж р┤╡р┤┐р┤│р┤┐р┤Ър╡Нр┤Ър┤кр╡Зр┤Хр╡Нр┤╖р┤┐р┤Хр╡Нр┤Хр╡Бр┤ир╡Нр┤и р┤Пр┤╡р┤ир╡Бр┤В р┤░р┤Хр╡Нр┤╖р┤┐р┤Хр╡Нр┤Хр┤кр╡Нр┤кр╡Жр┤Яр╡Бр┤В" р┤Ор┤ир╡Нр┤ир╡Бр┤гр╡Нр┤Яр┤▓р╡Нр┤▓р╡Л.`],
+        hi: [`рдХреНрдпреЛрдВрдХрд┐, "рдЬреЛ рдХреЛрдИ рдкреНрд░рднреБ рдХрд╛ рдирд╛рдо рд▓реЗрдЧрд╛, рд╡рд╣ рдЙрджреНрдзрд╛рд░ рдкрд╛рдПрдЧрд╛ред"`]
+      }
+    }
+  ]
+};
+/* ========================================================= */
+
+const LANG_META = {
+  nkjv: { tag: "NKJV", cls: "nkjv en" },
+  esv:  { tag: "ESV",  cls: "esv en" },
+  ta:   { tag: "родрооро┐ро┤рпН", cls: "ta" },
+  ml:   { tag: "р┤ор┤▓р┤пр┤╛р┤│р┤В", cls: "ml" },
+  hi:   { tag: "рд╣рд┐рдВрджреА", cls: "hi" }
+};
+const LANG_ORDER = ["nkjv", "esv", "ta", "ml", "hi"];
+
+document.getElementById('datesLabel').textContent = WEEK.dates;
+document.getElementById('refLabel').textContent = WEEK.ref;
+
+const tabsEl = document.getElementById('tabs');
+const panelsEl = document.getElementById('panels');
+
+function buildLangBlock(langKey, lines, versionRef) {
+  const meta = LANG_META[langKey];
+  const block = document.createElement('div');
+  block.className = `lang-block ${meta.cls}`;
+
+  const header = document.createElement('div');
+  header.className = 'lang-header';
+
+  const tag = document.createElement('div');
+  tag.className = 'lang-tag';
+  tag.textContent = meta.tag;
+
+  const shareBtn = document.createElement('button');
+  shareBtn.className = 'lang-share-btn';
+  shareBtn.title = `Share ${meta.tag} only`;
+  shareBtn.setAttribute('aria-label', `Share ${meta.tag} only`);
+  shareBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="18" cy="5" r="2.7"></circle>
+    <circle cx="6" cy="12" r="2.7"></circle>
+    <circle cx="18" cy="19" r="2.7"></circle>
+    <line x1="8.4" y1="10.7" x2="15.6" y2="6.3"></line>
+    <line x1="8.4" y1="13.3" x2="15.6" y2="17.7"></line>
+  </svg>`;
+  shareBtn.addEventListener('click', () => shareSingleLanguage(versionRef, meta.tag, lines));
+
+  header.appendChild(tag);
+  header.appendChild(shareBtn);
+
+  const text = document.createElement('p');
+  text.className = `verse-text ${meta.cls.split(' ')[1] || meta.cls.split(' ')[0]}`;
+  lines.forEach(line => {
+    const span = document.createElement('span');
+    span.className = 'vline';
+    span.textContent = line;
+    text.appendChild(span);
+  });
+
+  block.appendChild(header);
+  block.appendChild(text);
+  return block;
+}
+
+function buildPanel(version) {
+  const panel = document.createElement('div');
+  panel.className = 'version-panel';
+  panel.dataset.key = version.key;
+
+  const card = document.createElement('div');
+  card.className = 'card';
+
+  const head = document.createElement('div');
+  head.className = 'card-head';
+  head.innerHTML = `<span class="ref">${version.ref}</span><span class="version-tag">${version.label}</span>`;
+  card.appendChild(head);
+
+  LANG_ORDER.forEach(langKey => {
+    if (version.verses[langKey]) {
+      card.appendChild(buildLangBlock(langKey, version.verses[langKey], version.ref));
+    }
+  });
+
+  const foot = document.createElement('div');
+  foot.className = 'card-foot';
+  foot.textContent = 'Scripture Memory тАФ Emmanuel Believers\' Fellowship';
+  card.appendChild(foot);
+
+  panel.appendChild(card);
+  return panel;
+}
+
+// Build tabs + panels
+WEEK.versions.forEach((version, i) => {
+  const tab = document.createElement('button');
+  tab.className = 'tab' + (i === 0 ? ' active' : '') + (WEEK.versions.length === 1 ? ' only' : '');
+  tab.textContent = version.label;
+  tab.dataset.key = version.key;
+  if (WEEK.versions.length > 1) {
+    tab.addEventListener('click', () => setActive(version.key));
+  }
+  tabsEl.appendChild(tab);
+
+  const panel = buildPanel(version);
+  if (i === 0) panel.classList.add('active');
+  panelsEl.appendChild(panel);
+});
+
+function setActive(key) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.key === key));
+  document.querySelectorAll('.version-panel').forEach(p => p.classList.toggle('active', p.dataset.key === key));
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 2200)
