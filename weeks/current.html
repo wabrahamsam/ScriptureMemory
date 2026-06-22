@@ -108,6 +108,42 @@
   }
   .lang-share-btn:hover { opacity: 1; background: rgba(139,94,60,0.08); color: var(--accent); }
   .lang-share-btn svg { width: 17px; height: 17px; display: block; }
+
+  .lang-practice-btn {
+    flex-shrink: 0;
+    width: 34px; height: 34px; border-radius: 9px;
+    border: 1px solid transparent; background: transparent;
+    color: var(--ink-soft); opacity: 0.6;
+    display: flex; align-items: center; justify-content: center;
+    padding: 0; cursor: pointer;
+    transition: opacity 0.15s, background 0.15s, color 0.15s;
+  }
+  .lang-practice-btn:hover { opacity: 1; background: rgba(31,111,92,0.08); color: var(--verdigris); }
+  .lang-practice-btn.active {
+    opacity: 1;
+    background: rgba(31,111,92,0.12);
+    color: var(--verdigris);
+    border: 1px solid rgba(31,111,92,0.35);
+  }
+  .lang-practice-btn svg { width: 19px; height: 19px; display: block; }
+
+  .word-blank {
+    display: inline-block;
+    min-width: 2.4em;
+    border-bottom: 2px solid var(--lang-tint, var(--accent-soft));
+    cursor: pointer;
+    user-select: none;
+    color: transparent;
+    transition: color 0.1s;
+  }
+  .word-blank.revealed {
+    color: var(--ink);
+    cursor: default;
+    border-bottom-color: transparent;
+  }
+  .word-blank:not(.revealed):hover {
+    background: rgba(31,111,92,0.07);
+  }
   .verse-text.en { font-family: var(--font-display); font-size: 16.5px; }
   .verse-text.ta { font-family: var(--font-ta); font-size: 17px; line-height: 1.85; }
   .verse-text.ml { font-family: var(--font-ml); font-size: 17px; line-height: 1.9; }
@@ -288,21 +324,95 @@ function buildLangBlock(langKey, lines, versionRef) {
   </svg>`;
   shareBtn.addEventListener('click', () => shareSingleLanguage(versionRef, meta.tag, lines));
 
+  const EYE_OPEN = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"></path>
+    <circle cx="12" cy="12" r="2.5"></circle>
+  </svg>`;
+  const EYE_CROSSED = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"></path>
+    <circle cx="12" cy="12" r="2.5"></circle>
+    <line x1="3" y1="3" x2="21" y2="21"></line>
+  </svg>`;
+
+  const practiceBtn = document.createElement('button');
+  practiceBtn.className = 'lang-practice-btn';
+  practiceBtn.title = `Practice ${meta.tag}`;
+  practiceBtn.setAttribute('aria-label', `Practice ${meta.tag} — hide some words to test memorization`);
+  practiceBtn.innerHTML = EYE_OPEN;
+
+  // Cycle: off -> pattern A hidden -> off -> pattern B hidden -> off -> pattern A...
+  let practiceState = 'off'; // 'off' | 'A' | 'B'
+  let nextPattern = 'A';
+
+  practiceBtn.addEventListener('click', () => {
+    if (practiceState === 'off') {
+      practiceState = nextPattern;
+      nextPattern = nextPattern === 'A' ? 'B' : 'A';
+    } else {
+      practiceState = 'off';
+    }
+
+    practiceBtn.classList.toggle('active', practiceState !== 'off');
+    practiceBtn.innerHTML = practiceState !== 'off' ? EYE_CROSSED : EYE_OPEN;
+
+    wordCounterRef.count = 0;
+    text.querySelectorAll('.vline').forEach((lineEl, lineIdx) => {
+      renderLine(lineEl, lines[lineIdx], practiceState, wordCounterRef);
+    });
+  });
+
   header.appendChild(tag);
   header.appendChild(shareBtn);
+  header.appendChild(practiceBtn);
 
   const text = document.createElement('p');
   text.className = `verse-text ${meta.cls.split(' ')[1] || meta.cls.split(' ')[0]}`;
+
+  const wordCounterRef = { count: 0 };
   lines.forEach(line => {
     const span = document.createElement('span');
     span.className = 'vline';
-    span.textContent = line;
     text.appendChild(span);
+    renderLine(span, line, 'off', wordCounterRef);
   });
 
   block.appendChild(header);
   block.appendChild(text);
   return block;
+}
+
+// Renders a line as plain text (practiceState === 'off'), or with alternating words blanked out.
+// Pattern A hides odd-position words, Pattern B hides even-position words (continuous across the
+// whole verse, not reset per line, so the alternation stays consistent from line to line).
+function renderLine(lineEl, lineText, practiceState, wordCounterRef) {
+  lineEl.innerHTML = '';
+  if (practiceState === 'off') {
+    lineEl.textContent = lineText;
+    return;
+  }
+  const chunks = lineText.split(' ');
+  chunks.forEach((chunk, i) => {
+    if (chunk.length === 0) return;
+    const isOddPosition = wordCounterRef.count % 2 === 1;
+    const isHidden = practiceState === 'A' ? isOddPosition : !isOddPosition;
+    wordCounterRef.count++;
+
+    if (isHidden) {
+      const blank = document.createElement('span');
+      blank.className = 'word-blank';
+      blank.textContent = chunk;
+      blank.addEventListener('click', () => {
+        blank.classList.add('revealed');
+      });
+      lineEl.appendChild(blank);
+    } else {
+      lineEl.appendChild(document.createTextNode(chunk));
+    }
+
+    if (i < chunks.length - 1) {
+      lineEl.appendChild(document.createTextNode(' '));
+    }
+  });
 }
 
 function buildPanel(version) {
