@@ -96,10 +96,11 @@
   .lang-block.kn { --lang-tint: var(--tint-kn); --lang-tint-bg: #E5EDF0; }
   .lang-block.or { --lang-tint: var(--tint-or); --lang-tint-bg: #F1EDDD; }
 
-  .lang-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .lang-header { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+  .lang-icons { display: flex; align-items: center; gap: 4px; margin-left: auto; }
   .lang-ref {
     font-family: var(--font-display); font-style: italic; font-weight: 600;
-    font-size: 13px; color: var(--ink-soft); flex: 1;
+    font-size: 13px; color: var(--ink-soft); display: block; margin-bottom: 8px;
   }
   .lang-tag {
     font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
@@ -139,6 +140,26 @@
     border: 1px solid rgba(31,111,92,0.35);
   }
   .lang-practice-btn svg { width: 19px; height: 19px; display: block; }
+
+  .lang-voice-btn {
+    flex-shrink: 0;
+    width: 34px; height: 34px; border-radius: 9px;
+    border: 1px solid transparent; background: transparent;
+    color: var(--ink-soft); opacity: 0.6;
+    display: flex; align-items: center; justify-content: center;
+    padding: 0; cursor: pointer;
+    transition: opacity 0.15s, background 0.15s, color 0.15s;
+  }
+  .lang-voice-btn:hover { opacity: 1; background: rgba(139,94,60,0.08); color: var(--accent); }
+  .lang-voice-btn.active {
+    opacity: 1;
+    background: rgba(139,94,60,0.12);
+    color: var(--accent);
+    border: 1px solid rgba(139,94,60,0.35);
+  }
+  .lang-voice-btn.unavailable { opacity: 0.25; cursor: not-allowed; }
+  .lang-voice-btn.unavailable:hover { opacity: 0.25; background: transparent; color: var(--ink-soft); }
+  .lang-voice-btn svg { width: 19px; height: 19px; display: block; }
 
   .word-blank {
     display: inline-block;
@@ -309,14 +330,14 @@ const WEEK = {
 /* ========================================================= */
 
 const LANG_META = {
-  nkjv: { tag: "NKJV", cls: "nkjv en" },
-  esv:  { tag: "ESV",  cls: "esv en" },
-  ta:   { tag: "Tamil", cls: "ta" },
-  ml:   { tag: "Malayalam", cls: "ml" },
-  hi:   { tag: "Hindi", cls: "hi" },
-  te:   { tag: "Telugu", cls: "te" },
-  kn:   { tag: "Kannada", cls: "kn" },
-  or:   { tag: "Odia", cls: "or" }
+  nkjv: { tag: "NKJV", cls: "nkjv en", bcp47: "en-US" },
+  esv:  { tag: "ESV",  cls: "esv en", bcp47: "en-US" },
+  ta:   { tag: "Tamil", cls: "ta", bcp47: "ta-IN" },
+  ml:   { tag: "Malayalam", cls: "ml", bcp47: "ml-IN" },
+  hi:   { tag: "Hindi", cls: "hi", bcp47: "hi-IN" },
+  te:   { tag: "Telugu", cls: "te", bcp47: "te-IN" },
+  kn:   { tag: "Kannada", cls: "kn", bcp47: "kn-IN" },
+  or:   { tag: "Odia", cls: "or", bcp47: "or-IN" }
 };
 const LANG_ORDER = ["nkjv", "esv", "ta", "ml", "hi", "te", "kn", "or"];
 
@@ -325,6 +346,12 @@ document.getElementById('refLabel').textContent = WEEK.ref;
 
 const tabsEl = document.getElementById('tabs');
 const panelsEl = document.getElementById('panels');
+
+// Coordinates voice playback so starting one language's audio stops any other currently playing.
+const activeVoiceStoppers = [];
+function stopAllVoicesExcept(exceptBtn) {
+  activeVoiceStoppers.forEach(stopFn => stopFn());
+}
 
 function buildLangBlock(langKey, lines, langRef) {
   const meta = LANG_META[langKey];
@@ -371,14 +398,14 @@ function buildLangBlock(langKey, lines, langRef) {
   practiceBtn.setAttribute('aria-label', `Practice ${meta.tag} — hide some words to test memorization`);
   practiceBtn.innerHTML = EYE_OPEN;
 
-  // Cycle: off -> pattern A hidden -> off -> pattern B hidden -> off -> pattern A...
-  let practiceState = 'off'; // 'off' | 'A' | 'B'
+  // Cycle: off -> A hidden -> off -> B hidden -> off -> C (all hidden) -> off -> A...
+  let practiceState = 'off'; // 'off' | 'A' | 'B' | 'C'
   let nextPattern = 'A';
 
   practiceBtn.addEventListener('click', () => {
     if (practiceState === 'off') {
       practiceState = nextPattern;
-      nextPattern = nextPattern === 'A' ? 'B' : 'A';
+      nextPattern = nextPattern === 'A' ? 'B' : (nextPattern === 'B' ? 'C' : 'A');
     } else {
       practiceState = 'off';
     }
@@ -392,10 +419,93 @@ function buildLangBlock(langKey, lines, langRef) {
     });
   });
 
+  const PLAY_ICON = `<svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
+    <path d="M7 5.5v13a1 1 0 0 0 1.5.87l11-6.5a1 1 0 0 0 0-1.74l-11-6.5A1 1 0 0 0 7 5.5z"></path>
+  </svg>`;
+  const STOP_ICON = `<svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
+    <rect x="6" y="6" width="12" height="12" rx="1.5"></rect>
+  </svg>`;
+
+  const voiceBtn = document.createElement('button');
+  voiceBtn.className = 'lang-voice-btn';
+  voiceBtn.innerHTML = PLAY_ICON;
+
+  const voiceSupported = ('speechSynthesis' in window);
+  let voiceForLang = null;
+
+  function findVoice() {
+    if (!voiceSupported) return null;
+    const voices = window.speechSynthesis.getVoices();
+    const exact = voices.filter(v => v.lang === meta.bcp47);
+    if (exact.length) return exact[0];
+    const base = meta.bcp47.split('-')[0];
+    const fallback = voices.filter(v => v.lang && v.lang.startsWith(base));
+    return fallback.length ? fallback[0] : null;
+  }
+
+  function refreshVoiceAvailability() {
+    voiceForLang = findVoice();
+    const available = voiceSupported && !!voiceForLang;
+    voiceBtn.classList.toggle('unavailable', !available);
+    voiceBtn.title = available
+      ? `Listen to ${meta.tag} on loop`
+      : `No voice available for ${meta.tag} on this device`;
+    voiceBtn.setAttribute('aria-label', voiceBtn.title);
+  }
+  refreshVoiceAvailability();
+  if (voiceSupported) {
+    window.speechSynthesis.addEventListener('voiceschanged', refreshVoiceAvailability);
+  }
+
+  let isPlaying = false;
+  function stopVoice() {
+    isPlaying = false;
+    window.speechSynthesis.cancel();
+    voiceBtn.classList.remove('active');
+    voiceBtn.innerHTML = PLAY_ICON;
+  }
+
+  function playVoiceLoop() {
+    if (!isPlaying) return;
+    const fullText = lines.join(' ');
+    const utterance = new SpeechSynthesisUtterance(fullText);
+    utterance.voice = voiceForLang;
+    utterance.lang = meta.bcp47;
+    utterance.rate = 0.9;
+    utterance.onend = () => {
+      if (isPlaying) playVoiceLoop();
+    };
+    window.speechSynthesis.speak(utterance);
+  }
+
+  voiceBtn.addEventListener('click', () => {
+    if (voiceBtn.classList.contains('unavailable')) return;
+
+    const wasPlaying = isPlaying;
+    stopAllVoicesExcept(voiceBtn);
+
+    if (wasPlaying) {
+      // it was already playing — the stop-all above already stopped it, so we're done
+      return;
+    }
+
+    isPlaying = true;
+    voiceBtn.classList.add('active');
+    voiceBtn.innerHTML = STOP_ICON;
+    playVoiceLoop();
+  });
+
+  // Register this block's stop function so other voice buttons can silence it when they start playing
+  activeVoiceStoppers.push(() => { if (isPlaying) stopVoice(); });
+
+  const iconsWrap = document.createElement('div');
+  iconsWrap.className = 'lang-icons';
+  iconsWrap.appendChild(shareBtn);
+  iconsWrap.appendChild(practiceBtn);
+  iconsWrap.appendChild(voiceBtn);
+
   header.appendChild(tag);
-  header.appendChild(refSpan);
-  header.appendChild(shareBtn);
-  header.appendChild(practiceBtn);
+  header.appendChild(iconsWrap);
 
   const text = document.createElement('p');
   text.className = `verse-text ${meta.cls.split(' ')[1] || meta.cls.split(' ')[0]}`;
@@ -409,13 +519,15 @@ function buildLangBlock(langKey, lines, langRef) {
   });
 
   block.appendChild(header);
+  block.appendChild(refSpan);
   block.appendChild(text);
   return block;
 }
 
-// Renders a line as plain text (practiceState === 'off'), or with alternating words blanked out.
-// Pattern A hides odd-position words, Pattern B hides even-position words (continuous across the
-// whole verse, not reset per line, so the alternation stays consistent from line to line).
+// Renders a line as plain text (practiceState === 'off'), or with words blanked out per pattern.
+// Pattern A hides odd-position words, Pattern B hides even-position words, Pattern C hides all words.
+// wordCounterRef.count runs continuous across the whole verse (not reset per line), so the
+// alternation stays consistent from line to line.
 function renderLine(lineEl, lineText, practiceState, wordCounterRef) {
   lineEl.innerHTML = '';
   if (practiceState === 'off') {
@@ -426,7 +538,12 @@ function renderLine(lineEl, lineText, practiceState, wordCounterRef) {
   chunks.forEach((chunk, i) => {
     if (chunk.length === 0) return;
     const isOddPosition = wordCounterRef.count % 2 === 1;
-    const isHidden = practiceState === 'A' ? isOddPosition : !isOddPosition;
+    let isHidden;
+    if (practiceState === 'C') {
+      isHidden = true;
+    } else {
+      isHidden = practiceState === 'A' ? isOddPosition : !isOddPosition;
+    }
     wordCounterRef.count++;
 
     if (isHidden) {
@@ -447,7 +564,7 @@ function renderLine(lineEl, lineText, practiceState, wordCounterRef) {
   });
 }
 
-function buildPanel(version) {
+function buildPanel(version, displayLabel) {
   const panel = document.createElement('div');
   panel.className = 'version-panel';
   panel.dataset.key = version.key;
@@ -457,7 +574,7 @@ function buildPanel(version) {
 
   const head = document.createElement('div');
   head.className = 'card-head';
-  head.innerHTML = `<span class="ref">${version.ref}</span><span class="version-tag">${version.label}</span>`;
+  head.innerHTML = `<span class="ref">${version.ref}</span><span class="version-tag">${displayLabel}</span>`;
   card.appendChild(head);
 
   LANG_ORDER.forEach(langKey => {
@@ -480,16 +597,18 @@ function buildPanel(version) {
 
 // Build tabs + panels
 WEEK.versions.forEach((version, i) => {
+  const displayLabel = WEEK.versions.length === 1 ? 'Full Version' : version.label;
+
   const tab = document.createElement('button');
   tab.className = 'tab' + (i === 0 ? ' active' : '') + (WEEK.versions.length === 1 ? ' only' : '');
-  tab.textContent = version.label;
+  tab.textContent = displayLabel;
   tab.dataset.key = version.key;
   if (WEEK.versions.length > 1) {
     tab.addEventListener('click', () => setActive(version.key));
   }
   tabsEl.appendChild(tab);
 
-  const panel = buildPanel(version);
+  const panel = buildPanel(version, displayLabel);
   if (i === 0) panel.classList.add('active');
   panelsEl.appendChild(panel);
 });
@@ -515,8 +634,13 @@ function getShareText() {
   
   langBlocks.forEach(block => {
     const langTag = block.querySelector('.lang-tag').textContent;
+    const langRefEl = block.querySelector('.lang-ref');
+    const langRef = langRefEl ? langRefEl.textContent : '';
     const verseLines = block.querySelectorAll('.vline');
     text += langTag + '\n';
+    if (langRef) {
+      text += langRef + '\n';
+    }
     verseLines.forEach(line => {
       text += line.textContent + '\n';
     });
