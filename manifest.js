@@ -1,10 +1,11 @@
 // This week — update this whenever you publish a new week
 const CURRENT = {
-  ref: "Psalm 103:17-19"
+  ref: "Psalm 103:20-22"
 };
 
 // All past weeks — add to this list each week (newest at top after CURRENT)
 const WEEKS = [
+  { file: "2026-08-16.html", dates: "Aug 16–22", ref: "Psalm 103:17-19" },
   { file: "2026-08-09.html", dates: "Aug 09–15", ref: "Psalm 103:15-16" },
   { file: "2026-08-02.html", dates: "Aug 02–08", ref: "Psalm 103:11-14" },
   { file: "2026-07-26.html", dates: "Jul 26 – Aug 01", ref: "Psalm 103:8-10" },
