@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scripture Memory — Psalm 103:20-22</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Source+Sans+3:wght@400;500;600;700&family=Noto+Serif+Tamil:wght@400;600&family=Noto+Sans+Malayalam:wght@400;600&family=Noto+Serif+Devanagari:wght@400;600&family=Noto+Serif+Telugu:wght@400;600&family=Noto+Serif+Kannada:wght@400;600&family=Noto+Serif+Oriya:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #FAF6EE;
+    --paper-raised: #FFFDF9;
+    --ink: #3A3530;
+    --ink-soft: #6B6258;
+    --accent: #8B5E3C;
+    --accent-soft: #C9A57E;
+    --hairline: #E3DACB;
+    --hairline-strong: #D8CFC0;
+
+    --tint-en: #8B5E3C;
+    --tint-ta: #A8763F;
+    --tint-ml: #1F6F5C;
+    --tint-hi: #6E5A8C;
+    --tint-te: #B0654A;
+    --tint-kn: #4D7A8C;
+    --tint-or: #8C7A2E;
+
+    --font-display: 'Source Serif 4', Georgia, serif;
+    --font-body: 'Source Sans 3', system-ui, sans-serif;
+    --font-ta: 'Noto Serif Tamil', serif;
+    --font-ml: 'Noto Sans Malayalam', sans-serif;
+    --font-hi: 'Noto Serif Devanagari', serif;
+    --font-te: 'Noto Serif Telugu', serif;
+    --font-kn: 'Noto Serif Kannada', serif;
+    --font-or: 'Noto Serif Oriya', serif;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); -webkit-font-smoothing: antialiased; }
+  body {
+    background-image: radial-gradient(circle at 15% 0%, rgba(139,94,60,0.05), transparent 45%),
+                       radial-gradient(circle at 85% 100%, rgba(31,111,92,0.04), transparent 45%);
+    min-height: 100vh;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 28px 18px 90px; }
+
+  .backlink { display: inline-flex; align-items: center; gap: 6px; color: var(--ink-soft); text-decoration: none; font-size: 13.5px; font-weight: 500; margin-bottom: 18px; }
+  .backlink:hover { color: var(--accent); }
+
+  header { text-align: center; margin-bottom: 22px; }
+  .eyebrow { font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 6px; }
+  .dates { font-size: 13px; color: var(--ink-soft); margin-bottom: 14px; }
+  h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(26px, 6vw, 38px); margin: 0; letter-spacing: -0.01em; }
+
+  /* ---------- Tabs ---------- */
+  .tabs { display: flex; justify-content: center; gap: 6px; margin: 24px 0 26px; flex-wrap: wrap; }
+  .tab {
+    font-family: var(--font-body); font-weight: 600; font-size: 13.5px;
+    border: 1px solid var(--hairline-strong); background: var(--paper-raised); color: var(--ink-soft);
+    padding: 9px 18px; border-radius: 20px; cursor: pointer; transition: all 0.15s;
+  }
+  .tab:hover { border-color: var(--accent); color: var(--accent); }
+  .tab.active { background: var(--ink); color: var(--paper-raised); border-color: var(--ink); }
+  .tab.only { cursor: default; }
+  .tab.only:hover { border-color: var(--hairline-strong); color: var(--ink-soft); }
+
+  /* ---------- Verse card ---------- */
+  .version-panel { display: none; }
+  .version-panel.active { display: block; }
+
+  .card {
+    background: var(--paper-raised);
+    border: 1px solid var(--hairline);
+    border-radius: 16px;
+    padding: 30px 30px 26px;
+    box-shadow: 0 1px 2px rgba(58,53,48,0.04), 0 8px 24px -16px rgba(58,53,48,0.18);
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .card-head {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 10px;
+    margin-bottom: 18px; padding-bottom: 16px; border-bottom: 1px solid var(--hairline);
+  }
+  .card-head .ref { font-family: var(--font-display); font-weight: 700; font-size: 21px; }
+  .card-head .version-tag { font-size: 11.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); background: rgba(139,94,60,0.08); padding: 5px 11px; border-radius: 20px; }
+
+  .lang-block { padding: 14px 0; border-top: 1px solid var(--hairline); margin-bottom: 2px; max-width: 100%; }
+  .lang-block:first-of-type { border-top: none; padding-top: 4px; }
+  .lang-block.nkjv, .lang-block.esv { --lang-tint: var(--tint-en); --lang-tint-bg: #F2EAE0; }
+  .lang-block.ta { --lang-tint: var(--tint-ta); --lang-tint-bg: #F4EBDF; }
+  .lang-block.ml { --lang-tint: var(--tint-ml); --lang-tint-bg: #E3EDE9; }
+  .lang-block.hi { --lang-tint: var(--tint-hi); --lang-tint-bg: #EBE6F0; }
+  .lang-block.te { --lang-tint: var(--tint-te); --lang-tint-bg: #F5E8E2; }
+  .lang-block.kn { --lang-tint: var(--tint-kn); --lang-tint-bg: #E5EDF0; }
+  .lang-block.or { --lang-tint: var(--tint-or); --lang-tint-bg: #F1EDDD; }
+
+  .lang-header { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+  .lang-icons { display: flex; align-items: center; gap: 4px; margin-left: auto; }
+  .lang-ref {
+    font-family: var(--font-display); font-style: italic; font-weight: 600;
+    font-size: 13px; color: var(--ink-soft); display: block; margin-bottom: 8px;
+  }
+  .lang-tag {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--lang-tint, var(--ink-soft));
+    background: var(--lang-tint-bg, #F0EBE3);
+    padding: 4px 10px; border-radius: 20px;
+  }
+  .verse-text { width: 100%; font-size: 16px; line-height: 1.7; color: var(--ink); margin: 0; overflow-wrap: break-word; word-wrap: break-word; word-break: normal; }
+  .verse-text.en { hyphens: auto; -webkit-hyphens: auto; }
+
+  .lang-share-btn {
+    flex-shrink: 0;
+    width: 34px; height: 34px; border-radius: 9px;
+    border: 1px solid transparent; background: transparent;
+    color: var(--ink-soft); opacity: 0.6;
+    display: flex; align-items: center; justify-content: center;
+    padding: 0; cursor: pointer;
+    transition: opacity 0.15s, background 0.15s, color 0.15s;
+  }
+  .lang-share-btn:hover { opacity: 1; background: rgba(139,94,60,0.08); color: var(--accent); }
+  .lang-share-btn svg { width: 17px; height: 17px; display: block; }
+
+  .lang-practice-btn {
+    flex-shrink: 0;
+    width: 34px; height: 34px; border-radius: 9px;
+    border: 1px solid transparent; background: transparent;
+    color: var(--ink-soft); opacity: 0.6;
+    display: flex; align-items: center; justify-content: center;
+    padding: 0; cursor: pointer;
+    transition: opacity 0.15s, background 0.15s, color 0.15s;
+  }
+  .lang-practice-btn:hover { opacity: 1; background: rgba(31,111,92,0.08); color: var(--verdigris); }
+  .lang-practice-btn.active {
+    opacity: 1;
+    background: rgba(31,111,92,0.12);
+    color: var(--verdigris);
+    border: 1px solid rgba(31,111,92,0.35);
+  }
+  .lang-practice-btn svg { width: 19px; height: 19px; display: block; }
+
+  .lang-voice-btn {
+    flex-shrink: 0;
+    width: 34px; height: 34px; border-radius: 9px;
+    border: 1px solid transparent; background: transparent;
+    color: var(--ink-soft); opacity: 0.6;
+    display: flex; align-items: center; justify-content: center;
+    padding: 0; cursor: pointer;
+    transition: opacity 0.15s, background 0.15s, color 0.15s;
+  }
+  .lang-voice-btn:hover { opacity: 1; background: rgba(139,94,60,0.08); color: var(--accent); }
+  .lang-voice-btn.active {
+    opacity: 1;
+    background: rgba(139,94,60,0.12);
+    color: var(--accent);
+    border: 1px solid rgba(139,94,60,0.35);
+  }
+  .lang-voice-btn.unavailable { opacity: 0.25; cursor: not-allowed; }
+  .lang-voice-btn.unavailable:hover { opacity: 0.25; background: transparent; color: var(--ink-soft); }
+  .lang-voice-btn svg { width: 19px; height: 19px; display: block; }
+
+  .word-blank {
+    display: inline-block;
+    min-width: 2.4em;
+    border-bottom: 2px solid var(--lang-tint, var(--accent-soft));
+    cursor: pointer;
+    user-select: none;
+    color: transparent;
+    transition: color 0.1s;
+  }
+  .word-blank.revealed {
+    color: var(--ink);
+    cursor: default;
+    border-bottom-color: transparent;
+  }
+  .word-blank:not(.revealed):hover {
+    background: rgba(31,111,92,0.07);
+  }
+  .verse-text.en { font-family: var(--font-display); font-size: 16.5px; }
+  .verse-text.ta { font-family: var(--font-ta); font-size: 17px; line-height: 1.85; }
+  .verse-text.ml { font-family: var(--font-ml); font-size: 17px; line-height: 1.9; }
+  .verse-text.hi { font-family: var(--font-hi); font-size: 17px; line-height: 1.85; }
+  .verse-text.te { font-family: var(--font-te); font-size: 17px; line-height: 1.85; }
+  .verse-text.kn { font-family: var(--font-kn); font-size: 17px; line-height: 1.85; }
+  .verse-text.or { font-family: var(--font-or); font-size: 17px; line-height: 1.85; }
+  .verse-text .vline { display: block; }
+  .verse-text .vline + .vline { margin-top: 6px; }
+
+  .card-foot { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--hairline); text-align: center; font-size: 11.5px; color: var(--ink-soft); letter-spacing: 0.02em; }
+
+  /* ---------- Actions ---------- */
+  .actions { display: flex; justify-content: center; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+  button { font-family: var(--font-body); font-weight: 600; font-size: 13.5px; border: 1px solid var(--hairline-strong); background: var(--paper-raised); color: var(--ink); padding: 10px 18px; border-radius: 8px; cursor: pointer; transition: all 0.15s; }
+  button:hover { border-color: var(--accent); color: var(--accent); }
+  button.primary { background: var(--ink); color: var(--paper-raised); border-color: var(--ink); }
+  button.primary:hover { background: var(--accent); border-color: var(--accent); color: white; }
+  button:disabled { opacity: 0.6; cursor: wait; }
+
+  footer.page-footer { text-align: center; margin-top: 46px; padding-top: 18px; border-top: 1px solid var(--hairline); color: var(--ink-soft); font-size: 12px; }
+
+  .toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(10px);
+    background: var(--ink); color: var(--paper); padding: 10px 18px; border-radius: 8px;
+    font-size: 13px; font-weight: 500; opacity: 0; pointer-events: none; transition: opacity 0.25s, transform 0.25s; z-index: 100;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  @media (max-width: 480px) {
+    .wrap { padding: 28px 10px 90px; }
+    .card { padding: 18px 14px 16px; }
+    .verse-text.ta, .verse-text.hi, .verse-text.ml, .verse-text.te, .verse-text.kn, .verse-text.or { font-size: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <a href="../index.html" class="backlink">← All weeks</a>
+
+  <header>
+    <div class="eyebrow">Scripture Memory</div>
+    <div class="dates" id="datesLabel">Jun 21–27</div>
+    <h1 id="refLabel">Romans 10:13–15</h1>
+  </header>
+
+  <div class="tabs" id="tabs"></div>
+
+  <div id="panels"></div>
+
+  <div class="actions">
+    <button class="primary" id="shareBtn">📋 Share</button>
+  </div>
+
+  <footer class="page-footer">Emmanuel Believers' Fellowship · Tenkasi, Tamil Nadu</footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   WEEKLY DATA — edit this block each week, nothing else.
+   ========================================================= */
+const WEEK = {
+  dates: "Aug 23–29",
+  ref: "Psalm 103:20-22",
+  versions: [
+    {
+      key: "main",
+      label: "Psalm 103:20-22",
+      ref: "Psalm 103:20-22",
+      verses: {
+        nkjv: {
+          ref: "Psalm 103:20-22",
+          lines: [
+            `Bless the Lord, you His angels, Who excel in strength, who do His word, Heeding the voice of His word.`,
+            `Bless the Lord, all you His hosts, You ministers of His, who do His pleasure.`,
+            `Bless the Lord, all His works, In all places of His dominion. Bless the Lord, O my soul!`
+          ]
+        },
+        esv: {
+          ref: "Psalm 103:20-22",
+          lines: [
+            `Bless the Lord, O you His angels, you mighty ones who do His word, obeying the voice of His word!`,
+            `Bless the Lord, all His hosts, His ministers, who do His will!`,
+            `Bless the Lord, all His works, in all places of His dominion. Bless the Lord, O my soul!`
+          ]
+        },
+        ta: {
+          ref: "சங்கீதம் 103:20-22",
+          lines: [
+            `கர்த்தருடைய வார்த்தையைக் கேட்டு, அவருடைய வசனத்தின்படி செய்கிற பலத்த சவுரியவான்களாகிய அவருடைய தூதர்களே, அவரை ஸ்தோத்திரியுங்கள்.`,
+            `கர்த்தருக்குப் பிரியமானதைச் செய்து, அவர் பணிவிடைக்காரராயிருக்கிற அவருடைய சர்வசேனைகளே, அவரை ஸ்தோத்திரியுங்கள்.`,
+            `கர்த்தர் ஆளுகிற எவ்விடங்களிலுமுள்ள அவருடைய சகல கிரியைகளே, அவரை ஸ்தோத்திரியுங்கள்; என் ஆத்துமாவே, கர்த்தரை ஸ்தோத்திரி.`
+          ]
+        },
+        ml: {
+          ref: "സങ്കീർത്തനങ്ങൾ 103:20-22",
+          lines: [
+            `അവന്റെ വചനത്തിന്റെ ശബ്ദം കേട്ട് അവന്റെ ആജ്ഞ അനുസരിക്കുന്ന വീരന്മാരായി അവന്റെ ദൂതന്മാരായുള്ളോരേ, യഹോവയെ വാഴ്ത്തുവിൻ.`,
+            `അവന്റെ ഇഷ്ടം ചെയ്യുന്ന ശുശ്രൂഷക്കാരായി അവന്റെ സകല സൈന്യങ്ങളുമായുള്ളോരേ, യഹോവയെ വാഴ്ത്തുവിൻ;`,
+            `അവന്റെ ആധിപത്യത്തിലെ സകല സ്ഥലങ്ങളിലുമുള്ള അവന്റെ സകല പ്രവൃത്തികളുമേ, യഹോവയെ വാഴ്ത്തുവിൻ; എൻ മനമേ, യഹോവയെ വാഴ്ത്തുക.`
+          ]
+        },
+        hi: {
+          ref: "भजन संहिता 103:20-22",
+          lines: [
+            `हे यहोवा के दूतो, तुम जो बड़े वीर हो, और उसके वचन के मानने से उसको पूरा करते हो उसको धन्य कहो!`,
+            `हे यहोवा की सारी सेनाओ, हे उसके टहलुओ, तुम जो उसकी इच्छा पूरी करते हो, उसको धन्य कहो!`,
+            `हे यहोवा की सारी सृष्‍टि, उसके राज्य के सब स्थानों में उसको धन्य कहो। हे मेरे मन, तू यहोवा को धन्य कह!`
+          ]
+        },
+        te: {
+          ref: "కీర్తనలు 103:20-22",
+          lines: [
+            `యెహోవాదూతలారా, ఆయన ఆజ్ఞకులోబడి ఆయన వాక్యము నెరవేర్చు బలశూరులారా, ఆయనను సన్నుతించుడి.`,
+            `యెహోవా సైన్యములారా, ఆయన చిత్తము నెరవేర్చు ఆయన పరిచారకులారా, మీరందరు ఆయనను సన్నుతించుడి.`,
+            `యెహోవా ఏలుచుండు స్థలములన్నిటిలో నున్న ఆయన సర్వకార్యములారా, ఆయనను స్తుతించుడి.`
+          ]
+        },
+        kn: {
+          ref: "ಕೀರ್ತನೆಗಳು 103:20-22",
+          lines: [
+            `ದೇವದೂತರೇ, ಆತನ ಶಬ್ದಕ್ಕೆ ಕಿವಿಗೊಡುವವರೇ, ಆತನ ಆಜ್ಞೆಯನ್ನು ನೆರವೇರಿಸುವ ಪರಾಕ್ರಮಶಾಲಿಗಳೇ, ಯೆಹೋವನನ್ನು ಕೊಂಡಾಡಿರಿ.`,
+            `ಆತನ ಸೈನ್ಯಗಳೇ, ಆತನ ಮೆಚ್ಚಿಕೆಯನ್ನು ನೆರವೇರಿಸುವ ಸೇವಕರೇ, ಯೆಹೋವನನ್ನು ಕೊಂಡಾಡಿರಿ.`,
+            `ಆತನ ರಾಜ್ಯದ ಸರ್ವಸ್ಥಳಗಳಲ್ಲಿರುವ ಎಲ್ಲಾ ಸೃಷ್ಟಿಗಳೇ, ಯೆಹೋವನನ್ನು ಕೊಂಡಾಡಿರಿ. ನನ್ನ ಮನವೇ, ಯೆಹೋವನನ್ನು ಕೊಂಡಾಡು.`
+          ]
+        },
+        or: {
+          ref: "ଗୀତସଂହିତା 103:20-22",
+          lines: [
+            `ହେ ସଦାପ୍ରଭୁଙ୍କ ବାକ୍ୟସାଧକ ଓ ତାହାଙ୍କ ବାକ୍ୟର ରବ ଶ୍ରବଣକାରୀ, ବଳରେ ପରାକ୍ରା; ଦୂତଗଣ, ତୁମ୍ଭେମାନେ ତାହାଙ୍କର ଧନ୍ୟବାଦ କର।`,
+            `ହେ ସଦାପ୍ରଭୁଙ୍କର ପରିଚାରକ ଓ ତାହାଙ୍କ ଅଭିମତସାଧକ ସୈନ୍ୟସକଳ, ତୁମ୍ଭେମାନେ ତାହାଙ୍କର ଧନ୍ୟବାଦ କର।`,
+            `ହେ ସଦାପ୍ରଭୁଙ୍କ ହସ୍ତକୃତ କର୍ମସକଳ, ତୁମ୍ଭେମାନେ ତାହାଙ୍କ ରାଜ୍ୟର ସର୍ବତ୍ର ତାହାଙ୍କର ଧନ୍ୟବାଦ କର; ହେ ମୋହର ମନ, ସଦାପ୍ରଭୁଙ୍କର ଧନ୍ୟବାଦ କର।`
+          ]
+        }
+      }
+    }
+  ]
+};
+/* ========================================================= */
+
+const LANG_META = {
+  nkjv: { tag: "NKJV", cls: "nkjv en", bcp47: "en-US" },
+  esv:  { tag: "ESV",  cls: "esv en", bcp47: "en-US" },
+  ta:   { tag: "Tamil", cls: "ta", bcp47: "ta-IN" },
+  ml:   { tag: "Malayalam", cls: "ml", bcp47: "ml-IN" },
+  hi:   { tag: "Hindi", cls: "hi", bcp47: "hi-IN" },
+  te:   { tag: "Telugu", cls: "te", bcp47: "te-IN" },
+  kn:   { tag: "Kannada", cls: "kn", bcp47: "kn-IN" },
+  or:   { tag: "Odia", cls: "or", bcp47: "or-IN" }
+};
+const LANG_ORDER = ["nkjv", "esv", "ta", "ml", "hi", "te", "kn", "or"];
+
+document.getElementById('datesLabel').textContent = WEEK.dates;
+document.getElementById('refLabel').textContent = WEEK.ref;
+
+const tabsEl = document.getElementById('tabs');
+const panelsEl = document.getElementById('panels');
+
+// Coordinates voice playback so starting one language's audio stops any other currently playing.
+const activeVoiceStoppers = [];
+function stopAllVoicesExcept(exceptBtn) {
+  activeVoiceStoppers.forEach(stopFn => stopFn());
+}
+
+function buildLangBlock(langKey, lines, langRef) {
+  const meta = LANG_META[langKey];
+  const block = document.createElement('div');
+  block.className = `lang-block ${meta.cls}`;
+
+  const header = document.createElement('div');
+  header.className = 'lang-header';
+
+  const tag = document.createElement('div');
+  tag.className = 'lang-tag';
+  tag.textContent = meta.tag;
+
+  const refSpan = document.createElement('span');
+  refSpan.className = 'lang-ref';
+  refSpan.textContent = langRef;
+
+  const shareBtn = document.createElement('button');
+  shareBtn.className = 'lang-share-btn';
+  shareBtn.title = `Share ${meta.tag} only`;
+  shareBtn.setAttribute('aria-label', `Share ${meta.tag} only`);
+  shareBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="18" cy="5" r="2.7"></circle>
+    <circle cx="6" cy="12" r="2.7"></circle>
+    <circle cx="18" cy="19" r="2.7"></circle>
+    <line x1="8.4" y1="10.7" x2="15.6" y2="6.3"></line>
+    <line x1="8.4" y1="13.3" x2="15.6" y2="17.7"></line>
+  </svg>`;
+  shareBtn.addEventListener('click', () => shareSingleLanguage(langRef, meta.tag, lines));
+
+  const EYE_OPEN = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"></path>
+    <circle cx="12" cy="12" r="2.5"></circle>
+  </svg>`;
+  const EYE_CROSSED = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"></path>
+    <circle cx="12" cy="12" r="2.5"></circle>
+    <line x1="3" y1="3" x2="21" y2="21"></line>
+  </svg>`;
+
+  const practiceBtn = document.createElement('button');
+  practiceBtn.className = 'lang-practice-btn';
+  practiceBtn.title = `Practice ${meta.tag}`;
+  practiceBtn.setAttribute('aria-label', `Practice ${meta.tag} — hide some words to test memorization`);
+  practiceBtn.innerHTML = EYE_OPEN;
+
+  // Cycle: off -> A hidden -> off -> B hidden -> off -> C (all hidden) -> off -> A...
+  let practiceState = 'off'; // 'off' | 'A' | 'B' | 'C'
+  let nextPattern = 'A';
+
+  practiceBtn.addEventListener('click', () => {
+    if (practiceState === 'off') {
+      practiceState = nextPattern;
+      nextPattern = nextPattern === 'A' ? 'B' : (nextPattern === 'B' ? 'C' : 'A');
+    } else {
+      practiceState = 'off';
+    }
+
+    practiceBtn.classList.toggle('active', practiceState !== 'off');
+    practiceBtn.innerHTML = practiceState !== 'off' ? EYE_CROSSED : EYE_OPEN;
+
+    wordCounterRef.count = 0;
+    text.querySelectorAll('.vline').forEach((lineEl, lineIdx) => {
+      renderLine(lineEl, lines[lineIdx], practiceState, wordCounterRef);
+    });
+  });
+
+  const PLAY_ICON = `<svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
+    <path d="M7 5.5v13a1 1 0 0 0 1.5.87l11-6.5a1 1 0 0 0 0-1.74l-11-6.5A1 1 0 0 0 7 5.5z"></path>
+  </svg>`;
+  const STOP_ICON = `<svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
+    <rect x="6" y="6" width="12" height="12" rx="1.5"></rect>
+  </svg>`;
+
+  const voiceBtn = document.createElement('button');
+  voiceBtn.className = 'lang-voice-btn';
+  voiceBtn.innerHTML = PLAY_ICON;
+
+  const voiceSupported = ('speechSynthesis' in window);
+  let voiceForLang = null;
+
+  function findVoice() {
+    if (!voiceSupported) return null;
+    const voices = window.speechSynthesis.getVoices();
+    const exact = voices.filter(v => v.lang === meta.bcp47);
+    if (exact.length) return exact[0];
+    const base = meta.bcp47.split('-')[0];
+    const fallback = voices.filter(v => v.lang && v.lang.startsWith(base));
+    return fallback.length ? fallback[0] : null;
+  }
+
+  function refreshVoiceAvailability() {
+    voiceForLang = findVoice();
+    const available = voiceSupported && !!voiceForLang;
+    voiceBtn.classList.toggle('unavailable', !available);
+    voiceBtn.title = available
+      ? `Listen to ${meta.tag} on loop`
+      : `No voice available for ${meta.tag} on this device`;
+    voiceBtn.setAttribute('aria-label', voiceBtn.title);
+  }
+  refreshVoiceAvailability();
+  if (voiceSupported) {
+    window.speechSynthesis.addEventListener('voiceschanged', refreshVoiceAvailability);
+  }
+
+  let isPlaying = false;
+  function stopVoice() {
+    isPlaying = false;
+    window.speechSynthesis.cancel();
+    voiceBtn.classList.remove('active');
+    voiceBtn.innerHTML = PLAY_ICON;
+  }
+
+  function playVoiceLoop() {
+    if (!isPlaying) return;
+    const fullText = lines.join(' ');
+    const utterance = new SpeechSynthesisUtterance(fullText);
+    utterance.voice = voiceForLang;
+    utterance.lang = meta.bcp47;
+    utterance.rate = 0.9;
+    utterance.onend = () => {
+      if (isPlaying) playVoiceLoop();
+    };
+    window.speechSynthesis.speak(utterance);
+  }
+
+  voiceBtn.addEventListener('click', () => {
+    if (voiceBtn.classList.contains('unavailable')) return;
+
+    const wasPlaying = isPlaying;
+    stopAllVoicesExcept(voiceBtn);
+
+    if (wasPlaying) {
+      // it was already playing — the stop-all above already stopped it, so we're done
+      return;
+    }
+
+    isPlaying = true;
+    voiceBtn.classList.add('active');
+    voiceBtn.innerHTML = STOP_ICON;
+    playVoiceLoop();
+  });
+
+  // Register this block's stop function so other voice buttons can silence it when they start playing
+  activeVoiceStoppers.push(() => { if (isPlaying) stopVoice(); });
+
+  const iconsWrap = document.createElement('div');
+  iconsWrap.className = 'lang-icons';
+  iconsWrap.appendChild(shareBtn);
+  iconsWrap.appendChild(practiceBtn);
+  iconsWrap.appendChild(voiceBtn);
+
+  header.appendChild(tag);
+  header.appendChild(iconsWrap);
+
+  const text = document.createElement('p');
+  text.className = `verse-text ${meta.cls.split(' ')[1] || meta.cls.split(' ')[0]}`;
+
+  const wordCounterRef = { count: 0 };
+  lines.forEach(line => {
+    const span = document.createElement('span');
+    span.className = 'vline';
+    text.appendChild(span);
+    renderLine(span, line, 'off', wordCounterRef);
+  });
+
+  block.appendChild(header);
+  block.appendChild(refSpan);
+  block.appendChild(text);
+  return block;
+}
+
+// Renders a line as plain text (practiceState === 'off'), or with words blanked out per pattern.
+// Pattern A hides odd-position words, Pattern B hides even-position words, Pattern C hides all words.
+// wordCounterRef.count runs continuous across the whole verse (not reset per line), so the
+// alternation stays consistent from line to line.
+function renderLine(lineEl, lineText, practiceState, wordCounterRef) {
+  lineEl.innerHTML = '';
+  if (practiceState === 'off') {
+    lineEl.textContent = lineText;
+    return;
+  }
+  const chunks = lineText.split(' ');
+  chunks.forEach((chunk, i) => {
+    if (chunk.length === 0) return;
+    const isOddPosition = wordCounterRef.count % 2 === 1;
+    let isHidden;
+    if (practiceState === 'C') {
+      isHidden = true;
+    } else {
+      isHidden = practiceState === 'A' ? isOddPosition : !isOddPosition;
+    }
+    wordCounterRef.count++;
+
+    if (isHidden) {
+      const blank = document.createElement('span');
+      blank.className = 'word-blank';
+      blank.textContent = chunk;
+      blank.addEventListener('click', () => {
+        blank.classList.add('revealed');
+      });
+      lineEl.appendChild(blank);
+    } else {
+      lineEl.appendChild(document.createTextNode(chunk));
+    }
+
+    if (i < chunks.length - 1) {
+      lineEl.appendChild(document.createTextNode(' '));
+    }
+  });
+}
+
+function buildPanel(version, displayLabel) {
+  const panel = document.createElement('div');
+  panel.className = 'version-panel';
+  panel.dataset.key = version.key;
+
+  const card = document.createElement('div');
+  card.className = 'card';
+
+  const head = document.createElement('div');
+  head.className = 'card-head';
+  head.innerHTML = `<span class="ref">${version.ref}</span><span class="version-tag">${displayLabel}</span>`;
+  card.appendChild(head);
+
+  LANG_ORDER.forEach(langKey => {
+    if (version.verses[langKey]) {
+      const entry = version.verses[langKey];
+      const langRef = (entry && entry.ref) ? entry.ref : version.ref;
+      const langLines = (entry && entry.lines) ? entry.lines : entry;
+      card.appendChild(buildLangBlock(langKey, langLines, langRef));
+    }
+  });
+
+  const foot = document.createElement('div');
+  foot.className = 'card-foot';
+  foot.textContent = 'Scripture Memory — Emmanuel Believers\' Fellowship';
+  card.appendChild(foot);
+
+  panel.appendChild(card);
+  return panel;
+}
+
+// Build tabs + panels
+WEEK.versions.forEach((version, i) => {
+  const displayLabel = WEEK.versions.length === 1 ? 'Full Version' : version.label;
+
+  const tab = document.createElement('button');
+  tab.className = 'tab' + (i === 0 ? ' active' : '') + (WEEK.versions.length === 1 ? ' only' : '');
+  tab.textContent = displayLabel;
+  tab.dataset.key = version.key;
+  if (WEEK.versions.length > 1) {
+    tab.addEventListener('click', () => setActive(version.key));
+  }
+  tabsEl.appendChild(tab);
+
+  const panel = buildPanel(version, displayLabel);
+  if (i === 0) panel.classList.add('active');
+  panelsEl.appendChild(panel);
+});
+
+function setActive(key) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.key === key));
+  document.querySelectorAll('.version-panel').forEach(p => p.classList.toggle('active', p.dataset.key === key));
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+function getShareText() {
+  const activePanel = document.querySelector('.version-panel.active');
+  const activeVersion = WEEK.versions.find(v => v.key === activePanel.dataset.key);
+  const langBlocks = activePanel.querySelectorAll('.lang-block');
+  let text = activeVersion.ref + '\n\n';
+  
+  langBlocks.forEach(block => {
+    const langTag = block.querySelector('.lang-tag').textContent;
+    const langRefEl = block.querySelector('.lang-ref');
+    const langRef = langRefEl ? langRefEl.textContent : '';
+    const verseLines = block.querySelectorAll('.vline');
+    text += langTag + '\n';
+    if (langRef) {
+      text += langRef + '\n';
+    }
+    verseLines.forEach(line => {
+      text += line.textContent + '\n';
+    });
+    text += '\n';
+  });
+  
+  return text.trim();
+}
+
+async function shareSingleLanguage(versionRef, langTag, lines) {
+  const text = `${versionRef}\n\n${lines.join('\n')}`;
+
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: versionRef, text: text });
+      showToast('Shared!');
+      return;
+    } catch (err) {
+      if (err.name !== 'AbortError') console.error('Share failed:', err);
+      return;
+    }
+  }
+
+  try {
+    await navigator.clipboard.writeText(text);
+    showToast(`${langTag} copied to clipboard`);
+  } catch (err) {
+    showToast('Could not share — try copying manually');
+  }
+}
+
+document.getElementById('shareBtn').addEventListener('click', async () => {
+  const shareText = getShareText();
+  const btn = document.getElementById('shareBtn');
+  const activePanel = document.querySelector('.version-panel.active');
+  const activeVersion = WEEK.versions.find(v => v.key === activePanel.dataset.key);
+  
+  // Try native share first
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: activeVersion.ref,
+        text: shareText
+      });
+      showToast('Shared!');
+      return;
+    } catch (err) {
+      if (err.name !== 'AbortError') {
+        console.error('Share failed:', err);
+      }
+      // Fall through to clipboard
+    }
+  }
+  
+  // Fallback: copy to clipboard
+  try {
+    await navigator.clipboard.writeText(shareText);
+    showToast('Copied to clipboard');
+  } catch (err) {
+    showToast('Could not share — try copying manually');
+  }
+});
+</script>
+
+</body>
+</html>
