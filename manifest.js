@@ -1,10 +1,11 @@
 // This week — update this whenever you publish a new week
 const CURRENT = {
-  ref: "Ephesians 4:29"
+  ref: "Ephesians 4:31-32"
 };
 
 // All past weeks — add to this list each week (newest at top after CURRENT)
 const WEEKS = [
+  { file: "2026-09-20.html", dates: "Sep 20–26", ref: "Ephesians 4:29" },
   { file: "2026-09-13.html", dates: "Sep 13–19", ref: "Psalm 86:11" },
   { file: "2026-08-30.html", dates: "Aug 30 – Sep 05", ref: "Psalm 103" },
   { file: "2026-08-23.html", dates: "Aug 23–29", ref: "Psalm 103:20-22" },
