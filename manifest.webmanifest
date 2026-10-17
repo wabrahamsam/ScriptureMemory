@@ -1,0 +1,31 @@
+{
+  "name": "MemoryVerse",
+  "short_name": "MemoryVerse",
+  "description": "Weekly Scripture memory verses in English, Tamil, Malayalam, Hindi, Telugu, Kannada, and Odia.",
+  "start_url": "./weeks/current.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#EAF3FB",
+  "theme_color": "#EAF3FB",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "./icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
