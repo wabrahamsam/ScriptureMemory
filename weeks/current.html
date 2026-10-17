@@ -3,22 +3,42 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Scripture Memory — Deuteronomy 6:6-7</title>
+<title>Scripture Memory — 2 Corinthians 5:17</title>
+<link rel="manifest" href="../manifest.webmanifest">
+<meta name="theme-color" content="#EAF3FB">
+<script>
+(function () {
+  try {
+    var t = localStorage.getItem('mv-theme');
+    if (!t) { t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; }
+    document.documentElement.setAttribute('data-theme', t);
+  } catch (e) {}
+  try {
+    if (navigator.standalone || (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches)) { document.documentElement.classList.add('is-app'); }
+  } catch (e) {}
+})();
+</script>
+<link rel="apple-touch-icon" href="../icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="MemoryVerse">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Source+Sans+3:wght@400;500;600;700&family=Noto+Serif+Tamil:wght@400;600&family=Noto+Sans+Malayalam:wght@400;600&family=Noto+Serif+Devanagari:wght@400;600&family=Noto+Serif+Telugu:wght@400;600&family=Noto+Serif+Kannada:wght@400;600&family=Noto+Serif+Oriya:wght@400;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --paper: #FAF6EE;
-    --paper-raised: #FFFDF9;
-    --ink: #3A3530;
-    --ink-soft: #6B6258;
-    --accent: #8B5E3C;
-    --accent-soft: #C9A57E;
-    --hairline: #E3DACB;
-    --hairline-strong: #D8CFC0;
+    --paper: #EAF3FB;
+    --paper-raised: #F9FCFF;
+    --ink: #22364A;
+    --ink-soft: #587087;
+    --accent: #2F6498;
+    --accent-soft: #9CC3E6;
+    --verdigris: #1F6F5C;
+    --app-blue: #3E6B96;
+    --hairline: #D3E3F1;
+    --hairline-strong: #C3D8EA;
 
-    --tint-en: #8B5E3C;
+    --tint-en: #3E6B96;
     --tint-ta: #A8763F;
     --tint-ml: #1F6F5C;
     --tint-hi: #6E5A8C;
@@ -36,11 +56,32 @@
     --font-or: 'Noto Serif Oriya', serif;
   }
 
+  :root[data-theme="dark"] {
+    --paper: #1E2328;
+    --paper-raised: #262C33;
+    --ink: #EAE6DD;
+    --ink-soft: #A8A199;
+    --accent: #C9A57E;
+    --accent-soft: #8B5E3C;
+    --verdigris: #5FB89C;
+    --app-blue: #8FB4D9;
+    --hairline: #3A4049;
+    --hairline-strong: #454C56;
+
+    --tint-en: #C9A57E;
+    --tint-ta: #D4A56B;
+    --tint-ml: #5FB89C;
+    --tint-hi: #B8A0D9;
+    --tint-te: #E09070;
+    --tint-kn: #7FB8CC;
+    --tint-or: #D4BF5E;
+  }
+
   * { box-sizing: border-box; }
   html, body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); -webkit-font-smoothing: antialiased; }
   body {
-    background-image: radial-gradient(circle at 15% 0%, rgba(139,94,60,0.05), transparent 45%),
-                       radial-gradient(circle at 85% 100%, rgba(31,111,92,0.04), transparent 45%);
+    background-image: radial-gradient(circle at 15% 0%, rgba(62,107,150,0.08), transparent 45%),
+                       radial-gradient(circle at 85% 100%, rgba(143,180,217,0.12), transparent 45%);
     min-height: 100vh;
   }
   .wrap { max-width: 760px; margin: 0 auto; padding: 28px 18px 90px; }
@@ -74,7 +115,7 @@
     border: 1px solid var(--hairline);
     border-radius: 16px;
     padding: 30px 30px 26px;
-    box-shadow: 0 1px 2px rgba(58,53,48,0.04), 0 8px 24px -16px rgba(58,53,48,0.18);
+    box-shadow: 0 1px 2px rgba(34,54,74,0.04), 0 8px 24px -16px rgba(34,54,74,0.18);
     max-width: 100%;
     overflow: hidden;
   }
@@ -84,11 +125,11 @@
     margin-bottom: 18px; padding-bottom: 16px; border-bottom: 1px solid var(--hairline);
   }
   .card-head .ref { font-family: var(--font-display); font-weight: 700; font-size: 21px; }
-  .card-head .version-tag { font-size: 11.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); background: rgba(139,94,60,0.08); padding: 5px 11px; border-radius: 20px; }
+  .card-head .version-tag { font-size: 11.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); background: rgba(47,100,152,0.08); padding: 5px 11px; border-radius: 20px; }
 
   .lang-block { padding: 14px 0; border-top: 1px solid var(--hairline); margin-bottom: 2px; max-width: 100%; }
   .lang-block:first-of-type { border-top: none; padding-top: 4px; }
-  .lang-block.nkjv, .lang-block.esv { --lang-tint: var(--tint-en); --lang-tint-bg: #F2EAE0; }
+  .lang-block.nkjv, .lang-block.esv { --lang-tint: var(--tint-en); --lang-tint-bg: #E3EEF8; }
   .lang-block.ta { --lang-tint: var(--tint-ta); --lang-tint-bg: #F4EBDF; }
   .lang-block.ml { --lang-tint: var(--tint-ml); --lang-tint-bg: #E3EDE9; }
   .lang-block.hi { --lang-tint: var(--tint-hi); --lang-tint-bg: #EBE6F0; }
@@ -105,7 +146,7 @@
   .lang-tag {
     font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
     color: var(--lang-tint, var(--ink-soft));
-    background: var(--lang-tint-bg, #F0EBE3);
+    background: var(--lang-tint-bg, #E3EEF8);
     padding: 4px 10px; border-radius: 20px;
   }
   .verse-text { width: 100%; font-size: 16px; line-height: 1.7; color: var(--ink); margin: 0; overflow-wrap: break-word; word-wrap: break-word; word-break: normal; }
@@ -120,7 +161,7 @@
     padding: 0; cursor: pointer;
     transition: opacity 0.15s, background 0.15s, color 0.15s;
   }
-  .lang-share-btn:hover { opacity: 1; background: rgba(139,94,60,0.08); color: var(--accent); }
+  .lang-share-btn:hover { opacity: 1; background: rgba(47,100,152,0.08); color: var(--accent); }
   .lang-share-btn svg { width: 17px; height: 17px; display: block; }
 
   .lang-practice-btn {
@@ -150,12 +191,12 @@
     padding: 0; cursor: pointer;
     transition: opacity 0.15s, background 0.15s, color 0.15s;
   }
-  .lang-voice-btn:hover { opacity: 1; background: rgba(139,94,60,0.08); color: var(--accent); }
+  .lang-voice-btn:hover { opacity: 1; background: rgba(47,100,152,0.08); color: var(--accent); }
   .lang-voice-btn.active {
     opacity: 1;
-    background: rgba(139,94,60,0.12);
+    background: rgba(47,100,152,0.12);
     color: var(--accent);
-    border: 1px solid rgba(139,94,60,0.35);
+    border: 1px solid rgba(47,100,152,0.35);
   }
   .lang-voice-btn.unavailable { opacity: 0.25; cursor: not-allowed; }
   .lang-voice-btn.unavailable:hover { opacity: 0.25; background: transparent; color: var(--ink-soft); }
@@ -212,12 +253,91 @@
     .card { padding: 18px 14px 16px; }
     .verse-text.ta, .verse-text.hi, .verse-text.ml, .verse-text.te, .verse-text.kn, .verse-text.or { font-size: 16px; }
   }
+
+  /* ---------- App controls (top bar + settings) ---------- */
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 14px; }
+  .topbar .backlink { margin-bottom: 0; }
+  .top-actions { display: flex; align-items: center; gap: 2px; margin-left: auto; }
+  /* Installed app: the archive is not available offline and iPhone has no back button, so hide the link. */
+  .is-app .topbar .backlink { display: none; }
+  .top-btn {
+    width: 38px; height: 38px; border-radius: 10px;
+    border: 1px solid transparent; background: transparent; color: var(--ink-soft);
+    display: flex; align-items: center; justify-content: center; padding: 0; cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .top-btn:hover { background: rgba(62,107,150,0.10); color: var(--app-blue); border-color: transparent; }
+  .top-btn[aria-expanded="true"] { background: rgba(62,107,150,0.14); color: var(--app-blue); border-color: rgba(62,107,150,0.35); }
+  .top-btn svg { width: 20px; height: 20px; display: block; }
+  .top-btn.spinning svg { animation: mv-spin 0.9s linear infinite; }
+  @keyframes mv-spin { to { transform: rotate(360deg); } }
+
+  .settings-panel {
+    display: none; background: var(--paper-raised); border: 1px solid var(--hairline);
+    border-radius: 14px; padding: 16px 18px 12px; margin-bottom: 18px;
+    box-shadow: 0 8px 24px -16px rgba(34,54,74,0.25);
+  }
+  .settings-panel.open { display: block; }
+  .settings-panel h2 { font-family: var(--font-display); font-size: 15px; font-weight: 700; margin: 0 0 4px; }
+  .settings-panel .hint { font-size: 12.5px; color: var(--ink-soft); margin: 0 0 12px; line-height: 1.45; }
+  .lang-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px 14px; }
+  .lang-option { display: flex; align-items: center; gap: 9px; font-size: 14px; padding: 7px 2px; cursor: pointer; color: var(--ink); }
+  .lang-option input { width: 18px; height: 18px; margin: 0; flex-shrink: 0; accent-color: var(--app-blue); cursor: pointer; }
+  .settings-foot { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--hairline); display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .foot-links { display: flex; gap: 14px; flex-wrap: wrap; }
+  .settings-panel .need-one { margin: 10px 0 0; color: var(--ink-soft); }
+  .done-btn { background: var(--app-blue); color: var(--paper); border: none; border-radius: 10px; padding: 9px 24px; font-size: 14px; font-weight: 700; cursor: pointer; }
+  .done-btn:hover { background: var(--app-blue); border: none; color: var(--paper); filter: brightness(1.06); }
+  .done-btn:disabled { opacity: 0.4; cursor: default; filter: none; }
+  .link-btn { background: none; border: none; padding: 6px 2px; font-size: 13px; font-weight: 600; color: var(--app-blue); cursor: pointer; }
+  .link-btn:hover { background: none; border: none; color: var(--app-blue); text-decoration: underline; }
+
+  /* ---------- Dark theme fixes for hardcoded light colors ---------- */
+  :root[data-theme="dark"] .lang-block.nkjv, :root[data-theme="dark"] .lang-block.esv { --lang-tint-bg: rgba(201,165,126,0.16); }
+  :root[data-theme="dark"] .lang-block.ta { --lang-tint-bg: rgba(212,165,107,0.16); }
+  :root[data-theme="dark"] .lang-block.ml { --lang-tint-bg: rgba(95,184,156,0.16); }
+  :root[data-theme="dark"] .lang-block.hi { --lang-tint-bg: rgba(184,160,217,0.16); }
+  :root[data-theme="dark"] .lang-block.te { --lang-tint-bg: rgba(224,144,112,0.16); }
+  :root[data-theme="dark"] .lang-block.kn { --lang-tint-bg: rgba(127,184,204,0.16); }
+  :root[data-theme="dark"] .lang-block.or { --lang-tint-bg: rgba(212,191,94,0.16); }
+  :root[data-theme="dark"] .lang-practice-btn:hover { background: rgba(95,184,156,0.14); }
+  :root[data-theme="dark"] .lang-practice-btn.active { background: rgba(95,184,156,0.18); border-color: rgba(95,184,156,0.45); }
+  :root[data-theme="dark"] .lang-voice-btn:hover { background: rgba(201,165,126,0.14); }
+  :root[data-theme="dark"] .lang-voice-btn.active { background: rgba(201,165,126,0.18); border-color: rgba(201,165,126,0.45); }
+  :root[data-theme="dark"] .lang-share-btn:hover { background: rgba(201,165,126,0.14); }
+  :root[data-theme="dark"] .card-head .version-tag { background: rgba(201,165,126,0.14); }
+  :root[data-theme="dark"] .top-btn:hover { background: rgba(143,180,217,0.14); }
+  :root[data-theme="dark"] .top-btn[aria-expanded="true"] { background: rgba(143,180,217,0.18); border-color: rgba(143,180,217,0.4); }
+  :root[data-theme="dark"] body {
+    background-image: radial-gradient(circle at 15% 0%, rgba(143,180,217,0.05), transparent 45%);
+  }
 </style>
 </head>
 <body>
 
 <div class="wrap">
-  <a href="../index.html" class="backlink">← All weeks</a>
+  <div class="topbar">
+    <a href="../index.html" class="backlink">← All weeks</a>
+    <div class="top-actions">
+      <button class="top-btn" id="refreshBtn" title="Check for new passage" aria-label="Check for new passage"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.13-9.36L23 10"></path></svg></button>
+      <button class="top-btn" id="themeBtn" title="Switch theme" aria-label="Switch between light and dark theme"></button>
+      <button class="top-btn" id="settingsBtn" title="Choose translations" aria-label="Choose which translations to show" aria-expanded="false" aria-controls="settingsPanel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></button>
+    </div>
+  </div>
+
+  <div class="settings-panel" id="settingsPanel">
+    <h2>Translations to show</h2>
+    <p class="hint">Tap Save to keep your choice on this device. Sharing includes only the translations you have selected.</p>
+    <div class="lang-options" id="langOptions"></div>
+    <p class="hint need-one" id="needOne" hidden>Select at least one translation.</p>
+    <div class="settings-foot">
+      <div class="foot-links">
+        <button class="link-btn" id="selectAllBtn" type="button">Select all</button>
+        <button class="link-btn" id="deselectAllBtn" type="button">Deselect all</button>
+      </div>
+      <button class="done-btn" id="doneBtn" type="button">Save</button>
+    </div>
+  </div>
 
   <header>
     <div class="eyebrow">Scripture Memory</div>
@@ -243,68 +363,60 @@
    WEEKLY DATA — edit this block each week, nothing else.
    ========================================================= */
 const WEEK = {
-  dates: "Oct 11–17",
-  ref: "Deuteronomy 6:6-7",
+  dates: "Oct 18–24",
+  ref: "2 Corinthians 5:17",
   versions: [
     {
       key: "main",
-      label: "Deuteronomy 6:6-7",
-      ref: "Deuteronomy 6:6-7",
+      label: "2 Corinthians 5:17",
+      ref: "2 Corinthians 5:17",
       verses: {
         nkjv: {
-          ref: "Deuteronomy 6:6-7",
+          ref: "2 Corinthians 5:17",
           lines: [
-            `And these words which I command you today shall be in your heart.`,
-            `You shall teach them diligently to your children, and shall talk of them when you sit in your house, when you walk by the way, when you lie down, and when you rise up.`
+            `Therefore, if anyone is in Christ, he is a new creation; old things have passed away; behold, all things have become new.`
           ]
         },
         esv: {
-          ref: "Deuteronomy 6:6-7",
+          ref: "2 Corinthians 5:17",
           lines: [
-            `And these words that I command you today shall be on your heart.`,
-            `You shall teach them diligently to your children, and shall talk of them when you sit in your house, and when you walk by the way, and when you lie down, and when you rise.`
+            `Therefore, if anyone is in Christ, he is a new creation. The old has passed away; behold, the new has come.`
           ]
         },
         ta: {
-          ref: "உபாகமம் 6:6-7",
+          ref: "2 கொரிந்தியர் 5:17",
           lines: [
-            `இன்று நான் உனக்குக் கட்டளையிடுகிற இந்த வார்த்தைகள் உன் இருதயத்தில் இருக்கக்கடவது.`,
-            `நீ அவைகளை உன் பிள்ளைகளுக்குக் கருத்தாய்ப் போதித்து, நீ உன் வீட்டில் உட்கார்ந்திருக்கிறபோதும், வழியில் நடக்கிறபோதும், படுத்துக்கொள்ளுகிறபோதும், எழுந்திருக்கிறபோதும் அவைகளைக் குறித்துப் [பேசுவாயாக].`
+            `இப்படியிருக்க, ஒருவன் கிறிஸ்துவுக்குள்ளிருந்தால் புதுசிருஷ்டியாயிருக்கிறான்; பழையவைகள் ஒழிந்து போயின, எல்லாம் புதிதாயின.`
           ]
         },
         ml: {
-          ref: "ആവർത്തനപുസ്തകം 6:6-7",
+          ref: "2 കൊരിന്ത്യർ 5:17",
           lines: [
-            `ഇന്നു ഞാൻ നിന്നോടു കല്പിക്കുന്ന ഈ വചനങ്ങൾ നിന്റെ ഹൃദയത്തിൽ ഇരിക്കേണം.`,
-            `നീ അവയെ നിന്റെ മക്കൾക്ക് ഉപദേശിച്ചുകൊടുക്കയും നീ വീട്ടിൽ ഇരിക്കുമ്പോഴും വഴി നടക്കുമ്പോഴും കിടക്കുമ്പോഴും എഴുന്നേല്ക്കുമ്പോഴും അവയെക്കുറിച്ചു സംസാരിക്കയും വേണം.`
+            `ഒരുത്തൻ ക്രിസ്തുവിലായാൽ അവൻ പുതിയ സൃഷ്ടി ആകുന്നു; പഴയത് കഴിഞ്ഞുപോയി, ഇതാ, അതു പുതുതായി തീർന്നിരിക്കുന്നു.`
           ]
         },
         hi: {
-          ref: "व्यवस्थाविवरण 6:6-7",
+          ref: "2 कुरिन्थियों 5:17",
           lines: [
-            `और ये आज्ञाएँ जो मैं आज तुझ को सुनाता हूँ वे तेरे मन में बनी रहें;`,
-            `और तू इन्हें अपने बाल–बच्‍चों को समझाकर सिखाया करना, और घर में बैठे, मार्ग पर चलते, लेटते, उठते, इनकी चर्चा किया करना।`
+            `इसलिये यदि कोई मसीह में है तो वह नई सृष्‍टि है : पुरानी बातें बीत गई हैं; देखो, सब बातें नई हो गई हैं।`
           ]
         },
         te: {
-          ref: "ద్వితీయోపదేశకాండము 6:6-7",
+          ref: "2 కొరింథీయులకు 5:17",
           lines: [
-            `నేడు నేను నీకాజ్ఞాపించు ఈ మాటలు నీ హృదయములో ఉండవలెను.`,
-            `నీవు నీ కుమారులకు వాటిని అభ్యసింపజేసి, నీ యింట కూర్చుండునప్పుడును త్రోవను నడుచునప్పుడును పండుకొనునప్పుడును లేచునప్పుడును వాటినిగూర్చి మాటలాడవలెను; సూచనగా వాటిని నీ చేతికి కట్టుకొనవలెను.`
+            `కాగా ఎవడైనను క్రీస్తునందున్నయెడల వాడు నూతన సృష్టి; పాతవి గతించెను, ఇదిగో క్రొత్త వాయెను.`
           ]
         },
         kn: {
-          ref: "ಧರ್ಮೋಪದೇಶಕಾಂಡ 6:6-7",
+          ref: "2 ಕೊರಿಂಥದವರಿಗೆ 5:17",
           lines: [
-            `ನಾನು ಈಗ ನಿಮಗೆ ತಿಳಿಸುವ ಮಾತುಗಳು ನಿಮ್ಮ ಹೃದಯದಲ್ಲಿರಬೇಕು.`,
-            `ಇವುಗಳನ್ನು ನಿಮ್ಮ ಮಕ್ಕಳಿಗೆ ಅಭ್ಯಾಸಮಾಡಿಸಿ ಮನೆಯಲ್ಲಿ ಕೂತಿರುವಾಗಲೂ ದಾರಿನಡೆಯುವಾಗಲೂ ಮಲಗುವಾಗಲೂ ಏಳುವಾಗಲೂ ಇವುಗಳ ವಿಷಯದಲ್ಲಿ ಮಾತಾಡಬೇಕು.`
+            `ಹೀಗಿರಲಾಗಿ ಯಾವನಾದರೂ ಕ್ರಿಸ್ತನಲ್ಲಿದ್ದರೆ ಅವನು ನೂತನಸೃಷ್ಟಿಯಾದನು. ಇಗೋ, ಪೂರ್ವಸ್ಥಿತಿ ಹೋಗಿ ಎಲ್ಲಾ ನೂತನವಾಯಿತು.`
           ]
         },
         or: {
-          ref: "ଦ୍ଵିତୀୟ ବିବରଣ 6:6-7",
+          ref: "2 କରିନ୍ଥୀୟ 5:17",
           lines: [
-            `ପୁଣି ଏହି ଯେଉଁ ସକଳ କଥା ମୁଁ ଆଜି ତୁମ୍ଭକୁ ଆଜ୍ଞା କରୁଅଛି, ତାହା ତୁମ୍ଭେ ଆପଣା ହୃଦୟରେ ରଖିବ।`,
-            `ଆଉ ତୁମ୍ଭେ ଆପଣା ସନ୍ତାନଗଣକୁ ଯନିପୂର୍ବକ ତାହା ଶିଖାଇବ ଓ ତୁମ୍ଭେ ଆପଣା ଗୃହରେ ବସିବା ବେଳେ ଓ ତୁମ୍ଭେ ପଥରେ ଚାଲିବା ବେଳେ ଓ ତୁମ୍ଭେ ଶୟନ କରିବା ବେଳେ ଓ ତୁମ୍ଭେ ଉଠିବା ବେଳେ, ସେମାନଙ୍କ ସଙ୍ଗେ ସେବିଷୟରେ କଥାବାର୍ତ୍ତା କରିବ।`
+            `ଏଣୁ ଯଦି କେହି ଖ୍ରୀଷ୍ଟଙ୍କଠାରେ ଅଛି, ତେବେ ସେ ନୂତନ ସୃଷ୍ଟି ହୋଇଅଛି; ପୁରାତନ ବିଷୟସବୁ ଲୋପ ପାଇଅଛି, ଦେଖ, ନୂତନ ବିଷୟସବୁ ହୋଇଅଛି।`
           ]
         }
       }
@@ -341,6 +453,7 @@ function buildLangBlock(langKey, lines, langRef) {
   const meta = LANG_META[langKey];
   const block = document.createElement('div');
   block.className = `lang-block ${meta.cls}`;
+  block.dataset.lang = langKey;
 
   const header = document.createElement('div');
   header.className = 'lang-header';
@@ -617,6 +730,7 @@ function getShareText() {
   let text = activeVersion.ref + '\n\n';
   
   langBlocks.forEach(block => {
+    if (block.dataset.lang && !isLangVisible(block.dataset.lang)) return;
     const langTag = block.querySelector('.lang-tag').textContent;
     const langRefEl = block.querySelector('.lang-ref');
     const langRef = langRefEl ? langRefEl.textContent : '';
@@ -687,6 +801,167 @@ document.getElementById('shareBtn').addEventListener('click', async () => {
     showToast('Could not share — try copying manually');
   }
 });
+
+/* =========================================================
+   APP FEATURES: theme, translation picker, refresh, offline
+   ========================================================= */
+const LS = {
+  get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+};
+
+// ----- Theme (light / dark) -----
+const themeBtn = document.getElementById('themeBtn');
+const SUN_ICON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>`;
+const MOON_ICON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`;
+
+function currentTheme() {
+  return document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+}
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  themeBtn.innerHTML = theme === 'dark' ? SUN_ICON : MOON_ICON;
+  themeBtn.title = theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme';
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute('content', theme === 'dark' ? '#1E2328' : '#EAF3FB');
+}
+applyTheme(currentTheme());
+themeBtn.addEventListener('click', () => {
+  const next = currentTheme() === 'dark' ? 'light' : 'dark';
+  applyTheme(next);
+  LS.set('mv-theme', next);
+});
+
+// ----- Translation picker (saved per device) -----
+const ALL_LANGS = LANG_ORDER.slice();
+function loadVisibleLangs() {
+  try {
+    const raw = LS.get('mv-langs');
+    if (raw) {
+      const valid = JSON.parse(raw).filter(k => ALL_LANGS.indexOf(k) !== -1);
+      if (valid.length) return valid;
+    }
+  } catch (e) {}
+  return ALL_LANGS.slice(); // first launch: show all
+}
+let visibleLangs = loadVisibleLangs();
+function isLangVisible(key) { return visibleLangs.indexOf(key) !== -1; }
+function applyLangVisibility() {
+  document.querySelectorAll('.lang-block').forEach(block => {
+    block.style.display = isLangVisible(block.dataset.lang) ? '' : 'none';
+  });
+}
+function saveVisibleLangs() {
+  LS.set('mv-langs', JSON.stringify(visibleLangs));
+  stopAllVoicesExcept(null); // don't keep reading a translation that was just hidden
+  applyLangVisibility();
+}
+
+const langOptionsEl = document.getElementById('langOptions');
+const settingsBtn = document.getElementById('settingsBtn');
+const settingsPanel = document.getElementById('settingsPanel');
+const doneBtn = document.getElementById('doneBtn');
+const needOneEl = document.getElementById('needOne');
+ALL_LANGS.forEach(key => {
+  const label = document.createElement('label');
+  label.className = 'lang-option';
+  const cb = document.createElement('input');
+  cb.type = 'checkbox';
+  cb.value = key;
+  cb.checked = isLangVisible(key);
+  const name = document.createElement('span');
+  name.textContent = LANG_META[key].tag;
+  label.appendChild(cb);
+  label.appendChild(name);
+  langOptionsEl.appendChild(label);
+  cb.addEventListener('change', syncPanelState);
+});
+// Ticking boxes only changes the panel. The page and the saved choice change when Save is tapped.
+function panelChecked() {
+  return Array.from(langOptionsEl.querySelectorAll('input')).filter(i => i.checked).map(i => i.value);
+}
+function syncPanelState() {
+  const none = panelChecked().length === 0;
+  doneBtn.disabled = none;   // at least one translation must stay visible
+  needOneEl.hidden = !none;
+}
+function resetPanelToSaved() {
+  langOptionsEl.querySelectorAll('input').forEach(i => { i.checked = isLangVisible(i.value); });
+  syncPanelState();
+}
+function setPanelOpen(open) {
+  if (open) resetPanelToSaved();
+  settingsPanel.classList.toggle('open', open);
+  settingsBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+function setAllPanelBoxes(on) {
+  langOptionsEl.querySelectorAll('input').forEach(i => { i.checked = on; });
+  syncPanelState();
+}
+document.getElementById('selectAllBtn').addEventListener('click', () => setAllPanelBoxes(true));
+document.getElementById('deselectAllBtn').addEventListener('click', () => setAllPanelBoxes(false));
+doneBtn.addEventListener('click', () => {
+  const checked = panelChecked();
+  if (checked.length === 0) return;
+  visibleLangs = ALL_LANGS.filter(k => checked.indexOf(k) !== -1);
+  saveVisibleLangs();
+  setPanelOpen(false);
+  showToast('Saved');
+});
+// The gear (or Escape) closes the panel without saving.
+settingsBtn.addEventListener('click', () => setPanelOpen(!settingsPanel.classList.contains('open')));
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && settingsPanel.classList.contains('open')) setPanelOpen(false);
+});
+syncPanelState();
+applyLangVisibility();
+
+// ----- "Check for new passage" -----
+const refreshBtn = document.getElementById('refreshBtn');
+// Archived weeks are copies of this file. Only the real weeks/current.html may refresh itself or be saved offline.
+const IS_CURRENT_PAGE = /\/weeks\/current\.html$/.test(location.pathname);
+if (!IS_CURRENT_PAGE) refreshBtn.style.display = 'none';
+async function checkForNewPassage() {
+  if (!IS_CURRENT_PAGE) return;
+  if (refreshBtn.classList.contains('spinning')) return;
+  if (navigator.onLine === false) {
+    showToast("You're offline \u2014 showing the last saved passage");
+    return;
+  }
+  refreshBtn.classList.add('spinning');
+  try {
+    const pageUrl = location.href.split('#')[0].split('?')[0];
+    // the mv-refresh parameter tells the service worker to skip its cache and go to the network
+    const res = await fetch(pageUrl + '?mv-refresh=' + Date.now(), { cache: 'no-store' });
+    if (!res.ok) throw new Error('Unexpected response: ' + res.status);
+    const text = await res.text();
+    const m = text.match(/const WEEK = \{\s*dates:\s*"([^"]*)",\s*ref:\s*"([^"]*)"/);
+    if (!m) throw new Error('Unrecognized page');
+
+    if ('caches' in window) {
+      const cache = await caches.open('memoryverse-v1');
+      await cache.put(pageUrl, new Response(text, { headers: { 'Content-Type': 'text/html; charset=utf-8' } }));
+    }
+    if (m[1] !== WEEK.dates || m[2] !== WEEK.ref) {
+      showToast('New passage found: ' + m[2]);
+      setTimeout(() => location.reload(), 900);
+    } else {
+      showToast("You're up to date");
+    }
+  } catch (err) {
+    showToast("Couldn't check right now \u2014 showing the last saved passage");
+  } finally {
+    refreshBtn.classList.remove('spinning');
+  }
+}
+refreshBtn.addEventListener('click', checkForNewPassage);
+
+// ----- Offline support -----
+if (IS_CURRENT_PAGE && 'serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('../sw.js').catch(err => console.warn('Service worker registration failed:', err));
+  });
+}
 </script>
 
 </body>
