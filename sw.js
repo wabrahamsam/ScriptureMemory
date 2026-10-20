@@ -2,7 +2,9 @@
 // Keeps ONLY the current week's page (plus icons, manifest and fonts) available offline.
 // Archive pages and the weeks list are deliberately not cached.
 
-const CACHE_NAME = 'memoryverse-v1';
+// Same number as APP_VERSION in weeks/current.html. Changing it starts a fresh offline cache.
+const APP_VERSION = '1.1.0';
+const CACHE_NAME = 'memoryverse-v' + APP_VERSION;
 const CORE = ['./weeks/current.html'];
 const EXTRAS = [
   './manifest.webmanifest',
