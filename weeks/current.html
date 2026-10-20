@@ -286,6 +286,7 @@
   .settings-foot { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--hairline); display: flex; align-items: center; justify-content: space-between; gap: 10px; }
   .foot-links { display: flex; gap: 14px; flex-wrap: wrap; }
   .settings-panel .need-one { margin: 10px 0 0; color: var(--ink-soft); }
+  .app-version { margin: 10px 0 0; font-size: 12px; color: var(--ink-soft); text-align: center; }
   .done-btn { background: var(--app-blue); color: var(--paper); border: none; border-radius: 10px; padding: 9px 24px; font-size: 14px; font-weight: 700; cursor: pointer; }
   .done-btn:hover { background: var(--app-blue); border: none; color: var(--paper); filter: brightness(1.06); }
   .done-btn:disabled { opacity: 0.4; cursor: default; filter: none; }
@@ -337,6 +338,7 @@
       </div>
       <button class="done-btn" id="doneBtn" type="button">Save</button>
     </div>
+    <p class="app-version" id="appVersion"></p>
   </div>
 
   <header>
@@ -920,6 +922,9 @@ applyLangVisibility();
 const refreshBtn = document.getElementById('refreshBtn');
 // Archived weeks are copies of this file. Only the real weeks/current.html may refresh itself or be saved offline.
 const IS_CURRENT_PAGE = /\/weeks\/current\.html$/.test(location.pathname);
+// App version shown in Settings. Keep it the same as APP_VERSION in sw.js (a test checks this).
+const APP_VERSION = '1.0.0';
+document.getElementById('appVersion').textContent = 'MemoryVerse · Version ' + APP_VERSION;
 if (!IS_CURRENT_PAGE) refreshBtn.style.display = 'none';
 async function checkForNewPassage() {
   if (!IS_CURRENT_PAGE) return;
