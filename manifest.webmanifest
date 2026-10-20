@@ -2,7 +2,7 @@
   "name": "MemoryVerse",
   "short_name": "MemoryVerse",
   "description": "Weekly Scripture memory verses in English, Tamil, Malayalam, Hindi, Telugu, Kannada, and Odia.",
-  "id": "/ScriptureMemory/memoryverse-app",
+  "id": "/ScriptureMemory/weeks/current.html",
   "start_url": "./weeks/current.html",
   "scope": "./",
   "display": "standalone",
