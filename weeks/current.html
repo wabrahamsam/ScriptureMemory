@@ -287,6 +287,14 @@
   .foot-links { display: flex; gap: 14px; flex-wrap: wrap; }
   .settings-panel .need-one { margin: 10px 0 0; color: var(--ink-soft); }
   .app-version { margin: 10px 0 0; font-size: 12px; color: var(--ink-soft); text-align: center; }
+  .install-banner { display: flex; align-items: center; gap: 10px; background: var(--paper-raised); border: 1px solid var(--hairline-strong); border-radius: 14px; padding: 9px 10px 9px 12px; margin: 0 0 14px; }
+  .install-banner[hidden], .is-app .install-banner { display: none; }
+  .install-icon { border-radius: 8px; flex: none; }
+  .install-text { flex: 1; font-size: 14px; color: var(--ink); line-height: 1.3; }
+  .install-btn { background: var(--app-blue); color: var(--paper); border: none; border-radius: 10px; padding: 8px 16px; font-size: 13px; font-weight: 700; cursor: pointer; }
+  .install-btn:hover { background: var(--app-blue); border: none; color: var(--paper); filter: brightness(1.06); }
+  .install-close { background: none; border: none; color: var(--ink-soft); font-size: 16px; padding: 6px 8px; cursor: pointer; line-height: 1; }
+  .install-close:hover { background: none; border: none; color: var(--ink); }
   .done-btn { background: var(--app-blue); color: var(--paper); border: none; border-radius: 10px; padding: 9px 24px; font-size: 14px; font-weight: 700; cursor: pointer; }
   .done-btn:hover { background: var(--app-blue); border: none; color: var(--paper); filter: brightness(1.06); }
   .done-btn:disabled { opacity: 0.4; cursor: default; filter: none; }
@@ -317,6 +325,12 @@
 <body>
 
 <div class="wrap">
+  <div class="install-banner" id="installBanner" hidden>
+    <img class="install-icon" src="../icons/icon-192.png" alt="" width="34" height="34">
+    <span class="install-text">Install as app on your device</span>
+    <button class="install-btn" id="installBtn" type="button">Install</button>
+    <button class="install-close" id="installClose" type="button" aria-label="Dismiss">✕</button>
+  </div>
   <div class="topbar">
     <a href="../index.html" class="backlink">← All weeks</a>
     <div class="top-actions">
@@ -923,7 +937,7 @@ const refreshBtn = document.getElementById('refreshBtn');
 // Archived weeks are copies of this file. Only the real weeks/current.html may refresh itself or be saved offline.
 const IS_CURRENT_PAGE = /\/weeks\/current\.html$/.test(location.pathname);
 // App version shown in Settings. Keep it the same as APP_VERSION in sw.js (a test checks this).
-const APP_VERSION = '1.0.0';
+const APP_VERSION = '1.1.0';
 document.getElementById('appVersion').textContent = 'MemoryVerse · Version ' + APP_VERSION;
 if (!IS_CURRENT_PAGE) refreshBtn.style.display = 'none';
 async function checkForNewPassage() {
@@ -960,6 +974,46 @@ async function checkForNewPassage() {
   }
 }
 refreshBtn.addEventListener('click', checkForNewPassage);
+
+// ----- "Install as app" banner -----
+// Chrome only offers installing when the app is installable and not already installed, so the banner
+// appears only in those cases. Closing it hides it for 14 days. Archived copies never show it.
+const installBanner = document.getElementById('installBanner');
+const INSTALL_SNOOZE_KEY = 'mv-install-dismissed';
+const INSTALL_SNOOZE_MS = 14 * 24 * 60 * 60 * 1000;
+let installEvt = null;
+function installSnoozed() {
+  const t = Number(LS.get(INSTALL_SNOOZE_KEY));
+  return !!t && Date.now() - t < INSTALL_SNOOZE_MS;
+}
+function snoozeInstall() { LS.set(INSTALL_SNOOZE_KEY, String(Date.now())); }
+if (IS_CURRENT_PAGE) {
+  window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault();
+    installEvt = e;
+    if (!installSnoozed()) installBanner.hidden = false;
+  });
+  document.getElementById('installBtn').addEventListener('click', async () => {
+    if (!installEvt) return;
+    const evt = installEvt;
+    installEvt = null; // Chrome allows one prompt per event
+    installBanner.hidden = true;
+    try {
+      await evt.prompt();
+      const choice = await evt.userChoice;
+      if (choice && choice.outcome === 'dismissed') snoozeInstall();
+    } catch (err) {}
+  });
+  document.getElementById('installClose').addEventListener('click', () => {
+    installBanner.hidden = true;
+    snoozeInstall();
+  });
+  window.addEventListener('appinstalled', () => {
+    installEvt = null;
+    installBanner.hidden = true;
+    showToast('MemoryVerse installed');
+  });
+}
 
 // ----- Offline support -----
 if (IS_CURRENT_PAGE && 'serviceWorker' in navigator) {
