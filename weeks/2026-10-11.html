@@ -419,7 +419,8 @@ function buildLangBlock(langKey, lines, langRef) {
 
   function findVoice() {
     if (!voiceSupported) return null;
-    const voices = window.speechSynthesis.getVoices();
+    let voices = [];
+    try { voices = window.speechSynthesis.getVoices() || []; } catch (e) { return null; }
     const exact = voices.filter(v => v.lang === meta.bcp47);
     if (exact.length) return exact[0];
     const base = meta.bcp47.split('-')[0];
@@ -438,13 +439,24 @@ function buildLangBlock(langKey, lines, langRef) {
   }
   refreshVoiceAvailability();
   if (voiceSupported) {
-    window.speechSynthesis.addEventListener('voiceschanged', refreshVoiceAvailability);
+    try {
+      if (typeof window.speechSynthesis.addEventListener === 'function') {
+        window.speechSynthesis.addEventListener('voiceschanged', refreshVoiceAvailability);
+      } else {
+        // Older Safari (iOS 15 and earlier): use the old-style handler, chaining so every language block still hears it
+        const prevHandler = window.speechSynthesis.onvoiceschanged;
+        window.speechSynthesis.onvoiceschanged = function () {
+          if (typeof prevHandler === 'function') prevHandler.apply(this, arguments);
+          refreshVoiceAvailability();
+        };
+      }
+    } catch (e) { /* voice is optional: the verse text still shows */ }
   }
 
   let isPlaying = false;
   function stopVoice() {
     isPlaying = false;
-    window.speechSynthesis.cancel();
+    try { window.speechSynthesis.cancel(); } catch (e) {}
     voiceBtn.classList.remove('active');
     voiceBtn.innerHTML = PLAY_ICON;
   }
@@ -459,7 +471,7 @@ function buildLangBlock(langKey, lines, langRef) {
     utterance.onend = () => {
       if (isPlaying) playVoiceLoop();
     };
-    window.speechSynthesis.speak(utterance);
+    try { window.speechSynthesis.speak(utterance); } catch (e) { stopVoice(); }
   }
 
   voiceBtn.addEventListener('click', () => {
@@ -566,7 +578,16 @@ function buildPanel(version, displayLabel) {
       const entry = version.verses[langKey];
       const langRef = (entry && entry.ref) ? entry.ref : version.ref;
       const langLines = (entry && entry.lines) ? entry.lines : entry;
-      card.appendChild(buildLangBlock(langKey, langLines, langRef));
+      try {
+        card.appendChild(buildLangBlock(langKey, langLines, langRef));
+      } catch (err) {
+        console.warn('Could not build ' + langKey + ':', err);
+        const note = document.createElement('div');
+        note.className = 'lang-block';
+        note.style.padding = '12px 0';
+        note.textContent = (LANG_META[langKey] ? LANG_META[langKey].tag : langKey) + ' is not supported on this device.';
+        card.appendChild(note);
+      }
     }
   });
 
