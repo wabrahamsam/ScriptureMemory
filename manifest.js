@@ -1,10 +1,11 @@
 // This week — update this whenever you publish a new week
 const CURRENT = {
-  ref: "2 Corinthians 5:17"
+  ref: "Luke 12:32-34"
 };
 
 // All past weeks — add to this list each week (newest at top after CURRENT)
 const WEEKS = [
+  { file: "2026-10-18.html", dates: "Oct 18–24", ref: "2 Corinthians 5:17" },
   { file: "2026-10-11.html", dates: "Oct 11–17", ref: "Deuteronomy 6:6-7" },
   { file: "2026-10-04.html", dates: "Oct 04–10", ref: "Deuteronomy 6:4-5" },
   { file: "2026-09-27.html", dates: "Sep 27 – Oct 03", ref: "Ephesians 4:31-32" },
