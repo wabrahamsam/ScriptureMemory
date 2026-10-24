@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scripture Memory — 2 Corinthians 5:17</title>
+<link rel="manifest" href="../manifest.webmanifest">
+<meta name="theme-color" content="#EAF3FB">
+<script>
+(function () {
+  try {
+    var t = localStorage.getItem('mv-theme');
+    if (!t) { t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; }
+    document.documentElement.setAttribute('data-theme', t);
+  } catch (e) {}
+  try {
+    if (navigator.standalone || (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches)) { document.documentElement.classList.add('is-app'); }
+  } catch (e) {}
+})();
+</script>
+<link rel="apple-touch-icon" href="../icons/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="MemoryVerse">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Source+Sans+3:wght@400;500;600;700&family=Noto+Serif+Tamil:wght@400;600&family=Noto+Sans+Malayalam:wght@400;600&family=Noto+Serif+Devanagari:wght@400;600&family=Noto+Serif+Telugu:wght@400;600&family=Noto+Serif+Kannada:wght@400;600&family=Noto+Serif+Oriya:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #EAF3FB;
+    --paper-raised: #F9FCFF;
+    --ink: #22364A;
+    --ink-soft: #587087;
+    --accent: #2F6498;
+    --accent-soft: #9CC3E6;
+    --verdigris: #1F6F5C;
+    --app-blue: #3E6B96;
+    --hairline: #D3E3F1;
+    --hairline-strong: #C3D8EA;
+
+    --tint-en: #3E6B96;
+    --tint-ta: #A8763F;
+    --tint-ml: #1F6F5C;
+    --tint-hi: #6E5A8C;
+    --tint-te: #B0654A;
+    --tint-kn: #4D7A8C;
+    --tint-or: #8C7A2E;
+
+    --font-display: 'Source Serif 4', Georgia, serif;
+    --font-body: 'Source Sans 3', system-ui, sans-serif;
+    --font-ta: 'Noto Serif Tamil', serif;
+    --font-ml: 'Noto Sans Malayalam', sans-serif;
+    --font-hi: 'Noto Serif Devanagari', serif;
+    --font-te: 'Noto Serif Telugu', serif;
+    --font-kn: 'Noto Serif Kannada', serif;
+    --font-or: 'Noto Serif Oriya', serif;
+  }
+
+  :root[data-theme="dark"] {
+    --paper: #1E2328;
+    --paper-raised: #262C33;
+    --ink: #EAE6DD;
+    --ink-soft: #A8A199;
+    --accent: #C9A57E;
+    --accent-soft: #8B5E3C;
+    --verdigris: #5FB89C;
+    --app-blue: #8FB4D9;
+    --hairline: #3A4049;
+    --hairline-strong: #454C56;
+
+    --tint-en: #C9A57E;
+    --tint-ta: #D4A56B;
+    --tint-ml: #5FB89C;
+    --tint-hi: #B8A0D9;
+    --tint-te: #E09070;
+    --tint-kn: #7FB8CC;
+    --tint-or: #D4BF5E;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); -webkit-font-smoothing: antialiased; }
+  body {
+    background-image: radial-gradient(circle at 15% 0%, rgba(62,107,150,0.08), transparent 45%),
+                       radial-gradient(circle at 85% 100%, rgba(143,180,217,0.12), transparent 45%);
+    min-height: 100vh;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 28px 18px 90px; }
+
+  .backlink { display: inline-flex; align-items: center; gap: 6px; color: var(--ink-soft); text-decoration: none; font-size: 13.5px; font-weight: 500; margin-bottom: 18px; }
+  .backlink:hover { color: var(--accent); }
+
+  header { text-align: center; margin-bottom: 22px; }
+  .eyebrow { font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 6px; }
+  .dates { font-size: 13px; color: var(--ink-soft); margin-bottom: 14px; }
+  h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(26px, 6vw, 38px); margin: 0; letter-spacing: -0.01em; }
+
+  /* ---------- Tabs ---------- */
+  .tabs { display: flex; justify-content: center; gap: 6px; margin: 24px 0 26px; flex-wrap: wrap; }
+  .tab {
+    font-family: var(--font-body); font-weight: 600; font-size: 13.5px;
+    border: 1px solid var(--hairline-strong); background: var(--paper-raised); color: var(--ink-soft);
+    padding: 9px 18px; border-radius: 20px; cursor: pointer; transition: all 0.15s;
+  }
+  .tab:hover { border-color: var(--accent); color: var(--accent); }
+  .tab.active { background: var(--ink); color: var(--paper-raised); border-color: var(--ink); }
+  .tab.only { cursor: default; }
+  .tab.only:hover { border-color: var(--hairline-strong); color: var(--ink-soft); }
+
+  /* ---------- Verse card ---------- */
+  .version-panel { display: none; }
+  .version-panel.active { display: block; }
+
+  .card {
+    background: var(--paper-raised);
+    border: 1px solid var(--hairline);
+    border-radius: 16px;
+    padding: 30px 30px 26px;
+    box-shadow: 0 1px 2px rgba(34,54,74,0.04), 0 8px 24px -16px rgba(34,54,74,0.18);
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .card-head {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 10px;
+    margin-bottom: 18px; padding-bottom: 16px; border-bottom: 1px solid var(--hairline);
+  }
+  .card-head .ref { font-family: var(--font-display); font-weight: 700; font-size: 21px; }
+  .card-head .version-tag { font-size: 11.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); background: rgba(47,100,152,0.08); padding: 5px 11px; border-radius: 20px; }
+
+  .lang-block { padding: 14px 0; border-top: 1px solid var(--hairline); margin-bottom: 2px; max-width: 100%; }
+  .lang-block:first-of-type { border-top: none; padding-top: 4px; }
+  .lang-block.nkjv, .lang-block.esv { --lang-tint: var(--tint-en); --lang-tint-bg: #E3EEF8; }
+  .lang-block.ta { --lang-tint: var(--tint-ta); --lang-tint-bg: #F4EBDF; }
+  .lang-block.ml { --lang-tint: var(--tint-ml); --lang-tint-bg: #E3EDE9; }
+  .lang-block.hi { --lang-tint: var(--tint-hi); --lang-tint-bg: #EBE6F0; }
+  .lang-block.te { --lang-tint: var(--tint-te); --lang-tint-bg: #F5E8E2; }
+  .lang-block.kn { --lang-tint: var(--tint-kn); --lang-tint-bg: #E5EDF0; }
+  .lang-block.or { --lang-tint: var(--tint-or); --lang-tint-bg: #F1EDDD; }
+
+  .lang-header { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+  .lang-icons { display: flex; align-items: center; gap: 4px; margin-left: auto; }
+  .lang-ref {
+    font-family: var(--font-display); font-style: italic; font-weight: 600;
+    font-size: 13px; color: var(--ink-soft); display: block; margin-bottom: 8px;
+  }
+  .lang-tag {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--lang-tint, var(--ink-soft));
+    background: var(--lang-tint-bg, #E3EEF8);
+    padding: 4px 10px; border-radius: 20px;
+  }
+  .verse-text { width: 100%; font-size: 16px; line-height: 1.7; color: var(--ink); margin: 0; overflow-wrap: break-word; word-wrap: break-word; word-break: normal; }
+  .verse-text.en { hyphens: auto; -webkit-hyphens: auto; }
+
+  .lang-share-btn {
+    flex-shrink: 0;
+    width: 34px; height: 34px; border-radius: 9px;
+    border: 1px solid transparent; background: transparent;
+    color: var(--ink-soft); opacity: 0.6;
+    display: flex; align-items: center; justify-content: center;
+    padding: 0; cursor: pointer;
+    transition: opacity 0.15s, background 0.15s, color 0.15s;
+  }
+  .lang-share-btn:hover { opacity: 1; background: rgba(47,100,152,0.08); color: var(--accent); }
+  .lang-share-btn svg { width: 17px; height: 17px; display: block; }
+
+  .lang-practice-btn {
+    flex-shrink: 0;
+    width: 34px; height: 34px; border-radius: 9px;
+    border: 1px solid transparent; background: transparent;
+    color: var(--ink-soft); opacity: 0.6;
+    display: flex; align-items: center; justify-content: center;
+    padding: 0; cursor: pointer;
+    transition: opacity 0.15s, background 0.15s, color 0.15s;
+  }
+  .lang-practice-btn:hover { opacity: 1; background: rgba(31,111,92,0.08); color: var(--verdigris); }
+  .lang-practice-btn.active {
+    opacity: 1;
+    background: rgba(31,111,92,0.12);
+    color: var(--verdigris);
+    border: 1px solid rgba(31,111,92,0.35);
+  }
+  .lang-practice-btn svg { width: 19px; height: 19px; display: block; }
+
+  .lang-voice-btn {
+    flex-shrink: 0;
+    width: 34px; height: 34px; border-radius: 9px;
+    border: 1px solid transparent; background: transparent;
+    color: var(--ink-soft); opacity: 0.6;
+    display: flex; align-items: center; justify-content: center;
+    padding: 0; cursor: pointer;
+    transition: opacity 0.15s, background 0.15s, color 0.15s;
+  }
+  .lang-voice-btn:hover { opacity: 1; background: rgba(47,100,152,0.08); color: var(--accent); }
+  .lang-voice-btn.active {
+    opacity: 1;
+    background: rgba(47,100,152,0.12);
+    color: var(--accent);
+    border: 1px solid rgba(47,100,152,0.35);
+  }
+  .lang-voice-btn.unavailable { opacity: 0.25; cursor: not-allowed; }
+  .lang-voice-btn.unavailable:hover { opacity: 0.25; background: transparent; color: var(--ink-soft); }
+  .lang-voice-btn svg { width: 19px; height: 19px; display: block; }
+
+  .word-blank {
+    display: inline-block;
+    min-width: 2.4em;
+    border-bottom: 2px solid var(--lang-tint, var(--accent-soft));
+    cursor: pointer;
+    user-select: none;
+    color: transparent;
+    transition: color 0.1s;
+  }
+  .word-blank.revealed {
+    color: var(--ink);
+    cursor: default;
+    border-bottom-color: transparent;
+  }
+  .word-blank:not(.revealed):hover {
+    background: rgba(31,111,92,0.07);
+  }
+  .verse-text.en { font-family: var(--font-display); font-size: 16.5px; }
+  .verse-text.ta { font-family: var(--font-ta); font-size: 17px; line-height: 1.85; }
+  .verse-text.ml { font-family: var(--font-ml); font-size: 17px; line-height: 1.9; }
+  .verse-text.hi { font-family: var(--font-hi); font-size: 17px; line-height: 1.85; }
+  .verse-text.te { font-family: var(--font-te); font-size: 17px; line-height: 1.85; }
+  .verse-text.kn { font-family: var(--font-kn); font-size: 17px; line-height: 1.85; }
+  .verse-text.or { font-family: var(--font-or); font-size: 17px; line-height: 1.85; }
+  .verse-text .vline { display: block; }
+  .verse-text .vline + .vline { margin-top: 6px; }
+
+  .card-foot { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--hairline); text-align: center; font-size: 11.5px; color: var(--ink-soft); letter-spacing: 0.02em; }
+
+  /* ---------- Actions ---------- */
+  .actions { display: flex; justify-content: center; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+  button { font-family: var(--font-body); font-weight: 600; font-size: 13.5px; border: 1px solid var(--hairline-strong); background: var(--paper-raised); color: var(--ink); padding: 10px 18px; border-radius: 8px; cursor: pointer; transition: all 0.15s; }
+  button:hover { border-color: var(--accent); color: var(--accent); }
+  button.primary { background: var(--ink); color: var(--paper-raised); border-color: var(--ink); }
+  button.primary:hover { background: var(--accent); border-color: var(--accent); color: white; }
+  button:disabled { opacity: 0.6; cursor: wait; }
+
+  footer.page-footer { text-align: center; margin-top: 46px; padding-top: 18px; border-top: 1px solid var(--hairline); color: var(--ink-soft); font-size: 12px; }
+
+  .toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(10px);
+    background: var(--ink); color: var(--paper); padding: 10px 18px; border-radius: 8px;
+    font-size: 13px; font-weight: 500; opacity: 0; pointer-events: none; transition: opacity 0.25s, transform 0.25s; z-index: 100;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  @media (max-width: 480px) {
+    .wrap { padding: 28px 10px 90px; }
+    .card { padding: 18px 14px 16px; }
+    .verse-text.ta, .verse-text.hi, .verse-text.ml, .verse-text.te, .verse-text.kn, .verse-text.or { font-size: 16px; }
+  }
+
+  /* ---------- App controls (top bar + settings) ---------- */
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 14px; }
+  .topbar .backlink { margin-bottom: 0; }
+  .top-actions { display: flex; align-items: center; gap: 2px; margin-left: auto; }
+  /* Installed app: the archive is not available offline and iPhone has no back button, so hide the link. */
+  .is-app .topbar .backlink { display: none; }
+  .top-btn {
+    width: 38px; height: 38px; border-radius: 10px;
+    border: 1px solid transparent; background: transparent; color: var(--ink-soft);
+    display: flex; align-items: center; justify-content: center; padding: 0; cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+  }
+  .top-btn:hover { background: rgba(62,107,150,0.10); color: var(--app-blue); border-color: transparent; }
+  .top-btn[aria-expanded="true"] { background: rgba(62,107,150,0.14); color: var(--app-blue); border-color: rgba(62,107,150,0.35); }
+  .top-btn svg { width: 20px; height: 20px; display: block; }
+  .top-btn.spinning svg { animation: mv-spin 0.9s linear infinite; }
+  @keyframes mv-spin { to { transform: rotate(360deg); } }
+
+  .settings-panel {
+    display: none; background: var(--paper-raised); border: 1px solid var(--hairline);
+    border-radius: 14px; padding: 16px 18px 12px; margin-bottom: 18px;
+    box-shadow: 0 8px 24px -16px rgba(34,54,74,0.25);
+  }
+  .settings-panel.open { display: block; }
+  .settings-panel h2 { font-family: var(--font-display); font-size: 15px; font-weight: 700; margin: 0 0 4px; }
+  .settings-panel .hint { font-size: 12.5px; color: var(--ink-soft); margin: 0 0 12px; line-height: 1.45; }
+  .lang-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px 14px; }
+  .lang-option { display: flex; align-items: center; gap: 9px; font-size: 14px; padding: 7px 2px; cursor: pointer; color: var(--ink); }
+  .lang-option input { width: 18px; height: 18px; margin: 0; flex-shrink: 0; accent-color: var(--app-blue); cursor: pointer; }
+  .settings-foot { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--hairline); display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .foot-links { display: flex; gap: 14px; flex-wrap: wrap; }
+  .settings-panel .need-one { margin: 10px 0 0; color: var(--ink-soft); }
+  .app-version { margin: 10px 0 0; font-size: 12px; color: var(--ink-soft); text-align: center; }
+  .install-banner { display: flex; align-items: center; gap: 10px; background: var(--paper-raised); border: 1px solid var(--hairline-strong); border-radius: 14px; padding: 9px 10px 9px 12px; margin: 0 0 14px; }
+  .install-banner[hidden], .is-app .install-banner { display: none; }
+  .install-icon { border-radius: 8px; flex: none; }
+  .install-text { flex: 1; font-size: 14px; color: var(--ink); line-height: 1.3; }
+  .install-btn { background: var(--app-blue); color: var(--paper); border: none; border-radius: 10px; padding: 8px 16px; font-size: 13px; font-weight: 700; cursor: pointer; }
+  .install-btn:hover { background: var(--app-blue); border: none; color: var(--paper); filter: brightness(1.06); }
+  .install-close { background: none; border: none; color: var(--ink-soft); font-size: 16px; padding: 6px 8px; cursor: pointer; line-height: 1; }
+  .install-close:hover { background: none; border: none; color: var(--ink); }
+  .done-btn { background: var(--app-blue); color: var(--paper); border: none; border-radius: 10px; padding: 9px 24px; font-size: 14px; font-weight: 700; cursor: pointer; }
+  .done-btn:hover { background: var(--app-blue); border: none; color: var(--paper); filter: brightness(1.06); }
+  .done-btn:disabled { opacity: 0.4; cursor: default; filter: none; }
+  .link-btn { background: none; border: none; padding: 6px 2px; font-size: 13px; font-weight: 600; color: var(--app-blue); cursor: pointer; }
+  .link-btn:hover { background: none; border: none; color: var(--app-blue); text-decoration: underline; }
+
+  /* ---------- Dark theme fixes for hardcoded light colors ---------- */
+  :root[data-theme="dark"] .lang-block.nkjv, :root[data-theme="dark"] .lang-block.esv { --lang-tint-bg: rgba(201,165,126,0.16); }
+  :root[data-theme="dark"] .lang-block.ta { --lang-tint-bg: rgba(212,165,107,0.16); }
+  :root[data-theme="dark"] .lang-block.ml { --lang-tint-bg: rgba(95,184,156,0.16); }
+  :root[data-theme="dark"] .lang-block.hi { --lang-tint-bg: rgba(184,160,217,0.16); }
+  :root[data-theme="dark"] .lang-block.te { --lang-tint-bg: rgba(224,144,112,0.16); }
+  :root[data-theme="dark"] .lang-block.kn { --lang-tint-bg: rgba(127,184,204,0.16); }
+  :root[data-theme="dark"] .lang-block.or { --lang-tint-bg: rgba(212,191,94,0.16); }
+  :root[data-theme="dark"] .lang-practice-btn:hover { background: rgba(95,184,156,0.14); }
+  :root[data-theme="dark"] .lang-practice-btn.active { background: rgba(95,184,156,0.18); border-color: rgba(95,184,156,0.45); }
+  :root[data-theme="dark"] .lang-voice-btn:hover { background: rgba(201,165,126,0.14); }
+  :root[data-theme="dark"] .lang-voice-btn.active { background: rgba(201,165,126,0.18); border-color: rgba(201,165,126,0.45); }
+  :root[data-theme="dark"] .lang-share-btn:hover { background: rgba(201,165,126,0.14); }
+  :root[data-theme="dark"] .card-head .version-tag { background: rgba(201,165,126,0.14); }
+  :root[data-theme="dark"] .top-btn:hover { background: rgba(143,180,217,0.14); }
+  :root[data-theme="dark"] .top-btn[aria-expanded="true"] { background: rgba(143,180,217,0.18); border-color: rgba(143,180,217,0.4); }
+  :root[data-theme="dark"] body {
+    background-image: radial-gradient(circle at 15% 0%, rgba(143,180,217,0.05), transparent 45%);
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="install-banner" id="installBanner" hidden>
+    <img class="install-icon" src="../icons/icon-192.png" alt="" width="34" height="34">
+    <span class="install-text">Install as app on your device</span>
+    <button class="install-btn" id="installBtn" type="button">Install</button>
+    <button class="install-close" id="installClose" type="button" aria-label="Dismiss">✕</button>
+  </div>
+  <div class="topbar">
+    <a href="../index.html" class="backlink">← All weeks</a>
+    <div class="top-actions">
+      <button class="top-btn" id="refreshBtn" title="Check for new passage" aria-label="Check for new passage"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.13-9.36L23 10"></path></svg></button>
+      <button class="top-btn" id="themeBtn" title="Switch theme" aria-label="Switch between light and dark theme"></button>
+      <button class="top-btn" id="settingsBtn" title="Choose translations" aria-label="Choose which translations to show" aria-expanded="false" aria-controls="settingsPanel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></button>
+    </div>
+  </div>
+
+  <div class="settings-panel" id="settingsPanel">
+    <h2>Translations to show</h2>
+    <p class="hint">Tap Save to keep your choice on this device. Sharing includes only the translations you have selected.</p>
+    <div class="lang-options" id="langOptions"></div>
+    <p class="hint need-one" id="needOne" hidden>Select at least one translation.</p>
+    <div class="settings-foot">
+      <div class="foot-links">
+        <button class="link-btn" id="selectAllBtn" type="button">Select all</button>
+        <button class="link-btn" id="deselectAllBtn" type="button">Deselect all</button>
+      </div>
+      <button class="done-btn" id="doneBtn" type="button">Save</button>
+    </div>
+    <p class="app-version" id="appVersion"></p>
+  </div>
+
+  <header>
+    <div class="eyebrow">Scripture Memory</div>
+    <div class="dates" id="datesLabel">Jun 21–27</div>
+    <h1 id="refLabel">Romans 10:13–15</h1>
+  </header>
+
+  <div class="tabs" id="tabs"></div>
+
+  <div id="panels"></div>
+
+  <div class="actions">
+    <button class="primary" id="shareBtn">📋 Share</button>
+  </div>
+
+  <footer class="page-footer">Emmanuel Believers' Fellowship · Tenkasi, Tamil Nadu</footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   WEEKLY DATA — edit this block each week, nothing else.
+   ========================================================= */
+const WEEK = {
+  dates: "Oct 18–24",
+  ref: "2 Corinthians 5:17",
+  versions: [
+    {
+      key: "main",
+      label: "2 Corinthians 5:17",
+      ref: "2 Corinthians 5:17",
+      verses: {
+        nkjv: {
+          ref: "2 Corinthians 5:17",
+          lines: [
+            `Therefore, if anyone is in Christ, he is a new creation; old things have passed away; behold, all things have become new.`
+          ]
+        },
+        esv: {
+          ref: "2 Corinthians 5:17",
+          lines: [
+            `Therefore, if anyone is in Christ, he is a new creation. The old has passed away; behold, the new has come.`
+          ]
+        },
+        ta: {
+          ref: "2 கொரிந்தியர் 5:17",
+          lines: [
+            `இப்படியிருக்க, ஒருவன் கிறிஸ்துவுக்குள்ளிருந்தால் புதுசிருஷ்டியாயிருக்கிறான்; பழையவைகள் ஒழிந்து போயின, எல்லாம் புதிதாயின.`
+          ]
+        },
+        ml: {
+          ref: "2 കൊരിന്ത്യർ 5:17",
+          lines: [
+            `ഒരുത്തൻ ക്രിസ്തുവിലായാൽ അവൻ പുതിയ സൃഷ്ടി ആകുന്നു; പഴയത് കഴിഞ്ഞുപോയി, ഇതാ, അതു പുതുതായി തീർന്നിരിക്കുന്നു.`
+          ]
+        },
+        hi: {
+          ref: "2 कुरिन्थियों 5:17",
+          lines: [
+            `इसलिये यदि कोई मसीह में है तो वह नई सृष्‍टि है : पुरानी बातें बीत गई हैं; देखो, सब बातें नई हो गई हैं।`
+          ]
+        },
+        te: {
+          ref: "2 కొరింథీయులకు 5:17",
+          lines: [
+            `కాగా ఎవడైనను క్రీస్తునందున్నయెడల వాడు నూతన సృష్టి; పాతవి గతించెను, ఇదిగో క్రొత్త వాయెను.`
+          ]
+        },
+        kn: {
+          ref: "2 ಕೊರಿಂಥದವರಿಗೆ 5:17",
+          lines: [
+            `ಹೀಗಿರಲಾಗಿ ಯಾವನಾದರೂ ಕ್ರಿಸ್ತನಲ್ಲಿದ್ದರೆ ಅವನು ನೂತನಸೃಷ್ಟಿಯಾದನು. ಇಗೋ, ಪೂರ್ವಸ್ಥಿತಿ ಹೋಗಿ ಎಲ್ಲಾ ನೂತನವಾಯಿತು.`
+          ]
+        },
+        or: {
+          ref: "2 କରିନ୍ଥୀୟ 5:17",
+          lines: [
+            `ଏଣୁ ଯଦି କେହି ଖ୍ରୀଷ୍ଟଙ୍କଠାରେ ଅଛି, ତେବେ ସେ ନୂତନ ସୃଷ୍ଟି ହୋଇଅଛି; ପୁରାତନ ବିଷୟସବୁ ଲୋପ ପାଇଅଛି, ଦେଖ, ନୂତନ ବିଷୟସବୁ ହୋଇଅଛି।`
+          ]
+        }
+      }
+    }
+  ]
+};
+/* ========================================================= */
+
+const LANG_META = {
+  nkjv: { tag: "NKJV", cls: "nkjv en", bcp47: "en-US" },
+  esv:  { tag: "ESV",  cls: "esv en", bcp47: "en-US" },
+  ta:   { tag: "Tamil", cls: "ta", bcp47: "ta-IN" },
+  ml:   { tag: "Malayalam", cls: "ml", bcp47: "ml-IN" },
+  hi:   { tag: "Hindi", cls: "hi", bcp47: "hi-IN" },
+  te:   { tag: "Telugu", cls: "te", bcp47: "te-IN" },
+  kn:   { tag: "Kannada", cls: "kn", bcp47: "kn-IN" },
+  or:   { tag: "Odia", cls: "or", bcp47: "or-IN" }
+};
+const LANG_ORDER = ["nkjv", "esv", "ta", "ml", "hi", "te", "kn", "or"];
+
+document.getElementById('datesLabel').textContent = WEEK.dates;
+document.getElementById('refLabel').textContent = WEEK.ref;
+
+const tabsEl = document.getElementById('tabs');
+const panelsEl = document.getElementById('panels');
+
+// Coordinates voice playback so starting one language's audio stops any other currently playing.
+const activeVoiceStoppers = [];
+function stopAllVoicesExcept(exceptBtn) {
+  activeVoiceStoppers.forEach(stopFn => stopFn());
+}
+
+function buildLangBlock(langKey, lines, langRef) {
+  const meta = LANG_META[langKey];
+  const block = document.createElement('div');
+  block.className = `lang-block ${meta.cls}`;
+  block.dataset.lang = langKey;
+
+  const header = document.createElement('div');
+  header.className = 'lang-header';
+
+  const tag = document.createElement('div');
+  tag.className = 'lang-tag';
+  tag.textContent = meta.tag;
+
+  const refSpan = document.createElement('span');
+  refSpan.className = 'lang-ref';
+  refSpan.textContent = langRef;
+
+  const shareBtn = document.createElement('button');
+  shareBtn.className = 'lang-share-btn';
+  shareBtn.title = `Share ${meta.tag} only`;
+  shareBtn.setAttribute('aria-label', `Share ${meta.tag} only`);
+  shareBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="18" cy="5" r="2.7"></circle>
+    <circle cx="6" cy="12" r="2.7"></circle>
+    <circle cx="18" cy="19" r="2.7"></circle>
+    <line x1="8.4" y1="10.7" x2="15.6" y2="6.3"></line>
+    <line x1="8.4" y1="13.3" x2="15.6" y2="17.7"></line>
+  </svg>`;
+  shareBtn.addEventListener('click', () => shareSingleLanguage(langRef, meta.tag, lines));
+
+  const EYE_OPEN = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"></path>
+    <circle cx="12" cy="12" r="2.5"></circle>
+  </svg>`;
+  const EYE_CROSSED = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"></path>
+    <circle cx="12" cy="12" r="2.5"></circle>
+    <line x1="3" y1="3" x2="21" y2="21"></line>
+  </svg>`;
+
+  const practiceBtn = document.createElement('button');
+  practiceBtn.className = 'lang-practice-btn';
+  practiceBtn.title = `Practice ${meta.tag}`;
+  practiceBtn.setAttribute('aria-label', `Practice ${meta.tag} — hide some words to test memorization`);
+  practiceBtn.innerHTML = EYE_OPEN;
+
+  // Cycle: off -> A hidden -> off -> B hidden -> off -> C (all hidden) -> off -> A...
+  let practiceState = 'off'; // 'off' | 'A' | 'B' | 'C'
+  let nextPattern = 'A';
+
+  practiceBtn.addEventListener('click', () => {
+    if (practiceState === 'off') {
+      practiceState = nextPattern;
+      nextPattern = nextPattern === 'A' ? 'B' : (nextPattern === 'B' ? 'C' : 'A');
+    } else {
+      practiceState = 'off';
+    }
+
+    practiceBtn.classList.toggle('active', practiceState !== 'off');
+    practiceBtn.innerHTML = practiceState !== 'off' ? EYE_CROSSED : EYE_OPEN;
+
+    wordCounterRef.count = 0;
+    text.querySelectorAll('.vline').forEach((lineEl, lineIdx) => {
+      renderLine(lineEl, lines[lineIdx], practiceState, wordCounterRef);
+    });
+  });
+
+  const PLAY_ICON = `<svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
+    <path d="M7 5.5v13a1 1 0 0 0 1.5.87l11-6.5a1 1 0 0 0 0-1.74l-11-6.5A1 1 0 0 0 7 5.5z"></path>
+  </svg>`;
+  const STOP_ICON = `<svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
+    <rect x="6" y="6" width="12" height="12" rx="1.5"></rect>
+  </svg>`;
+
+  const voiceBtn = document.createElement('button');
+  voiceBtn.className = 'lang-voice-btn';
+  voiceBtn.innerHTML = PLAY_ICON;
+
+  const voiceSupported = ('speechSynthesis' in window);
+  let voiceForLang = null;
+
+  function findVoice() {
+    if (!voiceSupported) return null;
+    let voices = [];
+    try { voices = window.speechSynthesis.getVoices() || []; } catch (e) { return null; }
+    const exact = voices.filter(v => v.lang === meta.bcp47);
+    if (exact.length) return exact[0];
+    const base = meta.bcp47.split('-')[0];
+    const fallback = voices.filter(v => v.lang && v.lang.startsWith(base));
+    return fallback.length ? fallback[0] : null;
+  }
+
+  function refreshVoiceAvailability() {
+    voiceForLang = findVoice();
+    const available = voiceSupported && !!voiceForLang;
+    voiceBtn.classList.toggle('unavailable', !available);
+    voiceBtn.title = available
+      ? `Listen to ${meta.tag} on loop`
+      : `No voice available for ${meta.tag} on this device`;
+    voiceBtn.setAttribute('aria-label', voiceBtn.title);
+  }
+  refreshVoiceAvailability();
+  if (voiceSupported) {
+    try {
+      if (typeof window.speechSynthesis.addEventListener === 'function') {
+        window.speechSynthesis.addEventListener('voiceschanged', refreshVoiceAvailability);
+      } else {
+        // Older Safari (iOS 15 and earlier): use the old-style handler, chaining so every language block still hears it
+        const prevHandler = window.speechSynthesis.onvoiceschanged;
+        window.speechSynthesis.onvoiceschanged = function () {
+          if (typeof prevHandler === 'function') prevHandler.apply(this, arguments);
+          refreshVoiceAvailability();
+        };
+      }
+    } catch (e) { /* voice is optional: the verse text still shows */ }
+  }
+
+  let isPlaying = false;
+  function stopVoice() {
+    isPlaying = false;
+    try { window.speechSynthesis.cancel(); } catch (e) {}
+    voiceBtn.classList.remove('active');
+    voiceBtn.innerHTML = PLAY_ICON;
+  }
+
+  function playVoiceLoop() {
+    if (!isPlaying) return;
+    const fullText = lines.join(' ');
+    const utterance = new SpeechSynthesisUtterance(fullText);
+    utterance.voice = voiceForLang;
+    utterance.lang = meta.bcp47;
+    utterance.rate = 0.9;
+    utterance.onend = () => {
+      if (isPlaying) playVoiceLoop();
+    };
+    try { window.speechSynthesis.speak(utterance); } catch (e) { stopVoice(); }
+  }
+
+  voiceBtn.addEventListener('click', () => {
+    if (voiceBtn.classList.contains('unavailable')) return;
+
+    const wasPlaying = isPlaying;
+    stopAllVoicesExcept(voiceBtn);
+
+    if (wasPlaying) {
+      // it was already playing — the stop-all above already stopped it, so we're done
+      return;
+    }
+
+    isPlaying = true;
+    voiceBtn.classList.add('active');
+    voiceBtn.innerHTML = STOP_ICON;
+    playVoiceLoop();
+  });
+
+  // Register this block's stop function so other voice buttons can silence it when they start playing
+  activeVoiceStoppers.push(() => { if (isPlaying) stopVoice(); });
+
+  const iconsWrap = document.createElement('div');
+  iconsWrap.className = 'lang-icons';
+  iconsWrap.appendChild(shareBtn);
+  iconsWrap.appendChild(practiceBtn);
+  iconsWrap.appendChild(voiceBtn);
+
+  header.appendChild(tag);
+  header.appendChild(iconsWrap);
+
+  const text = document.createElement('p');
+  text.className = `verse-text ${meta.cls.split(' ')[1] || meta.cls.split(' ')[0]}`;
+
+  const wordCounterRef = { count: 0 };
+  lines.forEach(line => {
+    const span = document.createElement('span');
+    span.className = 'vline';
+    text.appendChild(span);
+    renderLine(span, line, 'off', wordCounterRef);
+  });
+
+  block.appendChild(header);
+  block.appendChild(refSpan);
+  block.appendChild(text);
+  return block;
+}
+
+// Renders a line as plain text (practiceState === 'off'), or with words blanked out per pattern.
+// Pattern A hides odd-position words, Pattern B hides even-position words, Pattern C hides all words.
+// wordCounterRef.count runs continuous across the whole verse (not reset per line), so the
+// alternation stays consistent from line to line.
+function renderLine(lineEl, lineText, practiceState, wordCounterRef) {
+  lineEl.innerHTML = '';
+  if (practiceState === 'off') {
+    lineEl.textContent = lineText;
+    return;
+  }
+  const chunks = lineText.split(' ');
+  chunks.forEach((chunk, i) => {
+    if (chunk.length === 0) return;
+    const isOddPosition = wordCounterRef.count % 2 === 1;
+    let isHidden;
+    if (practiceState === 'C') {
+      isHidden = true;
+    } else {
+      isHidden = practiceState === 'A' ? isOddPosition : !isOddPosition;
+    }
+    wordCounterRef.count++;
+
+    if (isHidden) {
+      const blank = document.createElement('span');
+      blank.className = 'word-blank';
+      blank.textContent = chunk;
+      blank.addEventListener('click', () => {
+        blank.classList.add('revealed');
+      });
+      lineEl.appendChild(blank);
+    } else {
+      lineEl.appendChild(document.createTextNode(chunk));
+    }
+
+    if (i < chunks.length - 1) {
+      lineEl.appendChild(document.createTextNode(' '));
+    }
+  });
+}
+
+function buildPanel(version, displayLabel) {
+  const panel = document.createElement('div');
+  panel.className = 'version-panel';
+  panel.dataset.key = version.key;
+
+  const card = document.createElement('div');
+  card.className = 'card';
+
+  const head = document.createElement('div');
+  head.className = 'card-head';
+  head.innerHTML = `<span class="ref">${version.ref}</span><span class="version-tag">${displayLabel}</span>`;
+  card.appendChild(head);
+
+  LANG_ORDER.forEach(langKey => {
+    if (version.verses[langKey]) {
+      const entry = version.verses[langKey];
+      const langRef = (entry && entry.ref) ? entry.ref : version.ref;
+      const langLines = (entry && entry.lines) ? entry.lines : entry;
+      try {
+        card.appendChild(buildLangBlock(langKey, langLines, langRef));
+      } catch (err) {
+        console.warn('Could not build ' + langKey + ':', err);
+        const note = document.createElement('div');
+        note.className = 'lang-block';
+        note.style.padding = '12px 0';
+        note.textContent = (LANG_META[langKey] ? LANG_META[langKey].tag : langKey) + ' is not supported on this device.';
+        card.appendChild(note);
+      }
+    }
+  });
+
+  const foot = document.createElement('div');
+  foot.className = 'card-foot';
+  foot.textContent = 'Scripture Memory — Emmanuel Believers\' Fellowship';
+  card.appendChild(foot);
+
+  panel.appendChild(card);
+  return panel;
+}
+
+// Build tabs + panels
+WEEK.versions.forEach((version, i) => {
+  const displayLabel = WEEK.versions.length === 1 ? 'Full Version' : version.label;
+
+  const tab = document.createElement('button');
+  tab.className = 'tab' + (i === 0 ? ' active' : '') + (WEEK.versions.length === 1 ? ' only' : '');
+  tab.textContent = displayLabel;
+  tab.dataset.key = version.key;
+  if (WEEK.versions.length > 1) {
+    tab.addEventListener('click', () => setActive(version.key));
+  }
+  tabsEl.appendChild(tab);
+
+  const panel = buildPanel(version, displayLabel);
+  if (i === 0) panel.classList.add('active');
+  panelsEl.appendChild(panel);
+});
+
+function setActive(key) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.key === key));
+  document.querySelectorAll('.version-panel').forEach(p => p.classList.toggle('active', p.dataset.key === key));
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+function getShareText() {
+  const activePanel = document.querySelector('.version-panel.active');
+  const activeVersion = WEEK.versions.find(v => v.key === activePanel.dataset.key);
+  const langBlocks = activePanel.querySelectorAll('.lang-block');
+  let text = activeVersion.ref + '\n\n';
+  
+  langBlocks.forEach(block => {
+    if (block.dataset.lang && !isLangVisible(block.dataset.lang)) return;
+    const langTag = block.querySelector('.lang-tag').textContent;
+    const langRefEl = block.querySelector('.lang-ref');
+    const langRef = langRefEl ? langRefEl.textContent : '';
+    const verseLines = block.querySelectorAll('.vline');
+    text += langTag + '\n';
+    if (langRef) {
+      text += langRef + '\n';
+    }
+    verseLines.forEach(line => {
+      text += line.textContent + '\n';
+    });
+    text += '\n';
+  });
+  
+  return text.trim();
+}
+
+async function shareSingleLanguage(versionRef, langTag, lines) {
+  const text = `${versionRef}\n\n${lines.join('\n')}`;
+
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: versionRef, text: text });
+      showToast('Shared!');
+      return;
+    } catch (err) {
+      if (err.name !== 'AbortError') console.error('Share failed:', err);
+      return;
+    }
+  }
+
+  try {
+    await navigator.clipboard.writeText(text);
+    showToast(`${langTag} copied to clipboard`);
+  } catch (err) {
+    showToast('Could not share — try copying manually');
+  }
+}
+
+document.getElementById('shareBtn').addEventListener('click', async () => {
+  const shareText = getShareText();
+  const btn = document.getElementById('shareBtn');
+  const activePanel = document.querySelector('.version-panel.active');
+  const activeVersion = WEEK.versions.find(v => v.key === activePanel.dataset.key);
+  
+  // Try native share first
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: activeVersion.ref,
+        text: shareText
+      });
+      showToast('Shared!');
+      return;
+    } catch (err) {
+      if (err.name !== 'AbortError') {
+        console.error('Share failed:', err);
+      }
+      // Fall through to clipboard
+    }
+  }
+  
+  // Fallback: copy to clipboard
+  try {
+    await navigator.clipboard.writeText(shareText);
+    showToast('Copied to clipboard');
+  } catch (err) {
+    showToast('Could not share — try copying manually');
+  }
+});
+
+/* =========================================================
+   APP FEATURES: theme, translation picker, refresh, offline
+   ========================================================= */
+const LS = {
+  get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+};
+
+// ----- Theme (light / dark) -----
+const themeBtn = document.getElementById('themeBtn');
+const SUN_ICON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path></svg>`;
+const MOON_ICON = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`;
+
+function currentTheme() {
+  return document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+}
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  themeBtn.innerHTML = theme === 'dark' ? SUN_ICON : MOON_ICON;
+  themeBtn.title = theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme';
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.setAttribute('content', theme === 'dark' ? '#1E2328' : '#EAF3FB');
+}
+applyTheme(currentTheme());
+themeBtn.addEventListener('click', () => {
+  const next = currentTheme() === 'dark' ? 'light' : 'dark';
+  applyTheme(next);
+  LS.set('mv-theme', next);
+});
+
+// ----- Translation picker (saved per device) -----
+const ALL_LANGS = LANG_ORDER.slice();
+function loadVisibleLangs() {
+  try {
+    const raw = LS.get('mv-langs');
+    if (raw) {
+      const valid = JSON.parse(raw).filter(k => ALL_LANGS.indexOf(k) !== -1);
+      if (valid.length) return valid;
+    }
+  } catch (e) {}
+  return ALL_LANGS.slice(); // first launch: show all
+}
+let visibleLangs = loadVisibleLangs();
+function isLangVisible(key) { return visibleLangs.indexOf(key) !== -1; }
+function applyLangVisibility() {
+  document.querySelectorAll('.lang-block').forEach(block => {
+    block.style.display = isLangVisible(block.dataset.lang) ? '' : 'none';
+  });
+}
+function saveVisibleLangs() {
+  LS.set('mv-langs', JSON.stringify(visibleLangs));
+  stopAllVoicesExcept(null); // don't keep reading a translation that was just hidden
+  applyLangVisibility();
+}
+
+const langOptionsEl = document.getElementById('langOptions');
+const settingsBtn = document.getElementById('settingsBtn');
+const settingsPanel = document.getElementById('settingsPanel');
+const doneBtn = document.getElementById('doneBtn');
+const needOneEl = document.getElementById('needOne');
+ALL_LANGS.forEach(key => {
+  const label = document.createElement('label');
+  label.className = 'lang-option';
+  const cb = document.createElement('input');
+  cb.type = 'checkbox';
+  cb.value = key;
+  cb.checked = isLangVisible(key);
+  const name = document.createElement('span');
+  name.textContent = LANG_META[key].tag;
+  label.appendChild(cb);
+  label.appendChild(name);
+  langOptionsEl.appendChild(label);
+  cb.addEventListener('change', syncPanelState);
+});
+// Ticking boxes only changes the panel. The page and the saved choice change when Save is tapped.
+function panelChecked() {
+  return Array.from(langOptionsEl.querySelectorAll('input')).filter(i => i.checked).map(i => i.value);
+}
+function syncPanelState() {
+  const none = panelChecked().length === 0;
+  doneBtn.disabled = none;   // at least one translation must stay visible
+  needOneEl.hidden = !none;
+}
+function resetPanelToSaved() {
+  langOptionsEl.querySelectorAll('input').forEach(i => { i.checked = isLangVisible(i.value); });
+  syncPanelState();
+}
+function setPanelOpen(open) {
+  if (open) resetPanelToSaved();
+  settingsPanel.classList.toggle('open', open);
+  settingsBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+function setAllPanelBoxes(on) {
+  langOptionsEl.querySelectorAll('input').forEach(i => { i.checked = on; });
+  syncPanelState();
+}
+document.getElementById('selectAllBtn').addEventListener('click', () => setAllPanelBoxes(true));
+document.getElementById('deselectAllBtn').addEventListener('click', () => setAllPanelBoxes(false));
+doneBtn.addEventListener('click', () => {
+  const checked = panelChecked();
+  if (checked.length === 0) return;
+  visibleLangs = ALL_LANGS.filter(k => checked.indexOf(k) !== -1);
+  saveVisibleLangs();
+  setPanelOpen(false);
+  showToast('Saved');
+});
+// The gear (or Escape) closes the panel without saving.
+settingsBtn.addEventListener('click', () => setPanelOpen(!settingsPanel.classList.contains('open')));
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && settingsPanel.classList.contains('open')) setPanelOpen(false);
+});
+syncPanelState();
+applyLangVisibility();
+
+// ----- "Check for new passage" -----
+const refreshBtn = document.getElementById('refreshBtn');
+// Archived weeks are copies of this file. Only the real weeks/current.html may refresh itself or be saved offline.
+const IS_CURRENT_PAGE = /\/weeks\/current\.html$/.test(location.pathname);
+// App version shown in Settings. Keep it the same as APP_VERSION in sw.js (a test checks this).
+const APP_VERSION = '1.1.1';
+document.getElementById('appVersion').textContent = 'MemoryVerse · Version ' + APP_VERSION;
+if (!IS_CURRENT_PAGE) refreshBtn.style.display = 'none';
+async function checkForNewPassage() {
+  if (!IS_CURRENT_PAGE) return;
+  if (refreshBtn.classList.contains('spinning')) return;
+  if (navigator.onLine === false) {
+    showToast("You're offline \u2014 showing the last saved passage");
+    return;
+  }
+  refreshBtn.classList.add('spinning');
+  try {
+    const pageUrl = location.href.split('#')[0].split('?')[0];
+    // the mv-refresh parameter tells the service worker to skip its cache and go to the network
+    const res = await fetch(pageUrl + '?mv-refresh=' + Date.now(), { cache: 'no-store' });
+    if (!res.ok) throw new Error('Unexpected response: ' + res.status);
+    const text = await res.text();
+    const m = text.match(/const WEEK = \{\s*dates:\s*"([^"]*)",\s*ref:\s*"([^"]*)"/);
+    if (!m) throw new Error('Unrecognized page');
+
+    if ('caches' in window) {
+      const cache = await caches.open('memoryverse-v1');
+      await cache.put(pageUrl, new Response(text, { headers: { 'Content-Type': 'text/html; charset=utf-8' } }));
+    }
+    if (m[1] !== WEEK.dates || m[2] !== WEEK.ref) {
+      showToast('New passage found: ' + m[2]);
+      setTimeout(() => location.reload(), 900);
+    } else {
+      showToast("You're up to date");
+    }
+  } catch (err) {
+    showToast("Couldn't check right now \u2014 showing the last saved passage");
+  } finally {
+    refreshBtn.classList.remove('spinning');
+  }
+}
+refreshBtn.addEventListener('click', checkForNewPassage);
+
+// ----- "Install as app" banner -----
+// Chrome only offers installing when the app is installable and not already installed, so the banner
+// appears only in those cases. Closing it hides it for 14 days. Archived copies never show it.
+const installBanner = document.getElementById('installBanner');
+const INSTALL_SNOOZE_KEY = 'mv-install-dismissed';
+const INSTALL_SNOOZE_MS = 14 * 24 * 60 * 60 * 1000;
+let installEvt = null;
+function installSnoozed() {
+  const t = Number(LS.get(INSTALL_SNOOZE_KEY));
+  return !!t && Date.now() - t < INSTALL_SNOOZE_MS;
+}
+function snoozeInstall() { LS.set(INSTALL_SNOOZE_KEY, String(Date.now())); }
+if (IS_CURRENT_PAGE) {
+  window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault();
+    installEvt = e;
+    if (!installSnoozed()) installBanner.hidden = false;
+  });
+  document.getElementById('installBtn').addEventListener('click', async () => {
+    if (!installEvt) return;
+    const evt = installEvt;
+    installEvt = null; // Chrome allows one prompt per event
+    installBanner.hidden = true;
+    try {
+      await evt.prompt();
+      const choice = await evt.userChoice;
+      if (choice && choice.outcome === 'dismissed') snoozeInstall();
+    } catch (err) {}
+  });
+  document.getElementById('installClose').addEventListener('click', () => {
+    installBanner.hidden = true;
+    snoozeInstall();
+  });
+  window.addEventListener('appinstalled', () => {
+    installEvt = null;
+    installBanner.hidden = true;
+    showToast('MemoryVerse installed');
+  });
+}
+
+// ----- Offline support -----
+if (IS_CURRENT_PAGE && 'serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('../sw.js').catch(err => console.warn('Service worker registration failed:', err));
+  });
+}
+</script>
+
+</body>
+</html>
