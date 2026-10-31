@@ -966,7 +966,7 @@ const refreshBtn = document.getElementById('refreshBtn');
 // Archived weeks are copies of this file. Only the real weeks/current.html may refresh itself or be saved offline.
 const IS_CURRENT_PAGE = /\/weeks\/current\.html$/.test(location.pathname);
 // App version shown in Settings. Keep it the same as APP_VERSION in sw.js (a test checks this).
-const APP_VERSION = '1.1.1';
+const APP_VERSION = '1.1.2';
 document.getElementById('appVersion').textContent = 'MemoryVerse · Version ' + APP_VERSION;
 if (!IS_CURRENT_PAGE) refreshBtn.style.display = 'none';
 async function checkForNewPassage() {
@@ -987,7 +987,7 @@ async function checkForNewPassage() {
     if (!m) throw new Error('Unrecognized page');
 
     if ('caches' in window) {
-      const cache = await caches.open('memoryverse-v1');
+      const cache = await caches.open('memoryverse-v' + APP_VERSION);
       await cache.put(pageUrl, new Response(text, { headers: { 'Content-Type': 'text/html; charset=utf-8' } }));
     }
     if (m[1] !== WEEK.dates || m[2] !== WEEK.ref) {
