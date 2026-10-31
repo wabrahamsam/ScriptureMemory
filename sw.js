@@ -3,7 +3,7 @@
 // Archive pages and the weeks list are deliberately not cached.
 
 // Same number as APP_VERSION in weeks/current.html. Changing it starts a fresh offline cache.
-const APP_VERSION = '1.1.1';
+const APP_VERSION = '1.1.2';
 const CACHE_NAME = 'memoryverse-v' + APP_VERSION;
 const CORE = ['./weeks/current.html'];
 const EXTRAS = [
@@ -12,6 +12,7 @@ const EXTRAS = [
   './icons/icon-512.png',
   './icons/icon-maskable-512.png'
 ];
+const CURRENT_PATH = new URL('./weeks/current.html', self.location).pathname;
 const SHELL_PATHS = CORE.concat(EXTRAS).map((p) => new URL(p, self.location).pathname);
 
 self.addEventListener('install', (event) => {
@@ -52,7 +53,14 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // The app's own files: show the saved copy instantly, refresh it quietly in the background.
+  // The weekly passage: always try the network first so a new week shows up straight away.
+  // Offline, or if the network is slow, fall back to the saved copy.
+  if (url.origin === self.location.origin && url.pathname === CURRENT_PATH) {
+    event.respondWith(networkFirstPage(event, url));
+    return;
+  }
+
+  // The other app files (manifest, icons): show the saved copy instantly, refresh it quietly in the background.
   if (url.origin === self.location.origin && SHELL_PATHS.includes(url.pathname)) {
     event.respondWith(staleWhileRevalidate(event, url));
     return;
@@ -95,4 +103,18 @@ async function staleWhileRevalidate(event, url) {
   }
   const res = await refresh;
   return res || Response.error();
+}
+
+// Network first for the weekly page. 'no-cache' makes the browser check with the server
+// instead of reusing its own copy. If the network fails or takes over 4 seconds, use the saved copy.
+async function networkFirstPage(event, url) {
+  const key = url.origin + url.pathname; // ignore any ?query so every launch maps to one saved copy
+  const cache = await caches.open(CACHE_NAME);
+  const hit = await cache.match(key);
+  const fresh = fetch(key, { cache: 'no-cache' })
+    .then((res) => { if (res && res.ok) { cache.put(key, res.clone()); return res; } throw new Error('bad response'); });
+  if (!hit) return fresh.catch(() => Response.error());
+  event.waitUntil(fresh.catch(() => {})); // let a slow download finish and update the saved copy
+  const timeout = new Promise((resolve) => setTimeout(() => resolve(hit), 4000));
+  return Promise.race([fresh.catch(() => hit), timeout]);
 }
