@@ -14,6 +14,10 @@
     document.documentElement.setAttribute('data-theme', t);
   } catch (e) {}
   try {
+    var z = localStorage.getItem('mv-size');
+    if (z === '0' || z === '1' || z === '2' || z === '3') document.documentElement.setAttribute('data-vsize', z);
+  } catch (e) {}
+  try {
     if (navigator.standalone || (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches)) { document.documentElement.classList.add('is-app'); }
   } catch (e) {}
 })();
@@ -149,7 +153,7 @@
     background: var(--lang-tint-bg, #E3EEF8);
     padding: 4px 10px; border-radius: 20px;
   }
-  .verse-text { width: 100%; font-size: 16px; line-height: 1.7; color: var(--ink); margin: 0; overflow-wrap: break-word; word-wrap: break-word; word-break: normal; }
+  .verse-text { width: 100%; font-size: calc(18px * var(--vscale, 1)); line-height: 1.7; color: var(--ink); margin: 0; overflow-wrap: break-word; word-wrap: break-word; word-break: normal; }
   .verse-text.en { hyphens: auto; -webkit-hyphens: auto; }
 
   .lang-share-btn {
@@ -219,13 +223,13 @@
   .word-blank:not(.revealed):hover {
     background: rgba(31,111,92,0.07);
   }
-  .verse-text.en { font-family: var(--font-display); font-size: 16.5px; }
-  .verse-text.ta { font-family: var(--font-ta); font-size: 17px; line-height: 1.85; }
-  .verse-text.ml { font-family: var(--font-ml); font-size: 17px; line-height: 1.9; }
-  .verse-text.hi { font-family: var(--font-hi); font-size: 17px; line-height: 1.85; }
-  .verse-text.te { font-family: var(--font-te); font-size: 17px; line-height: 1.85; }
-  .verse-text.kn { font-family: var(--font-kn); font-size: 17px; line-height: 1.85; }
-  .verse-text.or { font-family: var(--font-or); font-size: 17px; line-height: 1.85; }
+  .verse-text.en { font-family: var(--font-display); font-size: calc(18px * var(--vscale, 1)); }
+  .verse-text.ta { font-family: var(--font-ta); font-size: calc(18.5px * var(--vscale, 1)); line-height: 1.85; }
+  .verse-text.ml { font-family: var(--font-ml); font-size: calc(18.5px * var(--vscale, 1)); line-height: 1.9; }
+  .verse-text.hi { font-family: var(--font-hi); font-size: calc(18.5px * var(--vscale, 1)); line-height: 1.85; }
+  .verse-text.te { font-family: var(--font-te); font-size: calc(18.5px * var(--vscale, 1)); line-height: 1.85; }
+  .verse-text.kn { font-family: var(--font-kn); font-size: calc(18.5px * var(--vscale, 1)); line-height: 1.85; }
+  .verse-text.or { font-family: var(--font-or); font-size: calc(18.5px * var(--vscale, 1)); line-height: 1.85; }
   .verse-text .vline { display: block; }
   .verse-text .vline + .vline { margin-top: 6px; }
 
@@ -251,8 +255,12 @@
   @media (max-width: 480px) {
     .wrap { padding: 28px 10px 90px; }
     .card { padding: 18px 14px 16px; }
-    .verse-text.ta, .verse-text.hi, .verse-text.ml, .verse-text.te, .verse-text.kn, .verse-text.or { font-size: 16px; }
   }
+
+  /* ---------- Verse text size (Settings > Text size). Medium is the default. ---------- */
+  :root[data-vsize="0"] { --vscale: 0.9; }
+  :root[data-vsize="2"] { --vscale: 1.15; }
+  :root[data-vsize="3"] { --vscale: 1.3; }
 
   /* ---------- App controls (top bar + settings) ---------- */
   .topbar { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 14px; }
@@ -280,6 +288,10 @@
   .settings-panel.open { display: block; }
   .settings-panel h2 { font-family: var(--font-display); font-size: 15px; font-weight: 700; margin: 0 0 4px; }
   .settings-panel .hint { font-size: 12.5px; color: var(--ink-soft); margin: 0 0 12px; line-height: 1.45; }
+  .size-row { display: flex; align-items: center; gap: 10px; margin: 0 0 16px; padding-bottom: 14px; border-bottom: 1px solid var(--hairline); }
+  .size-btn { width: 44px; height: 40px; padding: 0; border-radius: 10px; font-size: 17px; line-height: 1; display: flex; align-items: center; justify-content: center; }
+  .size-btn:disabled { opacity: 0.35; cursor: default; }
+  .size-label { flex: 1; text-align: center; font-size: 14px; font-weight: 600; color: var(--ink); }
   .lang-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 4px 14px; }
   .lang-option { display: flex; align-items: center; gap: 9px; font-size: 14px; padding: 7px 2px; cursor: pointer; color: var(--ink); }
   .lang-option input { width: 18px; height: 18px; margin: 0; flex-shrink: 0; accent-color: var(--app-blue); cursor: pointer; }
@@ -341,6 +353,13 @@
   </div>
 
   <div class="settings-panel" id="settingsPanel">
+    <h2>Text size</h2>
+    <p class="hint">Changes the verse text right away.</p>
+    <div class="size-row">
+      <button class="size-btn" id="sizeDown" type="button" aria-label="Smaller text">A&minus;</button>
+      <span class="size-label" id="sizeLabel" aria-live="polite">Medium</span>
+      <button class="size-btn" id="sizeUp" type="button" aria-label="Larger text">A+</button>
+    </div>
     <h2>Translations to show</h2>
     <p class="hint">Tap Save to keep your choice on this device. Sharing includes only the translations you have selected.</p>
     <div class="lang-options" id="langOptions"></div>
@@ -877,6 +896,33 @@ themeBtn.addEventListener('click', () => {
   LS.set('mv-theme', next);
 });
 
+// ----- Verse text size (saved per device; 1 = Medium is the default) -----
+try {
+  const SIZE_NAMES = ['Small', 'Medium', 'Large', 'Extra large'];
+  const sizeDown = document.getElementById('sizeDown');
+  const sizeUp = document.getElementById('sizeUp');
+  const sizeLabel = document.getElementById('sizeLabel');
+  let sizeIdx = 1;
+  const savedSize = LS.get('mv-size');
+  if (savedSize === '0' || savedSize === '1' || savedSize === '2' || savedSize === '3') sizeIdx = parseInt(savedSize, 10);
+  function showSize() {
+    document.documentElement.setAttribute('data-vsize', String(sizeIdx));
+    sizeLabel.textContent = SIZE_NAMES[sizeIdx];
+    sizeDown.disabled = sizeIdx === 0;
+    sizeUp.disabled = sizeIdx === SIZE_NAMES.length - 1;
+  }
+  function changeSize(step) {
+    const next = sizeIdx + step;
+    if (next < 0 || next > SIZE_NAMES.length - 1) return;
+    sizeIdx = next;
+    LS.set('mv-size', String(sizeIdx));
+    showSize();
+  }
+  sizeDown.addEventListener('click', () => changeSize(-1));
+  sizeUp.addEventListener('click', () => changeSize(1));
+  showSize();
+} catch (e) {}
+
 // ----- Translation picker (saved per device) -----
 const ALL_LANGS = LANG_ORDER.slice();
 function loadVisibleLangs() {
@@ -966,7 +1012,7 @@ const refreshBtn = document.getElementById('refreshBtn');
 // Archived weeks are copies of this file. Only the real weeks/current.html may refresh itself or be saved offline.
 const IS_CURRENT_PAGE = /\/weeks\/current\.html$/.test(location.pathname);
 // App version shown in Settings. Keep it the same as APP_VERSION in sw.js (a test checks this).
-const APP_VERSION = '1.1.1';
+const APP_VERSION = '1.2.0';
 document.getElementById('appVersion').textContent = 'MemoryVerse · Version ' + APP_VERSION;
 if (!IS_CURRENT_PAGE) refreshBtn.style.display = 'none';
 async function checkForNewPassage() {
