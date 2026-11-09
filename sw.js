@@ -3,7 +3,7 @@
 // Archive pages and the weeks list are deliberately not cached.
 
 // Same number as APP_VERSION in weeks/current.html. Changing it starts a fresh offline cache.
-const APP_VERSION = '1.1.2';
+const APP_VERSION = '1.2.0';
 const CACHE_NAME = 'memoryverse-v' + APP_VERSION;
 const CORE = ['./weeks/current.html'];
 const EXTRAS = [
