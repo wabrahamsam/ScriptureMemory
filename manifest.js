@@ -1,10 +1,11 @@
 // This week — update this whenever you publish a new week
 const CURRENT = {
-  ref: "Galatians 5:24-25"
+  ref: "Proverbs 6:20-21"
 };
 
 // All past weeks — add to this list each week (newest at top after CURRENT)
 const WEEKS = [
+  { file: "2026-11-08.html", dates: "Nov 08–14", ref: "Galatians 5:24-25" },
   { file: "2026-11-01.html", dates: "Nov 01–07", ref: "Galatians 5:22-23" },
   { file: "2026-10-25.html", dates: "Oct 25–31", ref: "Luke 12:32-34" },
   { file: "2026-10-18.html", dates: "Oct 18–24", ref: "2 Corinthians 5:17" },
