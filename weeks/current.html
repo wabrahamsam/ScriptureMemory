@@ -389,6 +389,78 @@
   :root[data-theme="dark"] .lang-block.el { --lang-tint-bg: rgba(169,174,230,0.16); }
   .verse-text.he { font-family: var(--font-he); font-size: calc(21px * var(--vscale, 1)); line-height: 2; direction: rtl; text-align: right; }
   .verse-text.el { font-family: var(--font-el); font-size: calc(19px * var(--vscale, 1)); line-height: 1.8; }
+
+  /* ---------- My verses (installed app only) ---------- */
+  .mv-hidden { display: none !important; }
+  .mode-switch { display: flex; justify-content: center; gap: 6px; margin: 0 0 20px; }
+  .mode-btn {
+    font-family: var(--font-body); font-weight: 600; font-size: 13.5px;
+    border: 1px solid var(--hairline-strong); background: var(--paper-raised); color: var(--ink-soft);
+    padding: 9px 20px; border-radius: 20px; cursor: pointer; transition: all 0.15s;
+  }
+  .mode-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .mode-btn.active { background: var(--ink); color: var(--paper-raised); border-color: var(--ink); }
+  .mv-sub { color: var(--ink-soft); font-size: 14px; line-height: 1.5; max-width: 420px; margin: 10px auto 0; }
+  .mv-form { margin-bottom: 18px; }
+  .mv-label { display: block; font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft); margin: 0 0 6px; }
+  .mv-input, .mv-textarea {
+    display: block; width: 100%; font-family: system-ui, -apple-system, sans-serif; font-size: 16px; line-height: 1.5;
+    color: var(--ink); background: var(--paper); border: 1px solid var(--hairline-strong); border-radius: 10px; padding: 10px 12px;
+  }
+  .mv-textarea { min-height: 130px; resize: vertical; }
+  .mv-input:focus, .mv-textarea:focus { outline: none; border-color: var(--accent); }
+  .mv-msg { margin: 0; font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); }
+  .mv-msg.mv-warn { color: var(--tint-te); font-weight: 600; }
+  .mv-note { margin: 12px 0 0; font-size: 12.5px; line-height: 1.5; color: var(--ink-soft); }
+  .mv-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+  .mv-save:disabled { cursor: default; opacity: 0.4; }
+  .mv-list { display: flex; flex-direction: column; gap: 10px; }
+  .mv-row {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%; text-align: left;
+    background: var(--paper-raised); border: 1px solid var(--hairline); border-radius: 10px; padding: 14px 18px; color: var(--ink); font-weight: 400;
+  }
+  .mv-row:hover { border-color: var(--accent); color: var(--ink); }
+  .mv-row-main { display: block; min-width: 0; }
+  .mv-row-ref { display: block; font-family: var(--font-display); font-weight: 600; font-size: 16px; overflow-wrap: anywhere; }
+  .mv-row-chev { color: var(--ink-soft); font-size: 14px; flex: none; }
+  .mv-back { margin: 0 0 14px; padding-left: 0; }
+  .mv-del { color: var(--ink-soft); }
+  .mv-del.armed { color: #B3412F; border-color: #B3412F; }
+  :root[data-theme="dark"] .mv-del.armed { color: #E58A78; border-color: #E58A78; }
+
+  /* Hebrew and Greek for My verses */
+  :root { --tint-he: #A24F7A; --tint-el: #5A5FA6; --font-he: 'Noto Serif Hebrew', 'SBL Hebrew', 'Times New Roman', serif; --font-el: 'Noto Serif', 'Source Serif 4', Georgia, serif; }
+  :root[data-theme="dark"] { --tint-he: #D98FB8; --tint-el: #A9AEE6; }
+  .lang-block.he { --lang-tint: var(--tint-he); --lang-tint-bg: #F3E6EE; }
+  .lang-block.el { --lang-tint: var(--tint-el); --lang-tint-bg: #E6E7F3; }
+  :root[data-theme="dark"] .lang-block.he { --lang-tint-bg: rgba(217,143,184,0.16); }
+  :root[data-theme="dark"] .lang-block.el { --lang-tint-bg: rgba(169,174,230,0.16); }
+  .verse-text.he { font-family: var(--font-he); font-size: calc(21px * var(--vscale, 1)); line-height: 2; direction: rtl; text-align: right; }
+  .verse-text.el { font-family: var(--font-el); font-size: calc(19px * var(--vscale, 1)); line-height: 1.8; }
+
+  /* ---- 1.4.0 additions ---- */
+  .mv-form-title { font-family: var(--font-display); font-size: 18px; font-weight: 700; margin: 0 0 14px; }
+  .mv-gap { margin-top: 14px; }
+  .mv-form .lang-option { padding: 10px 2px 2px; }
+  .mv-list { padding-bottom: 96px; }
+  .mv-fab {
+    position: fixed; z-index: 20; width: 56px; height: 56px; padding: 0; border-radius: 50%;
+    right: max(18px, calc((100vw - 640px) / 2 + 18px)); bottom: calc(22px + env(safe-area-inset-bottom, 0px));
+    display: flex; align-items: center; justify-content: center;
+    background: var(--app-blue); color: var(--paper); border: none; box-shadow: 0 6px 18px -4px rgba(34,54,74,0.45);
+  }
+  .mv-fab:hover { background: var(--app-blue); color: var(--paper); border: none; filter: brightness(1.08); }
+  .mv-fab svg { width: 26px; height: 26px; }
+  .settings-extra { margin-top: 6px; padding-top: 14px; border-top: 1px solid var(--hairline); }
+  .prev-link { display: inline-block; margin: 0 0 10px; font-size: 14px; font-weight: 700; color: var(--app-blue); text-decoration: none; }
+  .prev-link:hover { text-decoration: underline; }
+  .backup-row { display: flex; gap: 10px; flex-wrap: wrap; margin: 0 0 8px; }
+  /* Languages beyond the weekly ones: neutral tint and the phone's own fonts */
+  :root { --tint-x: #5E6B7A; }
+  :root[data-theme="dark"] { --tint-x: #A9B4C2; }
+  .lang-block.mv-x { --lang-tint: var(--tint-x); --lang-tint-bg: #E8ECF0; }
+  :root[data-theme="dark"] .lang-block.mv-x { --lang-tint-bg: rgba(169,180,194,0.16); }
+  .verse-text.mv-x { font-family: system-ui, -apple-system, 'Noto Sans', sans-serif; line-height: 1.9; }
 </style>
 </head>
 <body>
@@ -417,6 +489,7 @@
       <span class="size-label" id="sizeLabel" aria-live="polite">Medium</span>
       <button class="size-btn" id="sizeUp" type="button" aria-label="Larger text">A+</button>
     </div>
+    <div id="weekSettings">
     <h2>Translations to show</h2>
     <p class="hint">Tap Save to keep your choice on this device. Sharing includes only the translations you have selected.</p>
     <div class="lang-options" id="langOptions"></div>
@@ -427,6 +500,21 @@
         <button class="link-btn" id="deselectAllBtn" type="button">Deselect all</button>
       </div>
       <button class="done-btn" id="doneBtn" type="button">Save</button>
+    </div>
+    </div>
+    <div id="prevWeeksBox" class="settings-extra mv-hidden">
+      <h2>Previous weeks</h2>
+      <p class="hint">Needs an internet connection. Past weeks are not saved on this device.</p>
+      <a class="prev-link" id="prevWeeksLink" href="../index.html">Open previous weeks &rarr;</a>
+    </div>
+    <div id="mineSettings" class="settings-extra mv-hidden">
+      <h2>Back up My Verses</h2>
+      <p class="hint">Your verses live only on this device. Save a backup file in case the app's data is ever cleared.</p>
+      <div class="backup-row">
+        <button type="button" id="backupBtn">Back up</button>
+        <button type="button" id="restoreBtn">Restore</button>
+      </div>
+      <input type="file" id="restoreFile" class="mv-hidden" accept=".json,application/json,text/plain">
     </div>
     <p class="app-version" id="appVersion"></p>
   </div>
@@ -545,10 +633,6 @@ const LANG_META = {
   or:   { tag: "Odia", cls: "or", bcp47: "or-IN" }
 };
 const LANG_ORDER = ["nkjv", "esv", "ta", "ml", "hi", "te", "kn", "or"];
-// Extra languages used only by "My verses". They are not part of the weekly passage or the translation picker.
-LANG_META.en = { tag: "English", cls: "esv en", bcp47: "en-US" };
-LANG_META.he = { tag: "Hebrew", cls: "he", bcp47: "he-IL" };
-LANG_META.el = { tag: "Greek", cls: "el", bcp47: "el-GR" };
 
 document.getElementById('datesLabel').textContent = WEEK.dates;
 document.getElementById('refLabel').textContent = WEEK.ref;
@@ -564,6 +648,8 @@ function stopAllVoicesExcept(exceptBtn) {
 
 function buildLangBlock(langKey, lines, langRef, opts) {
   const meta = (opts && opts.tag) ? Object.assign({}, LANG_META[langKey], { tag: opts.tag }) : LANG_META[langKey];
+  // Only "My Verses" passes opts. With no opts everything below behaves exactly as before.
+  const segFlags = lines.map(l => !!(opts && opts.segment) && needsSegmentation(l));
   const block = document.createElement('div');
   block.className = `lang-block ${meta.cls}`;
   block.dataset.lang = langKey;
@@ -625,7 +711,7 @@ function buildLangBlock(langKey, lines, langRef, opts) {
 
     wordCounterRef.count = 0;
     text.querySelectorAll('.vline').forEach((lineEl, lineIdx) => {
-      renderLine(lineEl, lines[lineIdx], practiceState, wordCounterRef);
+      renderLine(lineEl, lines[lineIdx], practiceState, wordCounterRef, segFlags[lineIdx]);
     });
   });
 
@@ -644,7 +730,7 @@ function buildLangBlock(langKey, lines, langRef, opts) {
   let voiceForLang = null;
 
   function findVoice() {
-    if (!voiceSupported) return null;
+    if (!voiceSupported || !meta.bcp47) return null;
     let voices = [];
     try { voices = window.speechSynthesis.getVoices() || []; } catch (e) { return null; }
     const exact = voices.filter(v => v.lang === meta.bcp47);
@@ -662,6 +748,7 @@ function buildLangBlock(langKey, lines, langRef, opts) {
       ? `Listen to ${meta.tag} on loop`
       : `No voice available for ${meta.tag} on this device`;
     voiceBtn.setAttribute('aria-label', voiceBtn.title);
+    if (opts && opts.hideVoiceIfNone) voiceBtn.style.display = available ? '' : 'none';
   }
   refreshVoiceAvailability();
   if (voiceSupported) {
@@ -693,6 +780,7 @@ function buildLangBlock(langKey, lines, langRef, opts) {
     lines.forEach(line => {
       const words = line.split(' ');
       words.forEach(w => {
+        while (w.length > MAX) { if (cur) { out.push(cur); cur = ''; } out.push(w.slice(0, MAX)); w = w.slice(MAX); }
         if (cur && (cur.length + 1 + w.length) > MAX) { out.push(cur); cur = ''; }
         cur = cur ? cur + ' ' + w : w;
       });
@@ -762,6 +850,7 @@ function buildLangBlock(langKey, lines, langRef, opts) {
   lines.forEach(line => {
     const span = document.createElement('span');
     span.className = 'vline';
+    if (opts && opts.autoDir) span.setAttribute('dir', 'auto');
     text.appendChild(span);
     renderLine(span, line, 'off', wordCounterRef);
   });
@@ -776,12 +865,13 @@ function buildLangBlock(langKey, lines, langRef, opts) {
 // Pattern A hides odd-position words, Pattern B hides even-position words, Pattern C hides all words.
 // wordCounterRef.count runs continuous across the whole verse (not reset per line), so the
 // alternation stays consistent from line to line.
-function renderLine(lineEl, lineText, practiceState, wordCounterRef) {
+function renderLine(lineEl, lineText, practiceState, wordCounterRef, seg) {
   lineEl.innerHTML = '';
   if (practiceState === 'off') {
     lineEl.textContent = lineText;
     return;
   }
+  if (seg) { renderSegmented(lineEl, lineText, practiceState, wordCounterRef); return; }
   const chunks = lineText.split(' ');
   chunks.forEach((chunk, i) => {
     if (chunk.length === 0) return;
@@ -808,6 +898,60 @@ function renderLine(lineEl, lineText, practiceState, wordCounterRef) {
 
     if (i < chunks.length - 1) {
       lineEl.appendChild(document.createTextNode(' '));
+    }
+  });
+}
+
+// Text without spaces between words (Chinese, Japanese, Thai, Tibetan...) is cut into words by the phone's own
+// word splitter when it has one, otherwise into short runs of characters, so the practice game still works.
+function needsSegmentation(line) {
+  if (!line || line.length < 25) return false;
+  let spaces = 0;
+  for (let i = 0; i < line.length; i++) { if (line.charCodeAt(i) === 32) spaces++; }
+  return (line.length / (spaces + 1)) > 14;
+}
+function segmentTokens(line) {
+  const out = [];
+  try {
+    if (typeof Intl !== 'undefined' && typeof Intl.Segmenter === 'function') {
+      const it = new Intl.Segmenter(undefined, { granularity: 'word' }).segment(line);
+      let words = 0;
+      for (const s of it) { out.push({ t: s.segment, w: !!s.isWordLike }); if (s.isWordLike) words++; }
+      if (words >= line.length / 10) return out;
+    }
+  } catch (e) { /* fall through to the simple method */ }
+  const res = [];
+  line.split(/(\s+)/).forEach(p => {
+    if (!p) return;
+    if (/^\s+$/.test(p)) { res.push({ t: p, w: false }); return; }
+    const m = p.match(/[^\u0F0B\u0F0D]+[\u0F0B\u0F0D]*|[\u0F0B\u0F0D]+/g) || [p]; // Tibetan syllables end with a tsheg
+    m.forEach(piece => {
+      const cps = Array.from(piece);
+      if (cps.length <= 4) res.push({ t: piece, w: true });
+      else for (let i = 0; i < cps.length; i += 3) res.push({ t: cps.slice(i, i + 3).join(''), w: true });
+    });
+  });
+  return res;
+}
+function renderSegmented(lineEl, lineText, practiceState, wordCounterRef) {
+  segmentTokens(lineText).forEach(tok => {
+    if (!tok.w) { lineEl.appendChild(document.createTextNode(tok.t)); return; }
+    const isOddPosition = wordCounterRef.count % 2 === 1;
+    let isHidden;
+    if (practiceState === 'C') {
+      isHidden = true;
+    } else {
+      isHidden = practiceState === 'A' ? isOddPosition : !isOddPosition;
+    }
+    wordCounterRef.count++;
+    if (isHidden) {
+      const blank = document.createElement('span');
+      blank.className = 'word-blank';
+      blank.textContent = tok.t;
+      blank.addEventListener('click', () => { blank.classList.add('revealed'); });
+      lineEl.appendChild(blank);
+    } else {
+      lineEl.appendChild(document.createTextNode(tok.t));
     }
   });
 }
@@ -1108,7 +1252,7 @@ const refreshBtn = document.getElementById('refreshBtn');
 // Archived weeks are copies of this file. Only the real weeks/current.html may refresh itself or be saved offline.
 const IS_CURRENT_PAGE = /\/weeks\/current\.html$/.test(location.pathname);
 // App version shown in Settings. Keep it the same as APP_VERSION in sw.js (a test checks this).
-const APP_VERSION = '1.3.0';
+const APP_VERSION = '1.4.0';
 document.getElementById('appVersion').textContent = 'MemoryVerse · Version ' + APP_VERSION;
 if (!IS_CURRENT_PAGE) refreshBtn.style.display = 'none';
 async function checkForNewPassage() {
@@ -1194,6 +1338,27 @@ if (IS_CURRENT_PAGE && 'serviceWorker' in navigator) {
 }
 
 /* =========================================================
+   PREVIOUS WEEKS link (installed app only, This week tab only).
+   The all-weeks page and archive pages are never saved offline: they load from the internet.
+   ========================================================= */
+try {
+(function () {
+  var box = document.getElementById('prevWeeksBox');
+  var link = document.getElementById('prevWeeksLink');
+  if (!box || !link) return;
+  if (!IS_CURRENT_PAGE || !document.documentElement.classList.contains('is-app')) return;
+  link.addEventListener('click', function (e) {
+    if (navigator.onLine === false) {
+      e.preventDefault();
+      showToast("You're offline. Previous weeks need internet.");
+    }
+  });
+  box.dataset.on = '1';
+  box.classList.remove('mv-hidden');
+})();
+} catch (err) { console.warn('Previous weeks link is unavailable:', err); }
+
+/* =========================================================
    MY VERSES (installed app only): paste your own verse, saved on this device.
    Built inside a safety net: if anything here fails, the weekly passage still works
    and the "My verses" switch simply stays hidden.
@@ -1203,31 +1368,52 @@ try {
   var modeSwitch = document.getElementById('modeSwitch');
   var weekView = document.getElementById('weekView');
   var mineView = document.getElementById('mineView');
-  if (!modeSwitch || !weekView || !mineView) return;
+  var weekSettings = document.getElementById('weekSettings');
+  var prevBox = document.getElementById('prevWeeksBox');
+  var mineSettings = document.getElementById('mineSettings');
+  var backupBtn = document.getElementById('backupBtn');
+  var restoreBtn = document.getElementById('restoreBtn');
+  var restoreFile = document.getElementById('restoreFile');
+  if (!modeSwitch || !weekView || !mineView || !weekSettings || !mineSettings || !backupBtn || !restoreBtn || !restoreFile) return;
   if (!IS_CURRENT_PAGE || !document.documentElement.classList.contains('is-app')) return;
 
   var STORE_KEY = 'mv-custom';
   var MAX_VERSES = 20;
-  var MAX_CHARS = 40000; // room for a whole long psalm in any supported language
+  var MAX_CHARS = 40000; // room for a whole long psalm in any language
   var MAX_REF = 60;
 
+  // Scripts we recognise, only to pick a font style and a voice. Any text can be saved.
   var SCRIPTS = [
-    { key: 'en', name: 'English', r: [[0x41, 0x5A], [0x61, 0x7A], [0xC0, 0xD6], [0xD8, 0xF6], [0xF8, 0x24F]] },
-    { key: 'he', name: 'Hebrew', r: [[0x0590, 0x05FF], [0xFB1D, 0xFB4F]] },
-    { key: 'el', name: 'Greek', r: [[0x0370, 0x03FF], [0x1F00, 0x1FFF]] },
-    { key: 'ta', name: 'Tamil', r: [[0x0B80, 0x0BFF]] },
-    { key: 'ml', name: 'Malayalam', r: [[0x0D00, 0x0D7F]] },
-    { key: 'hi', name: 'Hindi (Devanagari)', r: [[0x0900, 0x097F]] },
-    { key: 'te', name: 'Telugu', r: [[0x0C00, 0x0C7F]] },
-    { key: 'kn', name: 'Kannada', r: [[0x0C80, 0x0CFF]] },
-    { key: 'or', name: 'Odia', r: [[0x0B00, 0x0B7F]] }
+    { key: 'en', cls: 'esv en', voice: 'en-US', r: [[0x41, 0x5A], [0x61, 0x7A], [0xC0, 0xD6], [0xD8, 0xF6], [0xF8, 0x24F]] },
+    { key: 'he', cls: 'he', voice: 'he-IL', r: [[0x0590, 0x05FF], [0xFB1D, 0xFB4F]] },
+    { key: 'el', cls: 'el', voice: 'el-GR', r: [[0x0370, 0x03FF], [0x1F00, 0x1FFF]] },
+    { key: 'ta', cls: 'ta', voice: 'ta-IN', r: [[0x0B80, 0x0BFF]] },
+    { key: 'ml', cls: 'ml', voice: 'ml-IN', r: [[0x0D00, 0x0D7F]] },
+    { key: 'hi', cls: 'hi', voice: 'hi-IN', r: [[0x0900, 0x097F]] },
+    { key: 'te', cls: 'te', voice: 'te-IN', r: [[0x0C00, 0x0C7F]] },
+    { key: 'kn', cls: 'kn', voice: 'kn-IN', r: [[0x0C80, 0x0CFF]] },
+    { key: 'or', cls: 'or', voice: 'or-IN', r: [[0x0B00, 0x0B7F]] },
+    { key: 'gu', cls: 'gu', voice: 'gu-IN', r: [[0x0A80, 0x0AFF]] },
+    { key: 'bn', cls: 'bn', voice: 'bn-IN', r: [[0x0980, 0x09FF]] },
+    { key: 'pa', cls: 'pa', voice: 'pa-IN', r: [[0x0A00, 0x0A7F]] },
+    { key: 'bo', cls: 'bo', voice: 'bo', r: [[0x0F00, 0x0FFF]] },
+    { key: 'ar', cls: 'ar', voice: 'ar-SA', r: [[0x0600, 0x06FF], [0x0750, 0x077F], [0x08A0, 0x08FF], [0xFB50, 0xFDFF], [0xFE70, 0xFEFF]] },
+    { key: 'ru', cls: 'ru', voice: 'ru-RU', r: [[0x0400, 0x052F]] },
+    { key: 'th', cls: 'th', voice: 'th-TH', r: [[0x0E00, 0x0E7F]] },
+    { key: 'zh', cls: 'zh', voice: 'zh-CN', r: [[0x3400, 0x4DBF], [0x4E00, 0x9FFF]] },
+    { key: 'ja', cls: 'ja', voice: 'ja-JP', r: [[0x3040, 0x30FF]] },
+    { key: 'ko', cls: 'ko', voice: 'ko-KR', r: [[0x1100, 0x11FF], [0xAC00, 0xD7AF]] },
+    { key: 'si', cls: 'si', voice: 'si-LK', r: [[0x0D80, 0x0DFF]] }
   ];
-  function scriptByKey(k) {
-    for (var i = 0; i < SCRIPTS.length; i++) { if (SCRIPTS[i].key === k) return SCRIPTS[i]; }
-    return null;
-  }
+  var VALID = { other: true };
+  SCRIPTS.forEach(function (s) {
+    VALID[s.key] = true;
+    if (!LANG_META[s.key]) LANG_META[s.key] = { tag: 'My verse', cls: s.cls, bcp47: s.voice };
+  });
+  LANG_META.other = { tag: 'My verse', cls: 'other', bcp47: '' };
+  var OWN_STYLE = { en: 1, he: 1, el: 1, ta: 1, ml: 1, hi: 1, te: 1, kn: 1, or: 1 };
 
-  // Digits: ASCII plus the digit sets of the six scripts (for verse numbers at the start of a line)
+  // Digits: ASCII, superscripts, and the digit sets of the Indic scripts (for verse numbers at the start of a line)
   var DIGITS = '0-9\\u00B2\\u00B3\\u00B9\\u2070-\\u2079\\u0966-\\u096F\\u0B66-\\u0B6F\\u0BE6-\\u0BEF\\u0C66-\\u0C6F\\u0CE6-\\u0CEF\\u0D66-\\u0D6F';
   var NUM_LEAD = new RegExp('^[\\[(]?[' + DIGITS + ']{1,3}[\\])]?[.:)]?\\s+');
   var SUP_LEAD = /^[\u00B2\u00B3\u00B9\u2070-\u2079]{1,3}\s*/;
@@ -1264,65 +1450,76 @@ try {
     return { lines: lines, hasNums: hasNums, chars: chars };
   }
 
-  // Which supported script is this? Counts letters by Unicode block.
+  // Picks the script used most, to choose a font style and a voice. Never rejects anything.
   function detectLang(lines) {
-    var text = lines.join(' ');
-    var counts = {}, k, i, j, c, r, hit, other = 0, known = 0;
-    for (k = 0; k < SCRIPTS.length; k++) counts[SCRIPTS[k].key] = 0;
+    var text = lines.join(' '), counts = {}, i, j, r, c, hit, best = null, bestN = 0;
+    for (j = 0; j < SCRIPTS.length; j++) counts[SCRIPTS[j].key] = 0;
     for (i = 0; i < text.length; i++) {
       c = text.charCodeAt(i);
       if (c === 0x0964 || c === 0x0965) continue;   // danda marks are shared between scripts
-      if (c >= 0x0300 && c <= 0x036F) continue;      // combining accents (polytonic Greek can use these)
+      if (c >= 0x0300 && c <= 0x036F) continue;      // combining accents
       hit = false;
       for (j = 0; j < SCRIPTS.length && !hit; j++) {
         for (r = 0; r < SCRIPTS[j].r.length; r++) {
-          if (c >= SCRIPTS[j].r[r][0] && c <= SCRIPTS[j].r[r][1]) { counts[SCRIPTS[j].key]++; known++; hit = true; break; }
+          if (c >= SCRIPTS[j].r[r][0] && c <= SCRIPTS[j].r[r][1]) { counts[SCRIPTS[j].key]++; hit = true; break; }
         }
       }
-      if (hit) continue;
-      if ((c >= 0x250 && c < 0x2000) || (c >= 0x3040 && c < 0xD800)) other++; // Arabic, Cyrillic, Chinese, other scripts
     }
-    var UNSUPPORTED = 'This language is not supported yet. Supported: English, Hebrew, Greek, Tamil, Malayalam, Hindi, Telugu, Kannada and Odia.';
-    if (!known || known / (known + other) < 0.5) return { ok: false, message: UNSUPPORTED };
-    var best = null;
-    for (k = 0; k < SCRIPTS.length; k++) { if (!best || counts[SCRIPTS[k].key] > counts[best.key]) best = SCRIPTS[k]; }
-    if (counts[best.key] / known < 0.85) {
-      return { ok: false, message: 'This mixes more than one language. Please paste one language at a time.' };
+    for (j = 0; j < SCRIPTS.length; j++) { if (counts[SCRIPTS[j].key] > bestN) { best = SCRIPTS[j].key; bestN = counts[SCRIPTS[j].key]; } }
+    if (best === 'zh' && counts.ja > 0) best = 'ja'; // Japanese uses Chinese characters plus kana
+    return best || 'other';
+  }
+
+  function newId() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+
+  // Checks a list of verses read from storage or from a backup file. Bad entries are dropped.
+  function cleanItems(arr) {
+    var out = [], i, j, it, lines, chars;
+    if (!Array.isArray(arr)) return out;
+    for (i = 0; i < arr.length; i++) {
+      it = arr[i];
+      if (!it || typeof it.ref !== 'string' || !it.ref || !Array.isArray(it.lines)) continue;
+      lines = []; chars = 0;
+      for (j = 0; j < it.lines.length; j++) {
+        if (typeof it.lines[j] === 'string' && it.lines[j]) { lines.push(it.lines[j]); chars += it.lines[j].length; }
+      }
+      if (!lines.length || chars > MAX_CHARS) continue;
+      out.push({
+        id: (typeof it.id === 'string' && it.id) ? it.id : newId(),
+        ref: it.ref.slice(0, 120),
+        lang: (typeof it.lang === 'string' && VALID[it.lang]) ? it.lang : detectLang(lines),
+        lines: lines,
+        added: Number(it.added) || 0
+      });
     }
-    return { ok: true, lang: best.key, name: best.name };
+    return out;
   }
 
   // ----- Storage (this device only) -----
   function loadStore() {
-    var out = [];
     try {
       var raw = localStorage.getItem(STORE_KEY);
-      if (!raw) return out;
+      if (!raw) return [];
       var data = JSON.parse(raw);
-      var arr = data && data.items;
-      if (!Array.isArray(arr)) return out;
-      for (var i = 0; i < arr.length && out.length < MAX_VERSES; i++) {
-        var it = arr[i];
-        if (!it || typeof it.id !== 'string' || typeof it.ref !== 'string' || !scriptByKey(it.lang) || !Array.isArray(it.lines)) continue;
-        var lines = [];
-        for (var j = 0; j < it.lines.length; j++) { if (typeof it.lines[j] === 'string' && it.lines[j]) lines.push(it.lines[j]); }
-        if (!lines.length) continue;
-        out.push({ id: it.id, ref: it.ref, lang: it.lang, lines: lines, added: Number(it.added) || 0 });
-      }
+      return cleanItems(data && data.items).slice(0, MAX_VERSES);
     } catch (e) { return []; }
-    return out;
+  }
+  function askForSafeStorage() {
+    try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch (e) {}
   }
   function saveStore(list) {
     try {
       localStorage.setItem(STORE_KEY, JSON.stringify({ v: 1, items: list }));
+      askForSafeStorage();
       return true;
     } catch (e) { return false; }
   }
 
   var items = loadStore();
-  var view = { name: 'list', id: null };
-  var addOpen = false;
   var draft = { text: '', ref: '', strip: true };
+  var cur = { mv: 'week', d: 0 };   // where we are: week | list | detail | form, and how many history steps deep
+  var histOK = true;
+  var busy = false;
 
   function el(tag, cls, text) {
     var e = document.createElement(tag);
@@ -1330,20 +1527,77 @@ try {
     if (text != null) e.textContent = text;
     return e;
   }
-  function plural(n, word) { return n + ' ' + word + (n === 1 ? '' : 's'); }
-  function newId() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
-  function fallbackRef(lines) { return lines[0].split(' ').slice(0, 3).join(' ') + '\u2026'; }
+  function findItem(id) {
+    for (var i = 0; i < items.length; i++) { if (items[i].id === id) return items[i]; }
+    return null;
+  }
 
-  // ----- Add form -----
-  function buildForm(showCancel) {
+  // ----- Navigation: the phone's Back button steps verse -> My Verses -> This week -----
+  try { history.replaceState({ mv: 'week', d: 0 }, ''); } catch (e) { histOK = false; }
+  function pushOrApply(st) {
+    if (histOK) { try { history.pushState(st, ''); } catch (e) { histOK = false; } }
+    applyState(st);
+  }
+  function goBack(fallback) {
+    if (busy) return;
+    busy = true;
+    setTimeout(function () { busy = false; }, 500);
+    if (histOK && cur.d > 0) { try { history.back(); return; } catch (e) {} }
+    applyState(fallback);
+  }
+  window.addEventListener('popstate', function (e) {
+    busy = false;
+    var st = e.state;
+    if (!st || !st.mv) st = { mv: 'week', d: 0 };
+    applyState(st);
+  });
+
+  var modeBtns = modeSwitch.querySelectorAll('.mode-btn');
+  function applyState(st) {
+    cur = st;
+    var mine = st.mv !== 'week';
+    weekView.classList.toggle('mv-hidden', mine);
+    mineView.classList.toggle('mv-hidden', !mine);
+    weekSettings.classList.toggle('mv-hidden', mine);
+    mineSettings.classList.toggle('mv-hidden', !mine);
+    if (prevBox && prevBox.dataset.on) prevBox.classList.toggle('mv-hidden', mine);
+    Array.prototype.forEach.call(modeBtns, function (b) {
+      var on = b.getAttribute('data-mode') === (mine ? 'mine' : 'week');
+      b.classList.toggle('active', on);
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+    try { stopAllVoicesExcept(null); } catch (e) {}
+    if (mine) {
+      try { render(); } catch (err) {
+        console.warn('My verses failed:', err);
+        mineView.textContent = 'My Verses could not open on this device.';
+      }
+    }
+    try { window.scrollTo(0, 0); } catch (e) {}
+  }
+
+  // ----- Add / edit form -----
+  function buildForm(editItem) {
     var card = el('div', 'card mv-form');
+    card.appendChild(el('h2', 'mv-form-title', editItem ? 'Edit verse' : 'Add a verse'));
 
-    var l1 = el('label', 'mv-label', 'Paste your verse');
-    l1.setAttribute('for', 'mvText');
+    var l1 = el('label', 'mv-label', 'Reference (the title)');
+    l1.setAttribute('for', 'mvRef');
+    var ref = el('input', 'mv-input');
+    ref.id = 'mvRef';
+    ref.type = 'text';
+    ref.maxLength = MAX_REF;
+    ref.placeholder = 'e.g. John 3:16';
+    ref.value = editItem ? editItem.ref : draft.ref;
+    ref.setAttribute('autocomplete', 'off');
+    ref.setAttribute('dir', 'auto');
+
+    var l2 = el('label', 'mv-label mv-gap', 'Verse');
+    l2.setAttribute('for', 'mvText');
     var ta = el('textarea', 'mv-textarea');
     ta.id = 'mvText';
     ta.rows = 6;
-    ta.value = draft.text;
+    ta.value = editItem ? editItem.lines.join('\n') : draft.text;
     ta.placeholder = 'Tap and hold here, then choose Paste';
     ta.setAttribute('autocomplete', 'off');
     ta.setAttribute('autocorrect', 'off');
@@ -1358,150 +1612,123 @@ try {
     numRow.appendChild(cb);
     numRow.appendChild(el('span', '', 'Remove verse numbers at the start of lines'));
 
-    var preview = el('div', 'mv-preview');
-
-    var field = el('div', 'mv-field');
-    var l2 = el('label', 'mv-label', 'Reference (optional)');
-    l2.setAttribute('for', 'mvRef');
-    var ref = el('input', 'mv-input');
-    ref.id = 'mvRef';
-    ref.type = 'text';
-    ref.maxLength = MAX_REF;
-    ref.placeholder = 'e.g. John 3:16';
-    ref.value = draft.ref;
-    ref.setAttribute('autocomplete', 'off');
-    ref.setAttribute('dir', 'auto');
-    field.appendChild(l2);
-    field.appendChild(ref);
-
+    var msg = el('p', 'mv-msg mv-warn mv-hidden');
     var note = el('p', 'mv-note', 'Saved only on this device. Please check the wording against your Bible; this verse is not checked by the fellowship.');
 
     var actions = el('div', 'mv-actions');
     var save = el('button', 'primary mv-save', 'Save');
     save.type = 'button';
     save.disabled = true;
+    var cancel = el('button', '', 'Cancel');
+    cancel.type = 'button';
     actions.appendChild(save);
-    if (showCancel) {
-      var cancel = el('button', '', 'Cancel');
-      cancel.type = 'button';
-      cancel.addEventListener('click', function () { addOpen = false; render(); });
-      actions.appendChild(cancel);
-    }
+    if (editItem || items.length > 0) actions.appendChild(cancel);
+    cancel.addEventListener('click', function () {
+      goBack(editItem ? { mv: 'detail', id: editItem.id, d: 2 } : { mv: 'list', d: 1 });
+    });
 
-    var current = null;
+    var current = null, timer = null;
     function update() {
-      draft.text = ta.value;
-      draft.ref = ref.value;
-      draft.strip = cb.checked;
-      preview.innerHTML = '';
-      current = null;
-      save.disabled = true;
+      if (!editItem) { draft.text = ta.value; draft.ref = ref.value; draft.strip = cb.checked; }
       var res = parseVerse(ta.value, cb.checked);
       numRow.classList.toggle('mv-hidden', !res.hasNums);
-      if (!res.lines.length) {
-        preview.appendChild(el('p', 'mv-msg', 'Your verse will appear here, so you can check it reads clearly.'));
-        return;
-      }
-      if (res.chars > MAX_CHARS) {
-        preview.appendChild(el('p', 'mv-msg mv-warn', 'That is a long passage. Please paste a shorter one (up to ' + MAX_CHARS + ' characters).'));
-        return;
-      }
-      var det = detectLang(res.lines);
-      if (!det.ok) {
-        preview.appendChild(el('p', 'mv-msg mv-warn', det.message));
-        return;
-      }
-      preview.appendChild(el('p', 'mv-detect', 'Detected: ' + det.name + ' \u00B7 ' + plural(res.lines.length, 'line')));
-      var pv = el('div', 'mv-pv');
-      var p = el('p', 'verse-text ' + det.lang);
-      for (var i = 0; i < res.lines.length; i++) p.appendChild(el('span', 'vline', res.lines[i]));
-      pv.appendChild(p);
-      preview.appendChild(pv);
-      current = { lang: det.lang, lines: res.lines };
-      save.disabled = false;
+      var tooLong = res.chars > MAX_CHARS;
+      msg.textContent = tooLong ? 'That passage is too long to save (over ' + MAX_CHARS + ' characters).' : '';
+      msg.classList.toggle('mv-hidden', !tooLong);
+      current = (!tooLong && res.lines.length && cleanLine(ref.value)) ? res : null;
+      save.disabled = !current;
     }
-    var updTimer = null;
-    ta.addEventListener('input', function () {
-      clearTimeout(updTimer);
-      if (ta.value.length > 4000) updTimer = setTimeout(update, 250); else update();
-    });
+    function schedule() {
+      clearTimeout(timer);
+      if (ta.value.length > 4000) timer = setTimeout(update, 250); else update();
+    }
+    ta.addEventListener('input', schedule);
+    ref.addEventListener('input', schedule);
     cb.addEventListener('change', update);
-    ref.addEventListener('input', function () { draft.ref = ref.value; });
 
     save.addEventListener('click', function () {
-      clearTimeout(updTimer);
+      clearTimeout(timer);
       update();
       if (!current) return;
+      var refText = cleanLine(ref.value).slice(0, MAX_REF);
+      var lines = current.lines.slice();
+      var lang = detectLang(lines);
+      if (editItem) {
+        var edited = { id: editItem.id, ref: refText, lang: lang, lines: lines, added: editItem.added };
+        var next = items.map(function (x) { return x.id === editItem.id ? edited : x; });
+        if (!saveStore(next)) { showToast("Couldn't save. Your device storage may be full."); return; }
+        items = next;
+        showToast('Saved');
+        goBack({ mv: 'detail', id: editItem.id, d: 2 });
+        return;
+      }
       if (items.length >= MAX_VERSES) { showToast('You can keep up to ' + MAX_VERSES + ' verses. Delete one to add another.'); return; }
-      var refText = cleanLine(ref.value).slice(0, MAX_REF) || fallbackRef(current.lines);
-      var item = { id: newId(), ref: refText, lang: current.lang, lines: current.lines.slice(), added: Date.now() };
-      var next = [item].concat(items);
-      if (!saveStore(next)) { showToast("Couldn't save. Your device storage may be full."); return; }
-      items = next;
+      var item = { id: newId(), ref: refText, lang: lang, lines: lines, added: Date.now() };
+      var added = [item].concat(items);
+      if (!saveStore(added)) { showToast("Couldn't save. Your device storage may be full."); return; }
+      items = added;
       draft = { text: '', ref: '', strip: true };
-      addOpen = false;
-      view = { name: 'detail', id: item.id };
-      render();
+      var st = { mv: 'detail', id: item.id, d: 2 };
+      if (cur.mv === 'form' && histOK) { try { history.replaceState(st, ''); } catch (e) {} applyState(st); }
+      else pushOrApply(st);
       showToast('Saved');
     });
 
     card.appendChild(l1);
+    card.appendChild(ref);
+    card.appendChild(l2);
     card.appendChild(ta);
     card.appendChild(numRow);
-    card.appendChild(preview);
-    card.appendChild(field);
+    card.appendChild(msg);
     card.appendChild(note);
     card.appendChild(actions);
     update();
     return card;
   }
 
-  // ----- List and detail views -----
+  // ----- List, form and detail views -----
   function renderList() {
     var head = document.createElement('header');
     head.appendChild(el('div', 'eyebrow', 'Scripture Memory'));
-    head.appendChild(el('h1', '', 'My verses'));
-    head.appendChild(el('p', 'mv-sub', 'Paste any verse in English, Hebrew, Greek, Tamil, Malayalam, Hindi, Telugu, Kannada or Odia, then practise it with the same tools as the weekly verse.'));
+    head.appendChild(el('h1', '', 'My Verses'));
+    head.appendChild(el('p', 'mv-sub', 'Paste any verse, then practise it with the same tools as the weekly verse. Your verses stay only on this device.'));
     mineView.appendChild(head);
 
     var full = items.length >= MAX_VERSES;
-    if (full) {
-      mineView.appendChild(el('p', 'mv-note', 'You have ' + MAX_VERSES + ' verses, the most this page keeps. Delete one to add another.'));
-    } else if (items.length === 0 || addOpen) {
-      mineView.appendChild(buildForm(items.length > 0));
-    } else {
-      var add = el('button', 'primary mv-add', '+ Add a verse');
-      add.type = 'button';
-      add.addEventListener('click', function () { addOpen = true; render(); });
-      mineView.appendChild(add);
+    if (items.length === 0) {
+      mineView.appendChild(buildForm(null));
+      return;
     }
+    if (full) mineView.appendChild(el('p', 'mv-note', 'You have ' + MAX_VERSES + ' verses, the most this page keeps. Delete one to add another.'));
 
-    if (items.length) {
-      mineView.appendChild(el('div', 'mv-section', 'Saved on this device'));
-      var list = el('div', 'mv-list');
-      items.forEach(function (it) {
-        var row = el('button', 'mv-row');
-        row.type = 'button';
-        var main = el('span', 'mv-row-main');
-        main.appendChild(el('span', 'mv-row-ref', it.ref));
-        main.appendChild(el('span', 'mv-row-sub', scriptByKey(it.lang).name + ' \u00B7 ' + plural(it.lines.length, 'line')));
-        row.appendChild(main);
-        row.appendChild(el('span', 'mv-row-chev', '\u2192'));
-        row.addEventListener('click', function () { view = { name: 'detail', id: it.id }; render(); });
-        list.appendChild(row);
-      });
-      mineView.appendChild(list);
+    var list = el('div', 'mv-list');
+    items.forEach(function (it) {
+      var row = el('button', 'mv-row');
+      row.type = 'button';
+      var main = el('span', 'mv-row-main');
+      main.appendChild(el('span', 'mv-row-ref', it.ref));
+      row.appendChild(main);
+      row.appendChild(el('span', 'mv-row-chev', '\u2192'));
+      row.addEventListener('click', function () { pushOrApply({ mv: 'detail', id: it.id, d: 2 }); });
+      list.appendChild(row);
+    });
+    mineView.appendChild(list);
+
+    if (!full) {
+      var fab = el('button', 'mv-fab');
+      fab.type = 'button';
+      fab.title = 'Add a verse';
+      fab.setAttribute('aria-label', 'Add a verse');
+      fab.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>';
+      fab.addEventListener('click', function () { pushOrApply({ mv: 'form', id: null, d: cur.d + 1 }); });
+      mineView.appendChild(fab);
     }
   }
 
   function renderDetail(it) {
-    var back = el('button', 'link-btn mv-back', '\u2190 My verses');
+    var back = el('button', 'link-btn mv-back', '\u2190 My Verses');
     back.type = 'button';
-    back.addEventListener('click', function () {
-      try { stopAllVoicesExcept(null); } catch (e) {}
-      view = { name: 'list', id: null };
-      render();
-    });
+    back.addEventListener('click', function () { goBack({ mv: 'list', d: 1 }); });
     mineView.appendChild(back);
 
     var card = el('div', 'card');
@@ -1510,7 +1737,13 @@ try {
     head.appendChild(el('span', 'version-tag', 'My verse'));
     card.appendChild(head);
     try {
-      card.appendChild(buildLangBlock(it.lang, it.lines, it.ref, { tag: 'My verse' }));
+      var block = buildLangBlock(it.lang, it.lines, it.ref, { tag: 'My verse', segment: true, hideVoiceIfNone: true, autoDir: true });
+      if (!OWN_STYLE[it.lang]) {
+        block.classList.add('mv-x');
+        var vt = block.querySelector('.verse-text');
+        if (vt) vt.classList.add('mv-x');
+      }
+      card.appendChild(block);
     } catch (err) {
       console.warn('Could not build my verse:', err);
       card.appendChild(el('p', 'mv-msg', 'This verse could not be shown on this device.'));
@@ -1522,6 +1755,9 @@ try {
     var share = el('button', 'primary', '\uD83D\uDCCB Share');
     share.type = 'button';
     share.addEventListener('click', function () { shareSingleLanguage(it.ref, 'My verse', it.lines); });
+    var edit = el('button', 'mv-edit', 'Edit');
+    edit.type = 'button';
+    edit.addEventListener('click', function () { pushOrApply({ mv: 'form', id: it.id, d: cur.d + 1 }); });
     var del = el('button', 'mv-del', 'Delete');
     del.type = 'button';
     var armed = false, timer = null;
@@ -1539,48 +1775,104 @@ try {
       if (!saveStore(next)) { showToast("Couldn't delete. Please try again."); disarm(); return; }
       try { stopAllVoicesExcept(null); } catch (e) {}
       items = next;
-      view = { name: 'list', id: null };
-      render();
       showToast('Deleted');
+      goBack({ mv: 'list', d: 1 });
     });
     actions.appendChild(share);
+    actions.appendChild(edit);
     actions.appendChild(del);
     mineView.appendChild(actions);
   }
 
   function render() {
     mineView.innerHTML = '';
-    if (view.name === 'detail') {
-      var found = null;
-      for (var i = 0; i < items.length; i++) { if (items[i].id === view.id) found = items[i]; }
-      if (found) { renderDetail(found); return; }
-      view = { name: 'list', id: null };
+    if (cur.mv === 'form') {
+      var editItem = cur.id ? findItem(cur.id) : null;
+      if (cur.id && !editItem) { cur = { mv: 'list', d: 1 }; }
+      else { mineView.appendChild(buildForm(editItem)); return; }
+    }
+    if (cur.mv === 'detail') {
+      var it = findItem(cur.id);
+      if (it) { renderDetail(it); return; }
+      cur = { mv: 'list', d: 1 };
     }
     renderList();
   }
 
-  // ----- Switch between This week and My verses -----
-  var modeBtns = modeSwitch.querySelectorAll('.mode-btn');
-  function setMode(m) {
-    try { stopAllVoicesExcept(null); } catch (e) {}
-    weekView.classList.toggle('mv-hidden', m === 'mine');
-    mineView.classList.toggle('mv-hidden', m !== 'mine');
-    Array.prototype.forEach.call(modeBtns, function (b) {
-      var on = b.getAttribute('data-mode') === m;
-      b.classList.toggle('active', on);
-      b.setAttribute('aria-pressed', on ? 'true' : 'false');
-    });
-    if (m === 'mine') {
-      try { render(); } catch (err) {
-        console.warn('My verses failed:', err);
-        mineView.textContent = 'My verses could not open on this device.';
-      }
-    }
-    try { window.scrollTo(0, 0); } catch (e) {}
+  // ----- Switch between This week and My Verses -----
+  function showWeek() {
+    if (cur.mv === 'week') return;
+    var n = cur.d;
+    applyState({ mv: 'week', d: 0 });
+    if (histOK && n > 0) { try { history.go(-n); } catch (e) {} }
   }
   Array.prototype.forEach.call(modeBtns, function (b) {
-    b.addEventListener('click', function () { setMode(b.getAttribute('data-mode')); });
+    b.addEventListener('click', function () {
+      if (b.getAttribute('data-mode') === 'mine') { if (cur.mv === 'week') pushOrApply({ mv: 'list', d: 1 }); }
+      else showWeek();
+    });
   });
+
+  // ----- Backup and restore (settings, My Verses tab) -----
+  backupBtn.addEventListener('click', function () {
+    if (!items.length) { showToast('No verses to back up yet.'); return; }
+    var json = JSON.stringify({ app: 'MemoryVerse', kind: 'my-verses', v: 1, saved: new Date().toISOString(), items: items });
+    var name = 'memoryverse-my-verses-' + new Date().toISOString().slice(0, 10) + '.json';
+    function download() {
+      try {
+        var blob = new Blob([json], { type: 'application/json' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url; a.download = name; a.style.display = 'none';
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(function () { document.body.removeChild(a); URL.revokeObjectURL(url); }, 1500);
+        showToast('Backup file created');
+      } catch (e) { showToast("Couldn't create the backup file."); }
+    }
+    try {
+      var file = new File([json], name, { type: 'application/json' });
+      if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+        navigator.share({ files: [file], title: 'MemoryVerse backup' }).catch(function (err) {
+          if (!err || err.name !== 'AbortError') download();
+        });
+        return;
+      }
+    } catch (e) {}
+    download();
+  });
+  restoreBtn.addEventListener('click', function () { restoreFile.click(); });
+  function doRestore(text) {
+    var data;
+    try { data = JSON.parse(text); } catch (e) { data = null; }
+    var incoming = cleanItems(data && data.items);
+    if (!incoming.length) { showToast("That file is not a MemoryVerse backup."); return; }
+    var have = {}, ids = {}, added = [], dup = 0, over = 0;
+    items.forEach(function (x) { have[x.ref + '\n' + x.lines.join('\n')] = 1; ids[x.id] = 1; });
+    incoming.forEach(function (x) {
+      var sig = x.ref + '\n' + x.lines.join('\n');
+      if (have[sig]) { dup++; return; }
+      if (items.length + added.length >= MAX_VERSES) { over++; return; }
+      if (ids[x.id]) x.id = newId();
+      ids[x.id] = 1; have[sig] = 1; added.push(x);
+    });
+    if (!added.length) { showToast(dup ? 'Those verses are already here.' : 'No room. Delete a verse first.'); return; }
+    var next = items.concat(added).sort(function (a, b) { return b.added - a.added; });
+    if (!saveStore(next)) { showToast("Couldn't restore. Your device storage may be full."); return; }
+    items = next;
+    showToast('Restored ' + added.length + (added.length === 1 ? ' verse' : ' verses') + (over ? ' (' + over + ' skipped: the limit is ' + MAX_VERSES + ')' : ''));
+    if (cur.mv !== 'week') { try { render(); } catch (e) {} }
+  }
+  restoreFile.addEventListener('change', function () {
+    var f = restoreFile.files && restoreFile.files[0];
+    if (!f) return;
+    var reader = new FileReader();
+    reader.onload = function () { doRestore(String(reader.result || '')); restoreFile.value = ''; };
+    reader.onerror = function () { showToast("Couldn't read that file."); restoreFile.value = ''; };
+    reader.readAsText(f);
+  });
+
+  askForSafeStorage();
   modeSwitch.classList.remove('mv-hidden'); // shown only once everything above worked
 })();
 } catch (err) { console.warn('My verses is unavailable:', err); }
