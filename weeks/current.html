@@ -461,6 +461,19 @@
   .lang-block.mv-x { --lang-tint: var(--tint-x); --lang-tint-bg: #E8ECF0; }
   :root[data-theme="dark"] .lang-block.mv-x { --lang-tint-bg: rgba(169,180,194,0.16); }
   .verse-text.mv-x { font-family: system-ui, -apple-system, 'Noto Sans', sans-serif; line-height: 1.9; }
+
+  /* reorder handle */
+  .mv-item { display: flex; gap: 8px; align-items: stretch; -webkit-user-select: none; user-select: none; }
+  .mv-item .mv-row { flex: 1; width: auto; min-width: 0; }
+  .mv-grip {
+    flex: none; width: 46px; padding: 0; display: flex; align-items: center; justify-content: center;
+    background: var(--paper-raised); border: 1px solid var(--hairline); border-radius: 10px; color: var(--ink-soft);
+    touch-action: none; cursor: grab; -webkit-touch-callout: none;
+  }
+  .mv-grip:hover { border-color: var(--accent); color: var(--accent); }
+  .mv-grip svg { width: 20px; height: 20px; }
+  .mv-item.shifting { transition: transform 0.15s ease; }
+  .mv-item.dragging { position: relative; z-index: 10; transition: none; box-shadow: 0 12px 26px -10px rgba(34,54,74,0.5); border-radius: 10px; }
 </style>
 </head>
 <body>
@@ -1581,7 +1594,7 @@ try {
     var card = el('div', 'card mv-form');
     card.appendChild(el('h2', 'mv-form-title', editItem ? 'Edit verse' : 'Add a verse'));
 
-    var l1 = el('label', 'mv-label', 'Reference (the title)');
+    var l1 = el('label', 'mv-label', 'Reference');
     l1.setAttribute('for', 'mvRef');
     var ref = el('input', 'mv-input');
     ref.id = 'mvRef';
@@ -1664,7 +1677,7 @@ try {
       }
       if (items.length >= MAX_VERSES) { showToast('You can keep up to ' + MAX_VERSES + ' verses. Delete one to add another.'); return; }
       var item = { id: newId(), ref: refText, lang: lang, lines: lines, added: Date.now() };
-      var added = [item].concat(items);
+      var added = items.concat([item]);
       if (!saveStore(added)) { showToast("Couldn't save. Your device storage may be full."); return; }
       items = added;
       draft = { text: '', ref: '', strip: true };
@@ -1686,6 +1699,91 @@ try {
     return card;
   }
 
+  // ----- Reordering: drag the grip, or use the up and down arrow keys on it -----
+  function moveItem(from, to) {
+    if (from === to || from < 0 || to < 0 || from >= items.length || to >= items.length) return false;
+    var next = items.slice();
+    var m = next.splice(from, 1)[0];
+    next.splice(to, 0, m);
+    if (!saveStore(next)) { showToast("Couldn't save the new order."); return false; }
+    items = next;
+    return true;
+  }
+  function attachReorder(grip, wrap, idx, list) {
+    grip.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+    grip.addEventListener('keydown', function (e) {
+      var to = e.key === 'ArrowUp' ? idx - 1 : (e.key === 'ArrowDown' ? idx + 1 : -1);
+      if (to < 0 || to >= items.length) return;
+      e.preventDefault();
+      if (moveItem(idx, to)) {
+        render();
+        var grips = mineView.querySelectorAll('.mv-grip');
+        if (grips[to]) grips[to].focus();
+      }
+    });
+    grip.addEventListener('pointerdown', function (e) {
+      if (e.button) return;
+      e.preventDefault();
+      try { grip.setPointerCapture(e.pointerId); } catch (err) {}
+      var els = Array.prototype.slice.call(list.children);
+      var sy0 = window.pageYOffset || 0;
+      var info = els.map(function (n) { var r = n.getBoundingClientRect(); return { top: r.top + sy0, h: r.height }; });
+      var gap = 10;
+      try { gap = parseFloat(getComputedStyle(list).rowGap) || 10; } catch (err) {}
+      var dragH = info[idx].h + gap;
+      var startY = e.clientY, lastY = e.clientY, target = idx, raf = 0, active = true;
+      wrap.classList.add('dragging');
+      els.forEach(function (n, i) { if (i !== idx) n.classList.add('shifting'); });
+
+      function layout() {
+        var dy = (lastY - startY) + ((window.pageYOffset || 0) - sy0);
+        wrap.style.transform = 'translateY(' + dy + 'px)';
+        var center = info[idx].top + info[idx].h / 2 + dy, t = 0, i;
+        for (i = 0; i < els.length; i++) { if (i !== idx && info[i].top + info[i].h / 2 < center) t++; }
+        target = t;
+        els.forEach(function (n, j) {
+          if (j === idx) return;
+          var shift = 0;
+          if (idx < target && j > idx && j <= target) shift = -dragH;
+          else if (idx > target && j < idx && j >= target) shift = dragH;
+          n.style.transform = shift ? 'translateY(' + shift + 'px)' : '';
+        });
+      }
+      function tick() {
+        raf = 0;
+        if (!active) return;
+        var vh = window.innerHeight || 600, step = 0;
+        if (lastY < 70) step = -Math.ceil((70 - lastY) / 6);
+        else if (lastY > vh - 70) step = Math.ceil((lastY - (vh - 70)) / 6);
+        if (step) { try { window.scrollBy(0, step); } catch (err) {} layout(); raf = requestAnimationFrame(tick); }
+      }
+      function onMove(ev) {
+        if (!active) return;
+        lastY = ev.clientY;
+        if (ev.cancelable) ev.preventDefault();
+        layout();
+        if (!raf) raf = requestAnimationFrame(tick);
+      }
+      function finish(cancelled) {
+        if (!active) return;
+        active = false;
+        grip.removeEventListener('pointermove', onMove);
+        grip.removeEventListener('pointerup', onUp);
+        grip.removeEventListener('pointercancel', onCancel);
+        try { grip.releasePointerCapture(e.pointerId); } catch (err) {}
+        if (raf) cancelAnimationFrame(raf);
+        els.forEach(function (n) { n.classList.remove('dragging', 'shifting'); n.style.transform = ''; });
+        var to = cancelled ? idx : target;
+        if (to !== idx && moveItem(idx, to)) render();
+      }
+      function onUp() { finish(false); }
+      function onCancel() { finish(true); }
+      grip.addEventListener('pointermove', onMove);
+      grip.addEventListener('pointerup', onUp);
+      grip.addEventListener('pointercancel', onCancel);
+    });
+  }
+
   // ----- List, form and detail views -----
   function renderList() {
     var head = document.createElement('header');
@@ -1702,7 +1800,8 @@ try {
     if (full) mineView.appendChild(el('p', 'mv-note', 'You have ' + MAX_VERSES + ' verses, the most this page keeps. Delete one to add another.'));
 
     var list = el('div', 'mv-list');
-    items.forEach(function (it) {
+    items.forEach(function (it, idx) {
+      var wrap = el('div', 'mv-item');
       var row = el('button', 'mv-row');
       row.type = 'button';
       var main = el('span', 'mv-row-main');
@@ -1710,7 +1809,17 @@ try {
       row.appendChild(main);
       row.appendChild(el('span', 'mv-row-chev', '\u2192'));
       row.addEventListener('click', function () { pushOrApply({ mv: 'detail', id: it.id, d: 2 }); });
-      list.appendChild(row);
+      wrap.appendChild(row);
+      if (items.length > 1) {
+        var grip = el('button', 'mv-grip');
+        grip.type = 'button';
+        grip.title = 'Drag to reorder';
+        grip.setAttribute('aria-label', 'Reorder ' + it.ref + '. Drag, or use the up and down arrow keys.');
+        grip.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.8"></circle><circle cx="15" cy="6" r="1.8"></circle><circle cx="9" cy="12" r="1.8"></circle><circle cx="15" cy="12" r="1.8"></circle><circle cx="9" cy="18" r="1.8"></circle><circle cx="15" cy="18" r="1.8"></circle></svg>';
+        attachReorder(grip, wrap, idx, list);
+        wrap.appendChild(grip);
+      }
+      list.appendChild(wrap);
     });
     mineView.appendChild(list);
 
@@ -1857,7 +1966,7 @@ try {
       ids[x.id] = 1; have[sig] = 1; added.push(x);
     });
     if (!added.length) { showToast(dup ? 'Those verses are already here.' : 'No room. Delete a verse first.'); return; }
-    var next = items.concat(added).sort(function (a, b) { return b.added - a.added; });
+    var next = items.concat(added);
     if (!saveStore(next)) { showToast("Couldn't restore. Your device storage may be full."); return; }
     items = next;
     showToast('Restored ' + added.length + (added.length === 1 ? ' verse' : ' verses') + (over ? ' (' + over + ' skipped: the limit is ' + MAX_VERSES + ')' : ''));
