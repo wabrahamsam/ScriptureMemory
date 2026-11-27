@@ -456,7 +456,10 @@
   .mv-select {
     display: block; width: 100%; font-family: var(--font-body); font-size: 15px; font-weight: 600;
     color: var(--ink); background: var(--paper-raised); border: 1px solid var(--hairline-strong);
-    border-radius: 20px; padding: 9px 14px;
+    border-radius: 20px; padding: 9px 40px 9px 16px;
+    -webkit-appearance: none; appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%238a9bab' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 18px center;
   }
   .mv-select:focus { outline: none; border-color: var(--accent); }
   .mv-picks { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
@@ -488,14 +491,18 @@
   .verse-text.mv-x { font-family: system-ui, -apple-system, 'Noto Sans', sans-serif; line-height: 1.9; }
 
   /* reorder handle */
-  .mv-item { display: flex; gap: 8px; align-items: stretch; -webkit-user-select: none; user-select: none; }
-  .mv-item .mv-row { flex: 1; width: auto; min-width: 0; }
+  .mv-item {
+    display: flex; gap: 0; align-items: stretch; -webkit-user-select: none; user-select: none;
+    background: var(--paper-raised); border: 1px solid var(--hairline); border-radius: 10px;
+  }
+  .mv-item:hover { border-color: var(--accent); }
+  .mv-item .mv-row, .mv-item .mv-row:hover { flex: 1; width: auto; min-width: 0; background: transparent; border: none; border-radius: 10px 0 0 10px; }
   .mv-grip {
     flex: none; width: 46px; padding: 0; display: flex; align-items: center; justify-content: center;
-    background: var(--paper-raised); border: 1px solid var(--hairline); border-radius: 10px; color: var(--ink-soft);
+    background: transparent; border: none; border-left: 1px solid var(--hairline); border-radius: 0 10px 10px 0; color: var(--ink-soft);
     touch-action: none; cursor: grab; -webkit-touch-callout: none;
   }
-  .mv-grip:hover { border-color: var(--accent); color: var(--accent); }
+  .mv-grip:hover { background: transparent; border-left-color: var(--hairline); color: var(--accent); }
   .mv-grip svg { width: 20px; height: 20px; }
   .mv-item.shifting { transition: transform 0.15s ease; }
   .mv-item.dragging { position: relative; z-index: 10; transition: none; box-shadow: 0 12px 26px -10px rgba(34,54,74,0.5); border-radius: 10px; }
@@ -1290,7 +1297,7 @@ const refreshBtn = document.getElementById('refreshBtn');
 // Archived weeks are copies of this file. Only the real weeks/current.html may refresh itself or be saved offline.
 const IS_CURRENT_PAGE = /\/weeks\/current\.html$/.test(location.pathname);
 // App version shown in Settings. Keep it the same as APP_VERSION in sw.js (a test checks this).
-const APP_VERSION = '1.5.0';
+const APP_VERSION = '1.6.0';
 document.getElementById('appVersion').textContent = 'MemoryVerse · Version ' + APP_VERSION;
 if (!IS_CURRENT_PAGE) refreshBtn.style.display = 'none';
 async function checkForNewPassage() {
@@ -1699,7 +1706,7 @@ try {
     ta.setAttribute('spellcheck', 'false');
     ta.setAttribute('dir', 'auto');
 
-    var l3 = el('label', 'mv-label mv-gap', 'Tags (optional; use commas to separate tags)');
+    var l3 = el('label', 'mv-label mv-gap', 'Tags (optional; use commas to separate multiple tags)');
     l3.setAttribute('for', 'mvTags');
     var tagList = parseTags(editItem ? editItem.tags : draft.tags);
     var chosen = el('div', 'mv-chosen');
@@ -2002,7 +2009,6 @@ try {
       var main = el('span', 'mv-row-main');
       main.appendChild(el('span', 'mv-row-ref', it.ref));
       row.appendChild(main);
-      row.appendChild(el('span', 'mv-row-chev', '\u2192'));
       row.addEventListener('click', function () { pushOrApply({ mv: 'detail', id: it.id, d: 2 }); });
       wrap.appendChild(row);
       if (view.length > 1) {
