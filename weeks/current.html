@@ -441,7 +441,17 @@
   /* ---- 1.4.0 additions ---- */
   .mv-form-title { font-family: var(--font-display); font-size: 18px; font-weight: 700; margin: 0 0 14px; }
   .mv-gap { margin-top: 14px; }
-  .mv-tags { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; min-width: 0; }
+  .mv-chosen { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+  .mv-chosen:empty { display: none; }
+  .mv-chip { display: inline-flex; align-items: center; font-size: 12.5px; font-weight: 700; color: var(--accent); background: rgba(47,100,152,0.08); padding: 2px 3px 2px 11px; border-radius: 20px; max-width: 100%; }
+  .mv-chip > span { overflow-wrap: anywhere; }
+  button.mv-chip-x, button.mv-chip-x:hover { border: none; background: transparent; color: inherit; font-size: 17px; line-height: 1; padding: 3px 8px; min-width: 0; cursor: pointer; border-radius: 50%; }
+  :root[data-theme="dark"] .mv-chip { background: rgba(201,165,126,0.14); }
+  .mv-tagrow { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+  .mv-tag { font-size: 12px; font-weight: 700; letter-spacing: 0.02em; color: var(--accent); background: rgba(47,100,152,0.08); padding: 5px 11px; border-radius: 20px; overflow-wrap: anywhere; }
+  :root[data-theme="dark"] .mv-tag { background: rgba(201,165,126,0.14); }
+  .mv-block .lang-tag { display: none; }
+  .mv-block .lang-header .lang-ref { margin: 0; min-width: 0; overflow-wrap: anywhere; }
   .mv-filter { margin: 12px auto 0; max-width: 320px; }
   .mv-select {
     display: block; width: 100%; font-family: var(--font-body); font-size: 15px; font-weight: 600;
@@ -1409,7 +1419,6 @@ try {
   var MAX_VERSES = 20;
   var MAX_CHARS = 40000; // room for a whole long psalm in any language
   var MAX_REF = 60;
-  var MAX_TAGS = 5;
   var MAX_TAG_LEN = 24;
 
   // Scripts we recognise, only to pick a font style and a voice. Any text can be saved.
@@ -1504,7 +1513,7 @@ try {
   function parseTags(v) {
     var parts = Array.isArray(v) ? v : String(v || '').split(/[,\u060C\u3001;\n]/);
     var out = [], seen = {}, i, t;
-    for (i = 0; i < parts.length && out.length < MAX_TAGS; i++) {
+    for (i = 0; i < parts.length; i++) {
       if (typeof parts[i] !== 'string') continue;
       t = cleanLine(parts[i]).slice(0, MAX_TAG_LEN);
       t = cleanLine(t);
@@ -1566,15 +1575,40 @@ try {
   function askForSafeStorage() {
     try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch (e) {}
   }
+  // Each tag can have its own order of verses. Stored beside the items: { comfort: [id, id, ...] }.
+  // The main list order is never touched by it. Verses missing from a tag's order go to its end.
+  function cleanOrders(obj, valid) {
+    var out = {}, k, arr, i, seen, ids;
+    if (!obj || typeof obj !== 'object') return out;
+    for (k in obj) {
+      if (!Object.prototype.hasOwnProperty.call(obj, k) || !Array.isArray(obj[k])) continue;
+      arr = obj[k]; ids = []; seen = {};
+      for (i = 0; i < arr.length; i++) {
+        if (typeof arr[i] === 'string' && valid[arr[i]] && !seen[arr[i]]) { seen[arr[i]] = 1; ids.push(arr[i]); }
+      }
+      if (ids.length) out[String(k).toLowerCase().slice(0, 60)] = ids;
+    }
+    return out;
+  }
+  function loadOrders(list) {
+    try {
+      var raw = localStorage.getItem(STORE_KEY);
+      if (!raw) return {};
+      var valid = {};
+      list.forEach(function (x) { valid[x.id] = 1; });
+      return cleanOrders((JSON.parse(raw) || {}).orders, valid);
+    } catch (e) { return {}; }
+  }
   function saveStore(list) {
     try {
-      localStorage.setItem(STORE_KEY, JSON.stringify({ v: 1, items: list }));
+      localStorage.setItem(STORE_KEY, JSON.stringify({ v: 1, items: list, orders: orders }));
       askForSafeStorage();
       return true;
     } catch (e) { return false; }
   }
 
   var items = loadStore();
+  var orders = loadOrders(items);
   var draft = { text: '', ref: '', strip: true, tags: '' };
   var tagFilter = '';
   var cur = { mv: 'week', d: 0 };   // where we are: week | list | detail | form, and how many history steps deep
@@ -1640,7 +1674,6 @@ try {
   function buildForm(editItem) {
     var card = el('div', 'card mv-form');
     card.appendChild(el('h2', 'mv-form-title', editItem ? 'Edit verse' : 'Add a verse'));
-    card.appendChild(el('p', 'mv-msg', 'Paste any verse, then practise it with the same tools as the weekly verse.'));
 
     var l1 = el('label', 'mv-label', 'Reference');
     l1.setAttribute('for', 'mvRef');
@@ -1659,39 +1692,64 @@ try {
     ta.id = 'mvText';
     ta.rows = 6;
     ta.value = editItem ? editItem.lines.join('\n') : draft.text;
-    ta.placeholder = 'Tap and hold here, then choose Paste';
+    ta.placeholder = 'Paste any verse, then practice it with the same tools as the weekly verse.';
     ta.setAttribute('autocomplete', 'off');
     ta.setAttribute('autocorrect', 'off');
     ta.setAttribute('autocapitalize', 'off');
     ta.setAttribute('spellcheck', 'false');
     ta.setAttribute('dir', 'auto');
 
-    var l3 = el('label', 'mv-label mv-gap', 'Tags (optional, up to ' + MAX_TAGS + ')');
+    var l3 = el('label', 'mv-label mv-gap', 'Tags (optional; use commas to separate multiple tags)');
     l3.setAttribute('for', 'mvTags');
+    var tagList = parseTags(editItem ? editItem.tags : draft.tags);
+    var chosen = el('div', 'mv-chosen');
     var tg = el('input', 'mv-input');
     tg.id = 'mvTags';
     tg.type = 'text';
-    tg.maxLength = 120;
-    tg.placeholder = 'e.g. Comfort, Psalms';
-    tg.value = editItem ? editItem.tags.join(', ') : draft.tags;
+    tg.maxLength = 60;
+    tg.placeholder = 'e.g. Comfort, Psalms, Small Group';
     tg.setAttribute('autocomplete', 'off');
     tg.setAttribute('dir', 'auto');
     var picks = el('div', 'mv-picks');
-    function drawPicks() {
+    function indexOfTag(t) {
+      var k = t.toLowerCase(), i;
+      for (i = 0; i < tagList.length; i++) { if (tagList[i].toLowerCase() === k) return i; }
+      return -1;
+    }
+    function addTags(arr) {
+      arr.forEach(function (t) { if (indexOfTag(t) < 0) tagList.push(t); });
+    }
+    function commitTyped() {
+      var more = parseTags(tg.value);
+      tg.value = '';
+      if (more.length) addTags(more);
+    }
+    function drawTags() {
+      chosen.innerHTML = '';
+      tagList.forEach(function (t) {
+        var chip = el('span', 'mv-chip');
+        chip.appendChild(el('span', '', t));
+        var x = el('button', 'mv-chip-x', '\u00D7');
+        x.type = 'button';
+        x.setAttribute('aria-label', 'Remove tag ' + t);
+        x.addEventListener('click', function () {
+          var at = indexOfTag(t);
+          if (at >= 0) tagList.splice(at, 1);
+          drawTags();
+          update();
+        });
+        chip.appendChild(x);
+        chosen.appendChild(chip);
+      });
       picks.innerHTML = '';
-      var have = {};
-      parseTags(tg.value).forEach(function (t) { have[t.toLowerCase()] = 1; });
       allTags().forEach(function (t) {
-        var b = el('button', 'mv-pick' + (have[t.toLowerCase()] ? ' on' : ''), t);
+        var b = el('button', 'mv-pick' + (indexOfTag(t) >= 0 ? ' on' : ''), t);
         b.type = 'button';
         b.addEventListener('click', function () {
-          var list = parseTags(tg.value), k = t.toLowerCase(), at = -1, i;
-          for (i = 0; i < list.length; i++) { if (list[i].toLowerCase() === k) at = i; }
-          if (at >= 0) list.splice(at, 1);
-          else if (list.length < MAX_TAGS) list.push(t);
-          tg.value = list.join(', ');
+          var at = indexOfTag(t);
+          if (at >= 0) tagList.splice(at, 1); else tagList.push(t);
+          drawTags();
           update();
-          drawPicks();
         });
         picks.appendChild(b);
       });
@@ -1721,7 +1779,7 @@ try {
 
     var current = null, timer = null;
     function update() {
-      if (!editItem) { draft.text = ta.value; draft.ref = ref.value; draft.strip = cb.checked; draft.tags = tg.value; }
+      if (!editItem) { draft.text = ta.value; draft.ref = ref.value; draft.strip = cb.checked; draft.tags = tagList.join(', '); }
       var res = parseVerse(ta.value, cb.checked);
       numRow.classList.toggle('mv-hidden', !res.hasNums);
       var tooLong = res.chars > MAX_CHARS;
@@ -1736,7 +1794,19 @@ try {
     }
     ta.addEventListener('input', schedule);
     ref.addEventListener('input', schedule);
-    tg.addEventListener('input', function () { update(); drawPicks(); });
+    tg.addEventListener('input', function () {
+      if (/[,;\u060C\u3001]/.test(tg.value)) {
+        var parts = tg.value.split(/[,;\u060C\u3001]/), last = parts.pop();
+        addTags(parseTags(parts));
+        tg.value = last.replace(/^\s+/, '');
+        drawTags();
+        update();
+      }
+    });
+    tg.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { e.preventDefault(); commitTyped(); drawTags(); update(); }
+    });
+    tg.addEventListener('blur', function () { if (tg.value) { commitTyped(); drawTags(); update(); } });
     cb.addEventListener('change', update);
 
     save.addEventListener('click', function () {
@@ -1746,9 +1816,10 @@ try {
       var refText = cleanLine(ref.value).slice(0, MAX_REF);
       var lines = current.lines.slice();
       var lang = detectLang(lines);
-      var tagList = parseTags(tg.value);
+      commitTyped();
+      var finalTags = tagList.slice();
       if (editItem) {
-        var edited = { id: editItem.id, ref: refText, lang: lang, lines: lines, tags: tagList, added: editItem.added };
+        var edited = { id: editItem.id, ref: refText, lang: lang, lines: lines, tags: finalTags, added: editItem.added };
         var next = items.map(function (x) { return x.id === editItem.id ? edited : x; });
         if (!saveStore(next)) { showToast("Couldn't save. Your device storage may be full."); return; }
         items = next;
@@ -1757,7 +1828,7 @@ try {
         return;
       }
       if (items.length >= MAX_VERSES) { showToast('You can keep up to ' + MAX_VERSES + ' verses. Delete one to add another.'); return; }
-      var item = { id: newId(), ref: refText, lang: lang, lines: lines, tags: tagList, added: Date.now() };
+      var item = { id: newId(), ref: refText, lang: lang, lines: lines, tags: finalTags, added: Date.now() };
       var added = items.concat([item]);
       if (!saveStore(added)) { showToast("Couldn't save. Your device storage may be full."); return; }
       items = added;
@@ -1773,9 +1844,10 @@ try {
     card.appendChild(l2);
     card.appendChild(ta);
     card.appendChild(l3);
+    card.appendChild(chosen);
     card.appendChild(tg);
     card.appendChild(picks);
-    drawPicks();
+    drawTags();
     card.appendChild(numRow);
     card.appendChild(msg);
     card.appendChild(note);
@@ -1785,8 +1857,31 @@ try {
   }
 
   // ----- Reordering: drag the grip, or use the up and down arrow keys on it -----
-  function moveItem(from, to) {
-    if (from === to || from < 0 || to < 0 || from >= items.length || to >= items.length) return false;
+  function viewList() {
+    if (!tagFilter) return items;
+    var k = tagFilter.toLowerCase(), pos = {};
+    (orders[k] || []).forEach(function (id, i) { pos[id] = i; });
+    var m = [];
+    items.forEach(function (it, i) { if (hasTag(it, tagFilter)) m.push({ it: it, o: pos[it.id] !== undefined ? pos[it.id] : 1e6 + i }); });
+    m.sort(function (a, b) { return a.o - b.o; });
+    return m.map(function (x) { return x.it; });
+  }
+  function moveItem(from, to, view) {
+    view = view || items;
+    if (from === to || from < 0 || to < 0 || from >= view.length || to >= view.length) return false;
+    if (tagFilter) {
+      var key = tagFilter.toLowerCase(), prev = orders[key];
+      var ids = view.map(function (x) { return x.id; });
+      var mv = ids.splice(from, 1)[0];
+      ids.splice(to, 0, mv);
+      orders[key] = ids;
+      if (!saveStore(items)) {
+        if (prev) orders[key] = prev; else delete orders[key];
+        showToast("Couldn't save the new order.");
+        return false;
+      }
+      return true;
+    }
     var next = items.slice();
     var m = next.splice(from, 1)[0];
     next.splice(to, 0, m);
@@ -1794,13 +1889,13 @@ try {
     items = next;
     return true;
   }
-  function attachReorder(grip, wrap, idx, list) {
+  function attachReorder(grip, wrap, idx, list, view) {
     grip.addEventListener('contextmenu', function (e) { e.preventDefault(); });
     grip.addEventListener('keydown', function (e) {
       var to = e.key === 'ArrowUp' ? idx - 1 : (e.key === 'ArrowDown' ? idx + 1 : -1);
-      if (to < 0 || to >= items.length) return;
+      if (to < 0 || to >= view.length) return;
       e.preventDefault();
-      if (moveItem(idx, to)) {
+      if (moveItem(idx, to, view)) {
         render();
         var grips = mineView.querySelectorAll('.mv-grip');
         if (grips[to]) grips[to].focus();
@@ -1859,7 +1954,7 @@ try {
         if (raf) cancelAnimationFrame(raf);
         els.forEach(function (n) { n.classList.remove('dragging', 'shifting'); n.style.transform = ''; });
         var to = cancelled ? idx : target;
-        if (to !== idx && moveItem(idx, to)) render();
+        if (to !== idx && moveItem(idx, to, view)) render();
       }
       function onUp() { finish(false); }
       function onCancel() { finish(true); }
@@ -1899,8 +1994,8 @@ try {
     if (full) mineView.appendChild(el('p', 'mv-note', 'You have ' + MAX_VERSES + ' verses, the most this page keeps. Delete one to add another.'));
 
     var list = el('div', 'mv-list');
-    items.forEach(function (it, idx) {
-      if (tagFilter && !hasTag(it, tagFilter)) return;
+    var view = viewList();
+    view.forEach(function (it, idx) {
       var wrap = el('div', 'mv-item');
       var row = el('button', 'mv-row');
       row.type = 'button';
@@ -1910,13 +2005,13 @@ try {
       row.appendChild(el('span', 'mv-row-chev', '\u2192'));
       row.addEventListener('click', function () { pushOrApply({ mv: 'detail', id: it.id, d: 2 }); });
       wrap.appendChild(row);
-      if (items.length > 1 && !tagFilter) {
+      if (view.length > 1) {
         var grip = el('button', 'mv-grip');
         grip.type = 'button';
         grip.title = 'Drag to reorder';
         grip.setAttribute('aria-label', 'Reorder ' + it.ref + '. Drag, or use the up and down arrow keys.');
         grip.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.8"></circle><circle cx="15" cy="6" r="1.8"></circle><circle cx="9" cy="12" r="1.8"></circle><circle cx="15" cy="12" r="1.8"></circle><circle cx="9" cy="18" r="1.8"></circle><circle cx="15" cy="18" r="1.8"></circle></svg>';
-        attachReorder(grip, wrap, idx, list);
+        attachReorder(grip, wrap, idx, list, view);
         wrap.appendChild(grip);
       }
       list.appendChild(wrap);
@@ -1943,14 +2038,15 @@ try {
     var card = el('div', 'card');
     var head = el('div', 'card-head');
     head.appendChild(el('span', 'ref', it.ref));
-    if (it.tags.length) {
-      var tagBox = el('span', 'mv-tags');
-      it.tags.forEach(function (t) { tagBox.appendChild(el('span', 'version-tag', t)); });
-      head.appendChild(tagBox);
-    } else head.appendChild(el('span', 'version-tag', 'My verse'));
+    head.appendChild(el('span', 'version-tag', 'My verse'));
     card.appendChild(head);
     try {
       var block = buildLangBlock(it.lang, it.lines, it.ref, { tag: 'My verse', segment: true, hideVoiceIfNone: true, autoDir: true });
+      block.classList.add('mv-block');
+      try {
+        var lh = block.querySelector('.lang-header'), lr = block.querySelector('.lang-ref');
+        if (lh && lr) lh.insertBefore(lr, lh.firstChild);   // reference sits level with the icons
+      } catch (e) {}
       if (!OWN_STYLE[it.lang]) {
         block.classList.add('mv-x');
         var vt = block.querySelector('.verse-text');
@@ -1960,6 +2056,11 @@ try {
     } catch (err) {
       console.warn('Could not build my verse:', err);
       card.appendChild(el('p', 'mv-msg', 'This verse could not be shown on this device.'));
+    }
+    if (it.tags.length) {
+      var tagRow = el('div', 'mv-tagrow');
+      it.tags.forEach(function (t) { tagRow.appendChild(el('span', 'mv-tag', t)); });
+      card.appendChild(tagRow);
     }
     card.appendChild(el('div', 'card-foot', 'My verse \u00B7 saved on this device'));
     mineView.appendChild(card);
@@ -2029,7 +2130,7 @@ try {
   // ----- Backup and restore (settings, My Verses tab) -----
   backupBtn.addEventListener('click', function () {
     if (!items.length) { showToast('No verses to back up yet.'); return; }
-    var json = JSON.stringify({ app: 'MemoryVerse', kind: 'my-verses', v: 1, saved: new Date().toISOString(), items: items });
+    var json = JSON.stringify({ app: 'MemoryVerse', kind: 'my-verses', v: 1, saved: new Date().toISOString(), items: items, orders: orders });
     var name = 'memoryverse-my-verses-' + new Date().toISOString().slice(0, 10) + '.json';
     function download() {
       try {
@@ -2060,18 +2161,36 @@ try {
     try { data = JSON.parse(text); } catch (e) { data = null; }
     var incoming = cleanItems(data && data.items);
     if (!incoming.length) { showToast("That file is not a MemoryVerse backup."); return; }
-    var have = {}, ids = {}, added = [], dup = 0, over = 0;
+    var have = {}, ids = {}, added = [], dup = 0, over = 0, idMap = {};
     items.forEach(function (x) { have[x.ref + '\n' + x.lines.join('\n')] = 1; ids[x.id] = 1; });
     incoming.forEach(function (x) {
       var sig = x.ref + '\n' + x.lines.join('\n');
       if (have[sig]) { dup++; return; }
       if (items.length + added.length >= MAX_VERSES) { over++; return; }
+      var oldId = x.id;
       if (ids[x.id]) x.id = newId();
+      idMap[oldId] = x.id;
       ids[x.id] = 1; have[sig] = 1; added.push(x);
     });
     if (!added.length) { showToast(dup ? 'Those verses are already here.' : 'No room. Delete a verse first.'); return; }
     var next = items.concat(added);
-    if (!saveStore(next)) { showToast("Couldn't restore. Your device storage may be full."); return; }
+    var oldOrders = orders;
+    try {
+      var addedIds = {}, back = (data && data.orders && typeof data.orders === 'object') ? data.orders : {}, merged = {}, k;
+      added.forEach(function (x) { addedIds[x.id] = 1; });
+      for (k in oldOrders) { if (Object.prototype.hasOwnProperty.call(oldOrders, k)) merged[k] = oldOrders[k].slice(); }
+      for (k in back) {
+        if (!Object.prototype.hasOwnProperty.call(back, k) || !Array.isArray(back[k])) continue;
+        var key = String(k).toLowerCase().slice(0, 60), cur2 = merged[key] || [];
+        back[k].forEach(function (oid) {
+          var nid = idMap[oid];
+          if (typeof oid === 'string' && nid && addedIds[nid] && cur2.indexOf(nid) < 0) cur2.push(nid);
+        });
+        if (cur2.length) merged[key] = cur2;
+      }
+      orders = merged;
+    } catch (e) { orders = oldOrders; }
+    if (!saveStore(next)) { orders = oldOrders; showToast("Couldn't restore. Your device storage may be full."); return; }
     items = next;
     showToast('Restored ' + added.length + (added.length === 1 ? ' verse' : ' verses') + (over ? ' (' + over + ' skipped: the limit is ' + MAX_VERSES + ')' : ''));
     if (cur.mv !== 'week') { try { render(); } catch (e) {} }
