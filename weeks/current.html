@@ -441,6 +441,21 @@
   /* ---- 1.4.0 additions ---- */
   .mv-form-title { font-family: var(--font-display); font-size: 18px; font-weight: 700; margin: 0 0 14px; }
   .mv-gap { margin-top: 14px; }
+  .mv-tags { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; min-width: 0; }
+  .mv-filter { margin: 12px auto 0; max-width: 320px; }
+  .mv-select {
+    display: block; width: 100%; font-family: var(--font-body); font-size: 15px; font-weight: 600;
+    color: var(--ink); background: var(--paper-raised); border: 1px solid var(--hairline-strong);
+    border-radius: 20px; padding: 9px 14px;
+  }
+  .mv-select:focus { outline: none; border-color: var(--accent); }
+  .mv-picks { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .mv-picks:empty { display: none; }
+  button.mv-pick {
+    font-family: var(--font-body); font-size: 12.5px; font-weight: 600; padding: 5px 11px; border-radius: 20px;
+    border: 1px solid var(--hairline-strong); background: var(--paper-raised); color: var(--ink-soft); cursor: pointer;
+  }
+  button.mv-pick.on { background: var(--ink); color: var(--paper-raised); border-color: var(--ink); }
   .mv-form .lang-option { padding: 10px 2px 2px; }
   .mv-list { padding-bottom: 96px; }
   .mv-fab {
@@ -1265,7 +1280,7 @@ const refreshBtn = document.getElementById('refreshBtn');
 // Archived weeks are copies of this file. Only the real weeks/current.html may refresh itself or be saved offline.
 const IS_CURRENT_PAGE = /\/weeks\/current\.html$/.test(location.pathname);
 // App version shown in Settings. Keep it the same as APP_VERSION in sw.js (a test checks this).
-const APP_VERSION = '1.4.0';
+const APP_VERSION = '1.5.0';
 document.getElementById('appVersion').textContent = 'MemoryVerse · Version ' + APP_VERSION;
 if (!IS_CURRENT_PAGE) refreshBtn.style.display = 'none';
 async function checkForNewPassage() {
@@ -1394,6 +1409,8 @@ try {
   var MAX_VERSES = 20;
   var MAX_CHARS = 40000; // room for a whole long psalm in any language
   var MAX_REF = 60;
+  var MAX_TAGS = 5;
+  var MAX_TAG_LEN = 24;
 
   // Scripts we recognise, only to pick a font style and a voice. Any text can be saved.
   var SCRIPTS = [
@@ -1483,6 +1500,34 @@ try {
     return best || 'other';
   }
 
+  // Tags: typed with commas, up to 5 per verse. Repeats (any capitals) are dropped.
+  function parseTags(v) {
+    var parts = Array.isArray(v) ? v : String(v || '').split(/[,\u060C\u3001;\n]/);
+    var out = [], seen = {}, i, t;
+    for (i = 0; i < parts.length && out.length < MAX_TAGS; i++) {
+      if (typeof parts[i] !== 'string') continue;
+      t = cleanLine(parts[i]).slice(0, MAX_TAG_LEN);
+      t = cleanLine(t);
+      if (!t || seen[t.toLowerCase()]) continue;
+      seen[t.toLowerCase()] = 1;
+      out.push(t);
+    }
+    return out;
+  }
+  function hasTag(it, name) {
+    var k = String(name).toLowerCase(), i;
+    for (i = 0; i < it.tags.length; i++) { if (it.tags[i].toLowerCase() === k) return true; }
+    return false;
+  }
+  function allTags() {
+    var out = [], seen = {};
+    items.forEach(function (it) {
+      it.tags.forEach(function (t) { if (!seen[t.toLowerCase()]) { seen[t.toLowerCase()] = 1; out.push(t); } });
+    });
+    out.sort(function (a, b) { a = a.toLowerCase(); b = b.toLowerCase(); return a < b ? -1 : (a > b ? 1 : 0); });
+    return out;
+  }
+
   function newId() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
 
   // Checks a list of verses read from storage or from a backup file. Bad entries are dropped.
@@ -1502,6 +1547,7 @@ try {
         ref: it.ref.slice(0, 120),
         lang: (typeof it.lang === 'string' && VALID[it.lang]) ? it.lang : detectLang(lines),
         lines: lines,
+        tags: parseTags(it.tags),
         added: Number(it.added) || 0
       });
     }
@@ -1529,7 +1575,8 @@ try {
   }
 
   var items = loadStore();
-  var draft = { text: '', ref: '', strip: true };
+  var draft = { text: '', ref: '', strip: true, tags: '' };
+  var tagFilter = '';
   var cur = { mv: 'week', d: 0 };   // where we are: week | list | detail | form, and how many history steps deep
   var histOK = true;
   var busy = false;
@@ -1593,6 +1640,7 @@ try {
   function buildForm(editItem) {
     var card = el('div', 'card mv-form');
     card.appendChild(el('h2', 'mv-form-title', editItem ? 'Edit verse' : 'Add a verse'));
+    card.appendChild(el('p', 'mv-msg', 'Paste any verse, then practise it with the same tools as the weekly verse.'));
 
     var l1 = el('label', 'mv-label', 'Reference');
     l1.setAttribute('for', 'mvRef');
@@ -1618,6 +1666,37 @@ try {
     ta.setAttribute('spellcheck', 'false');
     ta.setAttribute('dir', 'auto');
 
+    var l3 = el('label', 'mv-label mv-gap', 'Tags (optional, up to ' + MAX_TAGS + ')');
+    l3.setAttribute('for', 'mvTags');
+    var tg = el('input', 'mv-input');
+    tg.id = 'mvTags';
+    tg.type = 'text';
+    tg.maxLength = 120;
+    tg.placeholder = 'e.g. Comfort, Psalms';
+    tg.value = editItem ? editItem.tags.join(', ') : draft.tags;
+    tg.setAttribute('autocomplete', 'off');
+    tg.setAttribute('dir', 'auto');
+    var picks = el('div', 'mv-picks');
+    function drawPicks() {
+      picks.innerHTML = '';
+      var have = {};
+      parseTags(tg.value).forEach(function (t) { have[t.toLowerCase()] = 1; });
+      allTags().forEach(function (t) {
+        var b = el('button', 'mv-pick' + (have[t.toLowerCase()] ? ' on' : ''), t);
+        b.type = 'button';
+        b.addEventListener('click', function () {
+          var list = parseTags(tg.value), k = t.toLowerCase(), at = -1, i;
+          for (i = 0; i < list.length; i++) { if (list[i].toLowerCase() === k) at = i; }
+          if (at >= 0) list.splice(at, 1);
+          else if (list.length < MAX_TAGS) list.push(t);
+          tg.value = list.join(', ');
+          update();
+          drawPicks();
+        });
+        picks.appendChild(b);
+      });
+    }
+
     var numRow = el('label', 'lang-option mv-hidden');
     var cb = el('input');
     cb.type = 'checkbox';
@@ -1642,7 +1721,7 @@ try {
 
     var current = null, timer = null;
     function update() {
-      if (!editItem) { draft.text = ta.value; draft.ref = ref.value; draft.strip = cb.checked; }
+      if (!editItem) { draft.text = ta.value; draft.ref = ref.value; draft.strip = cb.checked; draft.tags = tg.value; }
       var res = parseVerse(ta.value, cb.checked);
       numRow.classList.toggle('mv-hidden', !res.hasNums);
       var tooLong = res.chars > MAX_CHARS;
@@ -1657,6 +1736,7 @@ try {
     }
     ta.addEventListener('input', schedule);
     ref.addEventListener('input', schedule);
+    tg.addEventListener('input', function () { update(); drawPicks(); });
     cb.addEventListener('change', update);
 
     save.addEventListener('click', function () {
@@ -1666,8 +1746,9 @@ try {
       var refText = cleanLine(ref.value).slice(0, MAX_REF);
       var lines = current.lines.slice();
       var lang = detectLang(lines);
+      var tagList = parseTags(tg.value);
       if (editItem) {
-        var edited = { id: editItem.id, ref: refText, lang: lang, lines: lines, added: editItem.added };
+        var edited = { id: editItem.id, ref: refText, lang: lang, lines: lines, tags: tagList, added: editItem.added };
         var next = items.map(function (x) { return x.id === editItem.id ? edited : x; });
         if (!saveStore(next)) { showToast("Couldn't save. Your device storage may be full."); return; }
         items = next;
@@ -1676,11 +1757,11 @@ try {
         return;
       }
       if (items.length >= MAX_VERSES) { showToast('You can keep up to ' + MAX_VERSES + ' verses. Delete one to add another.'); return; }
-      var item = { id: newId(), ref: refText, lang: lang, lines: lines, added: Date.now() };
+      var item = { id: newId(), ref: refText, lang: lang, lines: lines, tags: tagList, added: Date.now() };
       var added = items.concat([item]);
       if (!saveStore(added)) { showToast("Couldn't save. Your device storage may be full."); return; }
       items = added;
-      draft = { text: '', ref: '', strip: true };
+      draft = { text: '', ref: '', strip: true, tags: '' };
       var st = { mv: 'detail', id: item.id, d: 2 };
       if (cur.mv === 'form' && histOK) { try { history.replaceState(st, ''); } catch (e) {} applyState(st); }
       else pushOrApply(st);
@@ -1691,6 +1772,10 @@ try {
     card.appendChild(ref);
     card.appendChild(l2);
     card.appendChild(ta);
+    card.appendChild(l3);
+    card.appendChild(tg);
+    card.appendChild(picks);
+    drawPicks();
     card.appendChild(numRow);
     card.appendChild(msg);
     card.appendChild(note);
@@ -1789,7 +1874,21 @@ try {
     var head = document.createElement('header');
     head.appendChild(el('div', 'eyebrow', 'Scripture Memory'));
     head.appendChild(el('h1', '', 'My Verses'));
-    head.appendChild(el('p', 'mv-sub', 'Paste any verse, then practise it with the same tools as the weekly verse. Your verses stay only on this device.'));
+    var tagNames = allTags();
+    if (tagFilter && !tagNames.some(function (t) { return t.toLowerCase() === tagFilter.toLowerCase(); })) tagFilter = '';
+    if (tagNames.length) {
+      var fwrap = el('div', 'mv-filter');
+      var sel = el('select', 'mv-select');
+      sel.setAttribute('aria-label', 'Show verses with a tag');
+      var o0 = el('option', '', 'All verses');
+      o0.value = '';
+      sel.appendChild(o0);
+      tagNames.forEach(function (t) { var o = el('option', '', t); o.value = t; sel.appendChild(o); });
+      sel.value = tagFilter;
+      sel.addEventListener('change', function () { tagFilter = sel.value; render(); });
+      fwrap.appendChild(sel);
+      head.appendChild(fwrap);
+    }
     mineView.appendChild(head);
 
     var full = items.length >= MAX_VERSES;
@@ -1801,6 +1900,7 @@ try {
 
     var list = el('div', 'mv-list');
     items.forEach(function (it, idx) {
+      if (tagFilter && !hasTag(it, tagFilter)) return;
       var wrap = el('div', 'mv-item');
       var row = el('button', 'mv-row');
       row.type = 'button';
@@ -1810,7 +1910,7 @@ try {
       row.appendChild(el('span', 'mv-row-chev', '\u2192'));
       row.addEventListener('click', function () { pushOrApply({ mv: 'detail', id: it.id, d: 2 }); });
       wrap.appendChild(row);
-      if (items.length > 1) {
+      if (items.length > 1 && !tagFilter) {
         var grip = el('button', 'mv-grip');
         grip.type = 'button';
         grip.title = 'Drag to reorder';
@@ -1843,7 +1943,11 @@ try {
     var card = el('div', 'card');
     var head = el('div', 'card-head');
     head.appendChild(el('span', 'ref', it.ref));
-    head.appendChild(el('span', 'version-tag', 'My verse'));
+    if (it.tags.length) {
+      var tagBox = el('span', 'mv-tags');
+      it.tags.forEach(function (t) { tagBox.appendChild(el('span', 'version-tag', t)); });
+      head.appendChild(tagBox);
+    } else head.appendChild(el('span', 'version-tag', 'My verse'));
     card.appendChild(head);
     try {
       var block = buildLangBlock(it.lang, it.lines, it.ref, { tag: 'My verse', segment: true, hideVoiceIfNone: true, autoDir: true });
@@ -1861,7 +1965,7 @@ try {
     mineView.appendChild(card);
 
     var actions = el('div', 'actions');
-    var share = el('button', 'primary', '\uD83D\uDCCB Share');
+    var share = el('button', 'mv-share', 'Share');
     share.type = 'button';
     share.addEventListener('click', function () { shareSingleLanguage(it.ref, 'My verse', it.lines); });
     var edit = el('button', 'mv-edit', 'Edit');
