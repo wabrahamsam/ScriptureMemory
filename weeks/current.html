@@ -1706,7 +1706,7 @@ try {
     ta.setAttribute('spellcheck', 'false');
     ta.setAttribute('dir', 'auto');
 
-    var l3 = el('label', 'mv-label mv-gap', 'Tags (optional; use commas to separate multiple tags)');
+    var l3 = el('label', 'mv-label mv-gap', 'Tags (optional; use commas to separate tags)');
     l3.setAttribute('for', 'mvTags');
     var tagList = parseTags(editItem ? editItem.tags : draft.tags);
     var chosen = el('div', 'mv-chosen');
